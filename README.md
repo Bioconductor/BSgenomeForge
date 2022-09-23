@@ -2,17 +2,17 @@
 
 WORK IN PROGRESS!
 
-## Outreachy applicants
+### Outreachy applicants
 
 Please see https://github.com/Bioconductor/BSgenomeForge/wiki/List-of-contribution-tasks-for-the-Outreachy-application-period for a list of contribution tasks that you can choose from.
 
-## About BSgenome data packages
+### About BSgenome data packages
 
 _BSgenome data packages_ are one of the many types of annotation packages available in Bioconductor. They contain the genomic sequences, which comprise chromosome sequences and other DNA sequences, of a particular genome assembly for a given organism. For example **BSgenome.Hsapiens.UCSC.hg19** is a BSgenome data package that contains the genomic sequences of the hg19 genome from UCSC. Users can easily and efficiently access the sequences, or portions of the sequences, stored in these packages, via a common API implemented in the **BSgenome** _software_ package.
 
 Bioconductor currently provides more than 100 BSgenome data packages, for more than 30 organisms. Most of them contain the genomic sequences of UCSC genomes (i.e. genomes supported by the UCSC Genome Browser) or NCBI assemblies. The packages are used in various Bioconductor workflows, as well as in man page examples and vignettes of other Bioconductor packages, typically in conjunction with tools available in the **BSgenome** and **Biostrings** software packages. New BSgenome data packages get added on a regular basis, based on demand.
 
-## Useful links
+### Useful links
 
 - **BSgenome.Hsapiens.UCSC.hg19** landing page: https://bioconductor.org/packages/BSgenome.Hsapiens.UCSC.hg19
 
