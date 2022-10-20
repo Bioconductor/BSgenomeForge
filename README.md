@@ -6,7 +6,10 @@ WORK IN PROGRESS!
 
 Please see https://github.com/Bioconductor/BSgenomeForge/wiki/List-of-contribution-tasks-for-the-Outreachy-application-period for a list of contribution tasks that you can choose from.
 
-Use my email (hpages.on.github at gmail.com) to get in touch with me, or open an issue in this repository to start a discussion (it will be public).
+If you are interested to work on the "Refactor the BSgenomeForge tools"
+project, please get in touch with me. You can use my email (hpages.on.github
+at gmail.com), or direct message me (Hervé Pagès) on the community-bioc Slack
+at https://bioc-community.herokuapp.com/ (you'll need to register first).
 
 ### About BSgenome data packages
 
