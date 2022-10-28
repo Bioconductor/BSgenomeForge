@@ -1,0 +1,11 @@
+import(methods)
+importFrom(stats, setNames)
+
+import(BiocGenerics)
+import(S4Vectors)
+import(IRanges)
+import(GenomeInfoDb)
+import(Biostrings)
+import(rtracklayer)
+import(BSgenome)
+

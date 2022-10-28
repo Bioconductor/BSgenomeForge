@@ -1,0 +1,21 @@
+Package: BSgenomeForge
+Title: Forge BSgenome data packages
+Description: A set of tools to forge BSgenome data packages. Supersedes the
+	old tools from the BSgenome software package.
+biocViews: Genetics, Infrastructure, DataRepresentation, Annotation,
+	GenomeAnnotation
+URL: https://bioconductor.org/packages/BSgenomeForge
+BugReports: https://github.com/Bioconductor/BSgenomeForge/issues
+Version: 0.0.1
+License: Artistic-2.0
+Encoding: UTF-8
+Authors@R: c(
+	person("first name", "last name", role="aut"),
+	person("first name", "last name", role="aut"),
+	person("Hervé", "Pagès", role=c("aut", "cre"),
+		email="hpages.on.github@gmail.com"))
+Depends: R (>= 4.2.0), methods, BiocGenerics, S4Vectors, IRanges,
+	GenomeInfoDb, Biostrings, BSgenome
+Imports: stats, rtracklayer
+Suggests: GenomicRanges, GenomicFeatures, testthat, knitr, rmarkdown, BiocStyle
+VignetteBuilder: knitr
