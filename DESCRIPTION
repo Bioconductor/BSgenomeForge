@@ -16,6 +16,6 @@ Authors@R: c(
 		email="hpages.on.github@gmail.com"))
 Depends: R (>= 4.2.0), methods, BiocGenerics, S4Vectors, IRanges,
 	GenomeInfoDb (>= 1.33.17), Biostrings, BSgenome
-Imports: stats, rtracklayer
+Imports: utils, stats, rtracklayer
 Suggests: GenomicRanges, GenomicFeatures, testthat, knitr, rmarkdown, BiocStyle
 VignetteBuilder: knitr
