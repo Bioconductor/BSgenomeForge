@@ -86,8 +86,3 @@
    genome_sequence <- import("/home/emmanuel/sacCer1.2bit") 
    genome_sequence
  }
-   
-   
-   
-   
-   
