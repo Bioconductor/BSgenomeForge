@@ -40,7 +40,7 @@ downloadGenomicSequencesFromUCSC(genome, goldenPath.url=getOption("UCSC.goldenPa
 
 \details{
   This function is intended for Bioconductor users who want 
-  to download the genomic sequence 2bit file of a UCSC genome 
+  to download the 2bit genomic sequence file of a UCSC genome 
   specified by the 'genome' argument.
  }
   
