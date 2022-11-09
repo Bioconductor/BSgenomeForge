@@ -5,7 +5,8 @@
 \title{The downloadGenomicSequencesFromUCSC function}
 
 \description{
-    A function for downloading UCSC genome .2bit sequence files
+   A utility function that finds and downloads the 2bit file from
+   UCSC, for a given genome.
  }
 
 \usage{
