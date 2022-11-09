@@ -58,6 +58,7 @@ downloadGenomicSequencesFromUCSC("sacCer1")
 downloadGenomicSequencesFromUCSC("sacCer1", destdir=tempdir())
    
 ## How to import the file in R as a DNAStringSet object. 
-genome_sequence <- import(downloadGenomicSequencesFromUCSC("sacCer1", destdir=tempdir())) 
+genome_sequence <- import(downloadGenomicSequencesFromUCSC("sacCer1", 
+                          destdir=tempdir())) 
 genome_sequence
 }
