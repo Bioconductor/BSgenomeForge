@@ -6,14 +6,13 @@ biocViews: Genetics, Infrastructure, DataRepresentation, Annotation,
 	GenomeAnnotation
 URL: https://bioconductor.org/packages/BSgenomeForge
 BugReports: https://github.com/Bioconductor/BSgenomeForge/issues
-Version: 0.0.1
+Version: 0.0.2
 License: Artistic-2.0
 Encoding: UTF-8
 Authors@R: c(
-	person("first name", "last name", role="aut"),
-	person("first name", "last name", role="aut"),
 	person("Hervé", "Pagès", role=c("aut", "cre"),
-		email="hpages.on.github@gmail.com"))
+		email="hpages.on.github@gmail.com"),
+	person("Emmanuel Chigozie", "Elendu", role="ctb"))
 Depends: R (>= 4.2.0), methods, BiocGenerics, S4Vectors, IRanges,
 	GenomeInfoDb (>= 1.33.17), Biostrings, BSgenome
 Imports: utils, stats, rtracklayer
