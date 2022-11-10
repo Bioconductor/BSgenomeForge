@@ -2,17 +2,19 @@
 
 \alias{downloadGenomicSequencesFromUCSC}
 
-\title{The downloadGenomicSequencesFromUCSC function}
+\title{Download genomic sequences from UCSC}
 
 \description{
    A utility function that finds and downloads the 2bit file from
    UCSC, for a given genome.
- }
+}
 
 \usage{
-downloadGenomicSequencesFromUCSC(genome, goldenPath.url=getOption("UCSC.goldenPath.url"), 
-                                 destdir=".", method, quiet=FALSE)
- }
+downloadGenomicSequencesFromUCSC(
+            genome,
+            goldenPath.url=getOption("UCSC.goldenPath.url"),                   
+            destdir=".", method, quiet=FALSE)
+}
 
 \arguments{
   \item{genome}{
@@ -21,34 +23,42 @@ downloadGenomicSequencesFromUCSC(genome, goldenPath.url=getOption("UCSC.goldenPa
   }
   
   \item{goldenPath.url}{
-    a ‘character’ string set to getOption("UCSC.goldenPath.url)
-    by default. getOption("UCSC.goldenPath.url) return the 
-    goldenPath URL, http://hgdownload.cse.ucsc.edu/goldenPath. 
-    This argument can be changed as needed. 
+    a ‘character’ string set to \code{getOption("UCSC.goldenPath.url")}
+    by default. \code{getOption("UCSC.goldenPath.url")} returns the 
+    goldenPath URL, \url{http://hgdownload.cse.ucsc.edu/goldenPath}.  
   }
   
   \item{destdir}{
     a 'character' string indicating the path where 
     the downloaded file is to be stored
-    it is set to "." by default.   
+    it is set to \code{"."} by default.   
   }
   
   \item{method, quiet}{
-    Passed to the internal call to \code{download.file()}. See \code{?download.file}
-    in the \pkg{utils} package for more information.
+    Passed to the internal call to \code{download.file()}. See 
+    \code{?download.file} in the \pkg{utils} package for more information.
   }  
- }
+}
 
 \details{
   This function is intended for Bioconductor users who want 
   to download the 2bit genomic sequence file of a UCSC genome 
-  specified by the 'genome' argument.
- }
+  specified by the \code{genome} argument.
+}
+
+\value{
+  An (invisible) \code{destdir} argument
+}
   
-  \seealso{
-  The \code{\link[utils]{download.file}} function in the \pkg{utils} package, that
-  \code{downloadGenomicSequencesFromUCSC} uses internally to download the 2bit file.
- }
+\author{
+  Emmanuel Chigozie Elendu (Simplecodez)
+}
+  
+\seealso{
+  The \code{\link[utils]{download.file}} function in the \pkg{utils}
+  package, that \code{downloadGenomicSequencesFromUCSC} uses internally
+  to download the 2bit file.
+}
   
 \examples{
 ## Download a genome.2bit file 
