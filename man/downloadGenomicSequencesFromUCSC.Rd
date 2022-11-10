@@ -23,15 +23,15 @@ downloadGenomicSequencesFromUCSC(
   }
   
   \item{goldenPath.url}{
-    a ‘character’ string set to \code{getOption("UCSC.goldenPath.url")}
+    A 'character' string set to \code{getOption("UCSC.goldenPath.url")}
     by default. \code{getOption("UCSC.goldenPath.url")} returns the 
     goldenPath URL, \url{http://hgdownload.cse.ucsc.edu/goldenPath}.  
   }
   
   \item{destdir}{
-    a 'character' string indicating the path where 
-    the downloaded file is to be stored
-    it is set to \code{"."} by default.   
+    A 'character' string indicating the path where 
+    the downloaded file is to be stored.
+    It is set to \code{"."} by default.   
   }
   
   \item{method, quiet}{
@@ -47,7 +47,7 @@ downloadGenomicSequencesFromUCSC(
 }
 
 \value{
-  An (invisible) \code{destdir} argument
+  An (invisible) \code{destfile} argument
 }
   
 \author{
@@ -61,11 +61,11 @@ downloadGenomicSequencesFromUCSC(
 }
   
 \examples{
-## Download a genome.2bit file 
-## Downloading a genome.2bit file with only the genome passed
+## Download the 2bit file for UCSC genome sacCer1:
 downloadGenomicSequencesFromUCSC("sacCer1")
    
-## Downloading a genome.2bit file with genome and destdir arguments passed
+## Use the 'destdir' argument to specify the directory where the
+## file is to be downloaded:
 downloadGenomicSequencesFromUCSC("sacCer1", destdir=tempdir())
    
 ## How to import the file in R as a DNAStringSet object. 
