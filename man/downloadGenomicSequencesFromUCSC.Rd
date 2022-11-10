@@ -47,7 +47,7 @@ downloadGenomicSequencesFromUCSC(
 }
 
 \value{
-  An (invisible) \code{destfile} argument
+  A 'character' string indicating the file path of the downloaded 2bit file. 
 }
   
 \author{
