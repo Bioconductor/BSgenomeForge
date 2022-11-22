@@ -8,7 +8,7 @@ downloadGenomicSequencesFromNCBI <- function(assembly_accession,
     if (!dir.exists(destdir))
         stop(wmsg("'destdir' must be the path to an existing directory"))
     if (file.access(destdir, 2))
-        stop(wmsg("'destdir'  must be a path with permission"))
+        stop(wmsg("you don't have write permission to 'destdir'"))
     if (!isTRUEorFALSE(quiet))
         stop(wmsg("'quiet' must be TRUE or FALSE"))
 
