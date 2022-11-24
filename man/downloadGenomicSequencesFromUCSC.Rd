@@ -5,8 +5,8 @@
 \title{Download genomic sequences from UCSC}
 
 \description{
-   A utility function that finds and downloads the 2bit file from
-   UCSC, for a given genome.
+  A utility function to download the 2bit file that contains the genomic
+  sequences of a given UCSC genome.
 }
 
 \usage{
@@ -22,14 +22,15 @@ downloadGenomicSequencesFromUCSC(
     It is used to form the download URL.
   }
   \item{goldenPath.url}{
-    A 'character' string set to \code{getOption("UCSC.goldenPath.url")}
+    A string set to \code{getOption("UCSC.goldenPath.url")}
     by default. \code{getOption("UCSC.goldenPath.url")} returns the
     goldenPath URL, \url{http://hgdownload.cse.ucsc.edu/goldenPath}.
   }
   \item{destdir}{
-    A 'character' string indicating the path where
-    the downloaded file is to be stored.
-    It is set to \code{"."} by default.
+    A single string containing the path to the directory where the 2bit file
+    is to be downloaded. This directory must already exist.
+    Note that, by default, the file will be downloaded to the current
+    directory (\code{"."}).
   }
   \item{method, quiet}{
     Passed to the internal call to \code{download.file()}. See
@@ -44,7 +45,7 @@ downloadGenomicSequencesFromUCSC(
 }
 
 \value{
-  A 'character' string indicating the file path of the downloaded 2bit file.
+  The path to the downloaded file as an invisible string.
 }
 
 \author{
@@ -52,21 +53,28 @@ downloadGenomicSequencesFromUCSC(
 }
 
 \seealso{
-  The \code{\link[utils]{download.file}} function in the \pkg{utils}
-  package, that \code{downloadGenomicSequencesFromUCSC} uses internally
-  to download the 2bit file.
+  \itemize{
+    \item The \code{\link[utils]{download.file}} function in the \pkg{utils}
+          package that \code{downloadGenomicSequencesFromUCSC} uses internally
+          to download the 2bit file.
+
+    \item The \code{\link{downloadGenomicSequencesFromNCBI}} function to
+          download genomic sequences from NCBI.
+  }
 }
 
 \examples{
 ## Download the 2bit file for UCSC genome sacCer1:
 downloadGenomicSequencesFromUCSC("sacCer1")
 
-## Use the 'destdir' argument to specify the directory where the
-## file is to be downloaded:
+## Use the 'destdir' argument to specify the directory where to
+## download the file:
 downloadGenomicSequencesFromUCSC("sacCer1", destdir=tempdir())
 
-## How to import the file in R as a DNAStringSet object.
+## Download and import the file in R as a DNAStringSet object:
 filepath <- downloadGenomicSequencesFromUCSC("sacCer1", destdir=tempdir())
-genome_sequence <- import(filepath)
-genome_sequence
+genomic_sequences <- import(filepath)
+genomic_sequences
 }
+
+\keyword{utilities}

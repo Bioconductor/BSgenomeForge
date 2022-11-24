@@ -9,5 +9,7 @@ import(GenomeInfoDb)
 import(Biostrings)
 import(rtracklayer)
 import(BSgenome)
+
 export(downloadGenomicSequencesFromUCSC)
 export(downloadGenomicSequencesFromNCBI)
+
