@@ -1,8 +1,15 @@
 [<img src="https://www.bioconductor.org/images/logo/jpg/bioconductor_logo_rgb.jpg" width="200" align="right"/>](https://bioconductor.org/)
 
-**BSgenomeForge** is an R/Bioconductor package that provides a set of tools to forge _BSgenome data packages_. These tools supersede the old tools from the **BSgenome** software package.
-
 WORK IN PROGRESS!
+
+### Outreachy applicants
+
+Please see https://github.com/Bioconductor/BSgenomeForge/wiki/List-of-contribution-tasks-for-the-Outreachy-application-period for a list of contribution tasks that you can choose from.
+
+If you are interested to work on the "Refactor the BSgenomeForge tools"
+project, please get in touch with me. You can use my email (hpages.on.github
+at gmail.com), or direct message me (Hervé Pagès) on the community-bioc Slack
+at https://bioc-community.herokuapp.com/ (you'll need to register first).
 
 ### About BSgenome data packages
 
@@ -16,11 +23,25 @@ Bioconductor currently provides more than 100 BSgenome data packages, for more t
 
 - List of BSgenome data packages available in Bioconductor: https://bioconductor.org/packages/release/BiocViews.html#___BSgenome
 
-- **BSgenome** software package landing page (with link to the old "How to forge a BSgenome data package" vignette): https://bioconductor.org/packages/BSgenome
+- **BSgenome** software package landing page (with link to the "How to forge a BSgenome data package" vignette): https://bioconductor.org/packages/BSgenome
 
 - **BSgenome** software package on GitHub: https://github.com/Bioconductor/BSgenome
 
 - **Biostrings** software package landing page: https://bioconductor.org/packages/Biostrings
 
 - **GenomeInfoDb** software package on GitHub: https://github.com/Bioconductor/GenomeInfoDb
+
+- Questions tagged with "BSgenome" on the Bioconductor support site: https://support.bioconductor.org/tag/bsgenome/
+
+- Download stats for Bioconductor data annotation packages: https://bioconductor.org/packages/stats/data-annotation.html
+
+- Bioconductor home page: https://bioconductor.org/
+
+- Bioconductor package submissions: https://github.com/Bioconductor/Contributions
+
+- The R Project landing page: https://www.r-project.org/
+
+- List of genomes available at UCSC: https://genome.ucsc.edu/FAQ/FAQreleases.html
+
+- NCBI assembly database: https://www.ncbi.nlm.nih.gov/assembly
 
