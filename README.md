@@ -1,8 +1,8 @@
 [<img src="https://www.bioconductor.org/images/logo/jpg/bioconductor_logo_rgb.jpg" width="200" align="right"/>](https://bioconductor.org/)
 
-**BSgenomeForge** is an R/Bioconductor package that provides a set of tools to forge _BSgenome data packages_. These tools supersede the old tools from the **BSgenome** software package.
-
 WORK IN PROGRESS!
+
+**BSgenomeForge** is an R/Bioconductor package that provides a set of tools to forge _BSgenome data packages_. These tools supersede the old tools from the **BSgenome** software package.
 
 ### About BSgenome data packages
 
