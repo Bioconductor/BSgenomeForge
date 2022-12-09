@@ -12,4 +12,4 @@ import(BSgenome)
 
 export(downloadGenomicSequencesFromUCSC)
 export(downloadGenomicSequencesFromNCBI)
-
+export(fastaTo2bit)
