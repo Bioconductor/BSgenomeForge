@@ -9,12 +9,12 @@
 }
 
 \usage{
-fastaTo2bit <- function(origfile, destfile)
+fastaTo2bit(origfile, destfile)
 }
 
 \arguments{
   \item{origfile}{
-    A single string containing the path to the intended FASTA file 
+    A single string containing the path to the FASTA file 
     to be read (e.g. \code{"felCat9.fasta"})
   }
   \item{destfile}{
@@ -28,7 +28,7 @@ fastaTo2bit <- function(origfile, destfile)
 }
 
 \value{
-  A converted 2bit file within the specified directory.
+  An invisible NULL.
 }
 
 \author{
@@ -40,11 +40,11 @@ fastaTo2bit <- function(origfile, destfile)
     \item The \code{\link{downloadGenomicSequencesFromNCBI}} function to
           download genomic sequences from NCBI.
           
-    \item The \code{\link{readDNAStringSet}} function in the Biostrings package
-          to read/write an XStringSet object from/to a file.
+    \item The \code{\link{readDNAStringSet}} function in the \pkg{Biostrings} package
+          that \code{fastaTo2bit} uses internally to import the FASTA file.
           
-    \item The \code{\link{export.2bit}} function in the rtracklayer package
-          to read/write an XStringSet object from/to a file.
+    \item The \code{\link{export.2bit}} function in the \pkg{rtracklayer} package
+          that \code{fastaTo2bit} uses internally to export the 2bit file.
   }
 }
 
@@ -53,5 +53,10 @@ fastaTo2bit <- function(origfile, destfile)
 ## and store in the tempdir folder (see 
 ## https://www.ncbi.nlm.nih.gov/assembly/GCF_009729545.1/):
 downloadGenomicSequencesFromNCBI("GCF_009729545.1", destdir=tempdir())
+
+## Convert the FASTA file to 2bit format:
+fasta_path <- downloadGenomicSequencesFromNCBI("GCF_009729545.1", destdir=tempdir())
+dest_path <- file.path(tempdir(), "ASM972954v1.2bit")
+fastaTo2bit(fasta_path, dest_path)
 }
 

@@ -3,12 +3,12 @@ fastaTo2bit <- function(origfile, destfile)
   
 {
     if (!isSingleString(origfile))
-      stop(wmsg("'origfile' must be a single string"))
+        stop(wmsg("'origfile' must be a single string"))
     if (!file.exists(origfile))
-      stop(wmsg("'origfile' must be the path to an existing file"))
+        stop(wmsg("'origfile' must be the path to an existing file"))
     if (!isSingleString(destfile))
-      stop(wmsg("'destfile' must be a single string"))
-    myfile <- readDNAStringSet(origfile)
-    export.2bit(myfile, destfile)
+        stop(wmsg("'destfile' must be a single string"))
+    dna <- readDNAStringSet(origfile)
+    export.2bit(dna, destfile)
 }
 
