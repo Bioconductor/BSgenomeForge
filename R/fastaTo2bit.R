@@ -1,11 +1,11 @@
 ### The function helps to convert a file from FASTA to 2bit
-fastaTo2bit <- function(origfile, destfile)
+fastaTo2bit <- function(origfile, destfile, assembly_accession = "")
   
 {
-    if (dir.exists(origfile))
-        stop(wmsg("'origfile' must be path to a file, not a directory"))
     if (!isSingleString(origfile))
         stop(wmsg("'origfile' must be a single string"))
+    if (dir.exists(origfile))
+        stop(wmsg("'origfile' must be path to a file, not a directory"))
     if (!file.exists(origfile))
         stop(wmsg("'origfile' must be the path to an existing file"))
     if (!isSingleString(destfile))
