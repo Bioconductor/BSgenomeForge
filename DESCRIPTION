@@ -12,6 +12,7 @@ Encoding: UTF-8
 Authors@R: c(
 	person("Hervé", "Pagès", role=c("aut", "cre"),
 		email="hpages.on.github@gmail.com"),
+	person("Atuhurira Kirabo", "Kakopo", role="aut"),
 	person("Emmanuel Chigozie", "Elendu", role="ctb"),
 	person("Prisca Chidimma", "Maduka", role="ctb"))
 Depends: R (>= 4.2.0), methods, BiocGenerics, S4Vectors, IRanges,
