@@ -2,6 +2,8 @@
 fastaTo2bit <- function(origfile, destfile)
   
 {
+    if (dir.exists(origfile))
+        stop(wmsg("'origfile' must be path to a file, not a directory"))
     if (!isSingleString(origfile))
         stop(wmsg("'origfile' must be a single string"))
     if (!file.exists(origfile))

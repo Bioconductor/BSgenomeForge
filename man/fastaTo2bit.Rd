@@ -52,10 +52,9 @@ fastaTo2bit(origfile, destfile)
 ## Download the compressed FASTA file for NCBI assembly ASM972954v1 
 ## and store in the tempdir folder (see 
 ## https://www.ncbi.nlm.nih.gov/assembly/GCF_009729545.1/):
-downloadGenomicSequencesFromNCBI("GCF_009729545.1", destdir=tempdir())
+fasta_path <- downloadGenomicSequencesFromNCBI("GCF_009729545.1", destdir=tempdir())
 
 ## Convert the FASTA file to 2bit format:
-fasta_path <- downloadGenomicSequencesFromNCBI("GCF_009729545.1", destdir=tempdir())
 dest_path <- file.path(tempdir(), "ASM972954v1.2bit")
 fastaTo2bit(fasta_path, dest_path)
 }
