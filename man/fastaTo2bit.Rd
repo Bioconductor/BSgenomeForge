@@ -9,7 +9,7 @@
 }
 
 \usage{
-fastaTo2bit(origfile, destfile)
+fastaTo2bit(origfile, destfile, assembly_accession = NA)
 }
 
 \arguments{
@@ -19,6 +19,11 @@ fastaTo2bit(origfile, destfile)
   }
   \item{destfile}{
     A single string containing the path to the 2bit file to be written (e.g. \code{"felCat9.2bit"}).
+  }
+  \item{assembly_accession}{
+    A single string containing a GenBank assembly accession (e.g.
+    \code{"GCA_009729545.1"}) or a RefSeq assembly accession (e.g.
+    \code{"GCF_009729545.1"}).
   }
 }
 
@@ -54,8 +59,8 @@ fastaTo2bit(origfile, destfile)
 ## https://www.ncbi.nlm.nih.gov/assembly/GCF_009729545.1/):
 fasta_path <- downloadGenomicSequencesFromNCBI("GCF_009729545.1", destdir=tempdir())
 
-## Convert the FASTA file to 2bit format:
-dest_path <- file.path(tempdir(), "ASM972954v1.2bit")
-fastaTo2bit(fasta_path, dest_path)
+## Convert the FASTA file to 2bit format and specify assembly accession:
+dest_path <- file.path(tempdir(), "ASM972954v1_sorted.2bit")
+fastaTo2bit(fasta_path, dest_path, assembly_accession = "GCF_009729545.1")
 }
 
