@@ -2,10 +2,11 @@
 
 \alias{fastaTo2bit}
 
-\title{Convert files from FASTA format to 2bit}
+\title{Convert files from FASTA to 2bit}
 
 \description{
-  This is a utility function to convert a FASTA file to 2bit format.
+  \code{fastaTo2bit} is a utility function to convert a FASTA file
+  to the 2bit format..
 }
 
 \usage{
@@ -15,10 +16,12 @@ fastaTo2bit(origfile, destfile, assembly_accession = NA)
 \arguments{
   \item{origfile}{
     A single string containing the path to the FASTA file 
-    to be read (e.g. \code{"felCat9.fasta"})
+    (possibly compressed) to read, e.g. \code{"felCat9.fa"},
+    \code{"felCat9.fa.gz"}, or \code{"path/to/felCat9.fa.gz"}.
   }
   \item{destfile}{
-    A single string containing the path to the 2bit file to be written (e.g. \code{"felCat9.2bit"}).
+    A single string containing the path to the 2bit file to be
+    written, e.g. \code{"felCat9.2bit"} or \code{"path/to/felCat9.2bit"}.
   }
   \item{assembly_accession}{
     A single string containing a GenBank assembly accession (e.g.
@@ -29,7 +32,7 @@ fastaTo2bit(origfile, destfile, assembly_accession = NA)
 
 \details{
   This function is intended for Bioconductor users who want
-  to convert a downloaded file from FASTA to a 2bit format.
+  to convert a FASTA file to the 2bit format.
 }
 
 \value{
@@ -59,13 +62,12 @@ fastaTo2bit(origfile, destfile, assembly_accession = NA)
 ## See https://www.ncbi.nlm.nih.gov/assembly/GCF_009729545.1 for
 ## the landing page of the ASM972954v1 assembly (Acidianus infernus).
 
-## Download the compressed FASTA file for NCBI assembly ASM972954v1 
-## and store in the tempdir folder (see 
-## https://www.ncbi.nlm.nih.gov/assembly/GCF_009729545.1/):
+## Download the FASTA file containing the genomic sequences for
+## this assembly to the tempdir() folder:
 fasta_path <- downloadGenomicSequencesFromNCBI("GCF_009729545.1", 
                                                 destdir=tempdir())
 
-## Convert the FASTA file to 2bit format and specify assembly accession:
+## Convert the FASTA file to the 2bit format:
 twobitpath <- file.path(tempdir(), "ASM972954v1_sorted.2bit")
 fastaTo2bit(fasta_path, twobitpath, assembly_accession = "GCF_009729545.1")
 }
