@@ -1,6 +1,6 @@
 [<img src="https://www.bioconductor.org/images/logo/jpg/bioconductor_logo_rgb.jpg" width="200" align="right"/>](https://bioconductor.org/)
 
-WORK IN PROGRESS!
+WORK IN PROGRESS! (see tasks and timeline [here](https://github.com/Bioconductor/BSgenomeForge/wiki/Tasks-and-Timeline-for-the-%22Refactor-the-BSgenomeForge-tools%22-project-(Outreachy-internship)))
 
 **BSgenomeForge** is an R/Bioconductor package that provides a set of tools to forge _BSgenome data packages_. These tools supersede the old tools from the **BSgenome** software package.
 
