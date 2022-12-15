@@ -6,7 +6,7 @@
 
 \description{
   \code{fastaTo2bit} is a utility function to convert a FASTA file
-  to the 2bit format..
+  to the 2bit format.
 }
 
 \usage{
@@ -48,12 +48,12 @@ fastaTo2bit(origfile, destfile, assembly_accession = NA)
     \item The \code{\link{downloadGenomicSequencesFromNCBI}} function to
           download genomic sequences from NCBI.
           
-    \item The \code{\link{readDNAStringSet}} function in the \pkg{Biostrings} 
-          package that \code{fastaTo2bit} uses internally to import 
+    \item The \code{\link{readDNAStringSet}} function in the \pkg{Biostrings}
+          package that \code{fastaTo2bit} uses internally to import
           the FASTA file.
           
-    \item The \code{\link{export.2bit}} function in the \pkg{rtracklayer} 
-          package that \code{fastaTo2bit} uses internally to export 
+    \item The \code{\link{export.2bit}} function in the \pkg{rtracklayer}
+          package that \code{fastaTo2bit} uses internally to export
           the 2bit file.
   }
 }
@@ -64,8 +64,8 @@ fastaTo2bit(origfile, destfile, assembly_accession = NA)
 
 ## Download the FASTA file containing the genomic sequences for
 ## this assembly to the tempdir() folder:
-fasta_path <- downloadGenomicSequencesFromNCBI("GCF_009729545.1", 
-                                                destdir=tempdir())
+fasta_path <- downloadGenomicSequencesFromNCBI("GCF_009729545.1",
+                                               destdir=tempdir())
 
 ## Convert the FASTA file to the 2bit format:
 twobitpath <- file.path(tempdir(), "ASM972954v1_sorted.2bit")
