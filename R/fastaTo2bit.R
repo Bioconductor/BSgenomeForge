@@ -1,5 +1,5 @@
 ### The function helps to convert a file from FASTA to 2bit
-fastaTo2bit <- function(origfile, destfile, assembly_accession = NA)
+fastaTo2bit <- function(origfile, destfile, assembly_accession=NA)
   
 {
     if (!isSingleString(origfile))
@@ -12,6 +12,8 @@ fastaTo2bit <- function(origfile, destfile, assembly_accession = NA)
         stop(wmsg("'destfile' must be a single string"))
     dna <- readDNAStringSet(origfile)
     
+    if (!is.na(assembly_accession))
+{
     current_RefSeqAccn <- unlist(heads(strsplit(names(dna), " ", fixed=TRUE), n=1L)) 
     chrominfo <- getChromInfoFromNCBI(assembly_accession)
     expected_RefSeqAccn <- chrominfo[ , "RefSeqAccn"]
@@ -26,6 +28,7 @@ fastaTo2bit <- function(origfile, destfile, assembly_accession = NA)
     ### Check sequence lengths.
     expected_seqlengths <- chrominfo[ , "SequenceLength"]
     stopifnot(all(width(dna) == expected_seqlengths | is.na(expected_seqlengths)))
+}
     
     ### Export file as 2bit
     export.2bit (dna, destfile)
