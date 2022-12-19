@@ -1,6 +1,23 @@
 ### The function helps to convert a file from FASTA to 2bit
+.sort_and_rename <- function(dna, assembly_accession)
+{
+    current_RefSeqAccn <- unlist(heads(strsplit(names(dna), " ", fixed=TRUE), n=1L))
+    chrominfo <- getChromInfoFromNCBI(assembly_accession)
+    expected_RefSeqAccn <- chrominfo[ , "RefSeqAccn"]
+    stopifnot(setequal(expected_RefSeqAccn, current_RefSeqAccn))
+
+    ### Reorder the sequences.
+    dna <- dna[match(expected_RefSeqAccn, current_RefSeqAccn)]
+
+    ### Rename the sequences.
+    names(dna) <- chrominfo[ , "SequenceName"]
+
+    ### Check sequence lengths.
+    expected_seqlengths <- chrominfo[ , "SequenceLength"]
+    stopifnot(all(width(dna) == expected_seqlengths | is.na(expected_seqlengths)))
+}
+
 fastaTo2bit <- function(origfile, destfile, assembly_accession=NA)
-  
 {
     if (!isSingleString(origfile))
         stop(wmsg("'origfile' must be a single string"))
@@ -11,27 +28,10 @@ fastaTo2bit <- function(origfile, destfile, assembly_accession=NA)
     if (!isSingleString(destfile))
         stop(wmsg("'destfile' must be a single string"))
     dna <- readDNAStringSet(origfile)
-    
+
     if (!is.na(assembly_accession))
-{
-    current_RefSeqAccn <- unlist(heads(strsplit(names(dna), " ", fixed=TRUE), n=1L)) 
-    chrominfo <- getChromInfoFromNCBI(assembly_accession)
-    expected_RefSeqAccn <- chrominfo[ , "RefSeqAccn"]
-    stopifnot(setequal(expected_RefSeqAccn, current_RefSeqAccn))
-    
-    ### Reorder the sequences.
-    dna <- dna[match(expected_RefSeqAccn, current_RefSeqAccn)]
-    
-    ### Rename the sequences.
-    names(dna) <- chrominfo[ , "SequenceName"]
-    
-    ### Check sequence lengths.
-    expected_seqlengths <- chrominfo[ , "SequenceLength"]
-    stopifnot(all(width(dna) == expected_seqlengths | is.na(expected_seqlengths)))
-}
-    
+        dna <- .sort_and_rename(dna, assembly_accession)
     ### Export file as 2bit
     export.2bit (dna, destfile)
 }
-
 

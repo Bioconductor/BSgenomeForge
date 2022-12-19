@@ -15,7 +15,7 @@ fastaTo2bit(origfile, destfile, assembly_accession = NA)
 
 \arguments{
   \item{origfile}{
-    A single string containing the path to the FASTA file 
+    A single string containing the path to the FASTA file
     (possibly compressed) to read, e.g. \code{"felCat9.fa"},
     \code{"felCat9.fa.gz"}, or \code{"path/to/felCat9.fa.gz"}.
   }
@@ -26,7 +26,8 @@ fastaTo2bit(origfile, destfile, assembly_accession = NA)
   \item{assembly_accession}{
     A single string containing a GenBank assembly accession (e.g.
     \code{"GCA_009729545.1"}) or a RefSeq assembly accession (e.g.
-    \code{"GCF_009729545.1"}).
+    \code{"GCF_009729545.1"}). If missing, the function does not
+    perform sequence renaming or reordering.
   }
 }
 
@@ -47,11 +48,11 @@ fastaTo2bit(origfile, destfile, assembly_accession = NA)
   \itemize{
     \item The \code{\link{downloadGenomicSequencesFromNCBI}} function to
           download genomic sequences from NCBI.
-          
+
     \item The \code{\link{readDNAStringSet}} function in the \pkg{Biostrings}
           package that \code{fastaTo2bit} uses internally to import
           the FASTA file.
-          
+
     \item The \code{\link{export.2bit}} function in the \pkg{rtracklayer}
           package that \code{fastaTo2bit} uses internally to export
           the 2bit file.
@@ -59,21 +60,51 @@ fastaTo2bit(origfile, destfile, assembly_accession = NA)
 }
 
 \examples{
-## See https://www.ncbi.nlm.nih.gov/assembly/GCF_009729545.1 for
-## the landing page of the ASM972954v1 assembly (Acidianus infernus).
+## Most assemblies at NCBI can be accessed using either their GenBank or
+## RefSeq assembly accession. For example assembly ASM972954v1 (for
+## Acidianus infernus) can be accessed either with GCA_009729545.1 (GenBank
+## assembly accession) or GCF_009729545.1 (RefSeq assembly accession).
+## See https://www.ncbi.nlm.nih.gov/assembly/GCA_009729545.1
+## or https://www.ncbi.nlm.nih.gov/assembly/GCF_009729545.1 for
+## the landing page of this assembly.
+
+## ---------------------------------------------------------------------
+## USING FASTA FILE FROM **GenBank** ASSEMBLY
+## ---------------------------------------------------------------------
 
 ## Download the FASTA file containing the genomic sequences for
-## this assembly to the tempdir() folder:
-fasta_path <- downloadGenomicSequencesFromNCBI("GCF_009729545.1",
+## the ASM972954v1 assembly to the tempdir() folder:
+fasta_path <- downloadGenomicSequencesFromNCBI("GCA_009729545.1",
                                                destdir=tempdir())
 
-## Convert the FASTA file to the 2bit format:
-twobitpath <- file.path(tempdir(), "ASM972954v1_sorted.2bit")
-fastaTo2bit(fasta_path, twobitpath, assembly_accession = "GCF_009729545.1")
-}
+## Use fastaTo2bit() to convert the file to 2bit. We're using the
+## function in its simplest form here so there won't be any sequence
+## renaming or reordering:
+twobitpath1 <- tempfile(fileext=".2bit")
+fastaTo2bit(fasta_path, twobitpath1)
 
-## Sanity check: try to import the 2bit file:
-rtracklayer::import.2bit(twobit_path)
+## Take a look at the sequence names in the resulting 2bit file:
+names(import.2bit(twobitpath1))
+
+## Use fastaTo2bit() again to convert the file to 2bit. This time
+## we want the function to rename and reorder the sequences as in
+## getChromInfoFromNCBI("GCA_009729545.1"), so we supply "GCA_009729545.1":
+twobitpath2 <- tempfile(fileext=".2bit")
+fastaTo2bit(fasta_path, twobitpath2, assembly_accession="GCA_009729545.1")
+
+## Take a look at the sequence names in the resulting 2bit file:
+names(import.2bit(twobitpath2))
+
+## ---------------------------------------------------------------------
+## USING FASTA FILE FROM **RefSeq** ASSEMBLY
+## ---------------------------------------------------------------------
+
+#(same as above but using GCF_009729545.1 instead of GCA_009729545.1)
+fasta_path <- downloadGenomicSequencesFromNCBI("GCF_009729545.1",
+                                               destdir=tempdir())
+twobitpath <- tempfile(fileext=".2bit")
+fastaTo2bit(fasta_path, twobitpath, assembly_accession="GCF_009729545.1")
+names(import.2bit(twobitpath))
 }
 
 \keyword{utilities}
