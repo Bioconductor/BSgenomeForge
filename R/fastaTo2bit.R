@@ -49,4 +49,3 @@ fastaTo2bit <- function(origfile, destfile, assembly_accession=NA)
     ### Export file as 2bit
     export.2bit (dna, destfile)
 }
-
