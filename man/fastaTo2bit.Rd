@@ -74,7 +74,7 @@ fastaTo2bit(origfile, destfile, assembly_accession = NA)
 
 ## Download the FASTA file containing the genomic sequences for
 ## the ASM972954v1 assembly to the tempdir() folder:
-fasta_path <- downloadGenomicSequencesFromNCBI("GCA_009729545.1",
+fasta_path <- downloadGenomicSequencesFromNCBI("GCF_009729545.1",
                                                destdir=tempdir())
 
 ## Use fastaTo2bit() to convert the file to 2bit. We're using the
@@ -88,9 +88,9 @@ names(import.2bit(twobitpath1))
 
 ## Use fastaTo2bit() again to convert the file to 2bit. This time
 ## we want the function to rename and reorder the sequences as in
-## getChromInfoFromNCBI("GCA_009729545.1"), so we supply "GCA_009729545.1":
+## getChromInfoFromNCBI("GCF_009729545.1"), so we supply "GCF_009729545.1":
 twobitpath2 <- tempfile(fileext=".2bit")
-fastaTo2bit(fasta_path, twobitpath2, assembly_accession="GCA_009729545.1")
+fastaTo2bit(fasta_path, twobitpath2, assembly_accession="GCF_009729545.1")
 
 ## Take a look at the sequence names in the resulting 2bit file:
 names(import.2bit(twobitpath2))
@@ -99,11 +99,11 @@ names(import.2bit(twobitpath2))
 ## USING FASTA FILE FROM **RefSeq** ASSEMBLY
 ## ---------------------------------------------------------------------
 
-#(same as above but using GCF_009729545.1 instead of GCA_009729545.1)
-fasta_path <- downloadGenomicSequencesFromNCBI("GCF_009729545.1",
+#(same as above but using GCA_009729545.1 instead of GCF_009729545.1)
+fasta_path <- downloadGenomicSequencesFromNCBI("GCA_009729545.1",
                                                destdir=tempdir())
 twobitpath <- tempfile(fileext=".2bit")
-fastaTo2bit(fasta_path, twobitpath, assembly_accession="GCF_009729545.1")
+fastaTo2bit(fasta_path, twobitpath, assembly_accession="GCA_009729545.1")
 names(import.2bit(twobitpath))
 }
 
