@@ -1,5 +1,10 @@
+### =========================================================================
+### downloadGenomicSequencesFromUCSC()
+### -------------------------------------------------------------------------
+###
 ### A utility function to download the 2bit file that contains the genomic
 ### sequences of a given UCSC genome.
+###
 
 downloadGenomicSequencesFromUCSC <- function(genome,
             goldenPath.url=getOption("UCSC.goldenPath.url"),
