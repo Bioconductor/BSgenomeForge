@@ -4,22 +4,16 @@
     current_Accn <- unlist(heads(strsplit(names(dna), " ", fixed=TRUE), n=1L))
     chrominfo <- getChromInfoFromNCBI(assembly_accession)
 
-    ### Check if RefSeq assembly accession
+    ### Check if RefSeq or GenBank assembly accession
     if (grepl("GCF", assembly_accession)) {
-        expected_RefSeqAccn <- chrominfo[ , "RefSeqAccn"]
-        stopifnot(setequal(expected_RefSeqAccn, current_Accn))
-
-        ### Reorder the sequences.
-        dna <- dna[match(expected_RefSeqAccn, current_Accn)]
+        expected_Accn <- chrominfo[ , "RefSeqAccn"]
+    } else if (grepl("GCA", assembly_accession)) {
+        expected_Accn <- chrominfo[ , "GenBankAccn"]
     }
-    ### Check if GenBank assembly accession
-    else if (grepl("GCA", assembly_accession)) {
-        expected_GenBankAccn <- chrominfo[ , "GenBankAccn"]
-        stopifnot(setequal(expected_GenBankAccn, current_Accn))
+    stopifnot(setequal(expected_Accn, current_Accn))
 
-        ### Reorder the sequences.
-        dna <- dna[match(expected_GenBankAccn, current_Accn)]
-    }
+    ### Reorder the sequences.
+    dna <- dna[match(expected_Accn, current_Accn)]
 
     ### Rename the sequences.
     names(dna) <- chrominfo[ , "SequenceName"]
@@ -42,6 +36,7 @@ fastaTo2bit <- function(origfile, destfile, assembly_accession=NA)
         stop(wmsg("'destfile' must be a single string"))
     if (!isSingleStringOrNA(assembly_accession))
         stop(wmsg("'assembly_accession' must be a single string or NA value"))
+
     dna <- readDNAStringSet(origfile)
 
     if (!is.na(assembly_accession))

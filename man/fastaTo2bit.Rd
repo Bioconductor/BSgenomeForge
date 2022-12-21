@@ -26,8 +26,13 @@ fastaTo2bit(origfile, destfile, assembly_accession = NA)
   \item{assembly_accession}{
     A single string containing a GenBank assembly accession (e.g.
     \code{"GCA_009729545.1"}) or a RefSeq assembly accession (e.g.
-    \code{"GCF_009729545.1"}). If missing, the function does not
-    perform sequence renaming or reordering.
+    \code{"GCF_009729545.1"}). 
+    When specified, this uses \code{\link{getChromInfoFromNCBI}} to
+    get chromosome information for the NCBI assembly, which is matched
+    against the corresponding information in the FASTA file, consequently
+    reordering its sequences. The sequences are then renamed from their GenBank
+    or RefSeq accession assembly names, to their corresponding sequence names.
+    If missing, the function does not perform sequence reordering or renaming.
   }
 }
 
@@ -46,8 +51,8 @@ fastaTo2bit(origfile, destfile, assembly_accession = NA)
 
 \seealso{
   \itemize{
-    \item The \code{\link{downloadGenomicSequencesFromNCBI}} function to
-          download genomic sequences from NCBI.
+    \item The \code{\link{downloadGenomicSequencesFromNCBI}} function that
+          downloads genomic sequences from NCBI.
 
     \item The \code{\link{readDNAStringSet}} function in the \pkg{Biostrings}
           package that \code{fastaTo2bit} uses internally to import
@@ -56,6 +61,10 @@ fastaTo2bit(origfile, destfile, assembly_accession = NA)
     \item The \code{\link{export.2bit}} function in the \pkg{rtracklayer}
           package that \code{fastaTo2bit} uses internally to export
           the 2bit file.
+          
+    \item The \code{\link{getChromInfoFromNCBI}} function in the 
+          \pkg{GenomeInfoDb} package that \code{fastaTo2bit} uses internally
+          to get chromosome information for the specified NCBI assembly.
   }
 }
 
