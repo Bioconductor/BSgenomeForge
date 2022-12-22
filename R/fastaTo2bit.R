@@ -47,6 +47,6 @@ fastaTo2bit <- function(origfile, destfile, assembly_accession=NA)
     if (!is.na(assembly_accession))
         dna <- .sort_and_rename(dna, assembly_accession)
 
-    ### Export file as 2bit
+    ## Export file as 2bit.
     export.2bit (dna, destfile)
 }
