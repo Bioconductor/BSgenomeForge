@@ -1,5 +1,10 @@
+### =========================================================================
+### downloadGenomicSequencesFromNCBI()
+### -------------------------------------------------------------------------
+###
 ### A utility function to download the compressed FASTA file that contains
 ### the genomic sequences of a given NCBI assembly.
+###
 
 downloadGenomicSequencesFromNCBI <- function(assembly_accession,
                                              assembly_name=NA,
