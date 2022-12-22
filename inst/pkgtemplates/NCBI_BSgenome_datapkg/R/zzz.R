@@ -7,8 +7,6 @@
 
 .circ_seqs <- @CIRCSEQS@
 
-.mseqnames <- @MSEQNAMES@
-
 .onLoad <- function(libname, pkgname)
 {
     if (pkgname != .pkgname)
@@ -27,7 +25,7 @@
         source_url=NA,
         seqnames=.seqnames,
         circ_seqs=.circ_seqs,
-        mseqnames=.mseqnames,
+        mseqnames=NULL,
         seqs_pkgname=pkgname,
         seqs_dirpath=extdata_dirpath
     )
