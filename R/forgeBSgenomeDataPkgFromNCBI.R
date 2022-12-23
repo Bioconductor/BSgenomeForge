@@ -1,0 +1,29 @@
+forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
+                                         pkg_maintainer, pkg_author=NA,
+                                         pkg_version="0.01", destdir=".")
+{
+    local_file <-downloadGenomicSequencesFromNCBI(assembly_accession)
+    origfile <- local_file
+    fastaTo2bit(origfile, "single_sequences.2bit", assembly_accession)
+
+    library(Biobase)
+    abbr <- abbreviate(organism)
+    pkgname <- paste0("BSgenome.", abbr, ".NCBI.", genome)
+
+    if(is.na(pkg_author))
+        pkg_author <- pkg_maintainer
+
+    symValues <- list(PKGNAME = pkgname, BSGENOMEOBJNAME = abbr,
+                      PKGTITLE = "Full genome sequences for", organism, "(NCBI version", genome,")",
+                      PKGAUTHOR = pkg_author, VERSION = pkg_version, MAINTAINER = pkg_maintainer,
+                      PKGDESCRIPTION = "Full genome sequences for", organism, "as provided by
+                      NCBI (", genome, ") and stored in Biostrings objects.", LICENSE = "Artistic-2.0",
+                      ORGANISM = organism, GENOME = genome, ORGANISMBIOCVIEW = genome,
+                      SEQNAMES = "NA", CIRCSEQS = "NA")
+
+    originDir <- "~/Documents/GitHub/BSgenomeForge/inst"
+    createPackage(pkgname, destdir, originDir, symValues, unlink=FALSE, quiet=FALSE)
+
+    file.copy(from = file.path(".", single_sequences.2bit)
+              to = file.path("inst/extdata", single_sequences.2bit))
+}
