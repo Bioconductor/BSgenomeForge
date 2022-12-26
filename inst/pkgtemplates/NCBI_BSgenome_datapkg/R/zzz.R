@@ -20,7 +20,7 @@
         organism="@ORGANISM@",
         common_name=NA,
         genome="@GENOME@",
-        provider="@PROVIDER@",
+        provider="NCBI",
         release_date=NA,
         source_url=NA,
         seqnames=.seqnames,

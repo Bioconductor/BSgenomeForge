@@ -13,17 +13,30 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
     if(is.na(pkg_author))
         pkg_author <- pkg_maintainer
 
-    symValues <- list(PKGNAME = pkgname, BSGENOMEOBJNAME = abbr,
-                      PKGTITLE = "Full genome sequences for", organism, "(NCBI version", genome,")",
-                      PKGAUTHOR = pkg_author, VERSION = pkg_version, MAINTAINER = pkg_maintainer,
-                      PKGDESCRIPTION = "Full genome sequences for", organism, "as provided by
-                      NCBI (", genome, ") and stored in Biostrings objects.", LICENSE = "Artistic-2.0",
-                      ORGANISM = organism, GENOME = genome, ORGANISMBIOCVIEW = genome,
-                      SEQNAMES = "NA", CIRCSEQS = "NA")
+    pkgtitle <- paste0("Full genome sequences for ", organism, " (NCBI version ", genome, ")")
+    pkgdesc <- paste0("Full genome sequences for", organism, "as provided by NCBI (",
+                      genome, ") and stored in Biostrings objects.")
 
-    originDir <- "~/Documents/GitHub/BSgenomeForge/inst"
-    createPackage(pkgname, destdir, originDir, symValues, unlink=FALSE, quiet=FALSE)
+    symValues <- list(PKGNAME = pkgname,
+                      BSGENOMEOBJNAME = abbr,
+                      PKGTITLE = pkgtitle,
+                      AUTHOR = pkg_author,
+                      PKGVERSION = pkg_version,
+                      MAINTAINER = pkg_maintainer,
+                      PKGDESCRIPTION = pkgdesc,
+                      LICENSE = "Artistic-2.0",
+                      ORGANISM = organism,
+                      GENOME = genome,
+                      ORGANISMBIOCVIEW = genome,
+                      SEQNAMES = "NA",
+                      CIRCSEQS = "character(0)")
 
-    file.copy(from = file.path(".", single_sequences.2bit)
-              to = file.path("inst/extdata", single_sequences.2bit))
+    #originDir <- "~/Documents/GitHub/BSgenomeForge/inst/pkgtemplates/NCBI_BSgenome_datapkg"
+    originDir <- system.file("inst", "pkgtemplates", "NCBI_BSgenome_datapkg", package = "BSgenomeForge")
+    file_dir <- createPackage(pkgname, destdir, originDir, symValues, unlink=TRUE, quiet=FALSE)
+
+    current_dir <- getwd()
+    new_dir <- file.path(file_dir, "inst/extdata")
+    file.copy(from = file.path(current_dir, "single_sequences.2bit"),
+              to = file.path(new_dir, "single_sequences.2bit"))
 }
