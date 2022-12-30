@@ -4,19 +4,24 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
                                          license="Artistic-2.0",
                                          destdir=".")
 {
+    if (!isSingleString(organism))
+        stop(wmsg("'organism' must be a single string"))
+    if (!isSingleString(genome))
+        stop(wmsg("'genome' must be a single string"))
+    if(is.na(pkg_author))
+        pkg_author <- pkg_maintainer
+
+    ## Download file and convert from fasta to 2bit
     local_file <-downloadGenomicSequencesFromNCBI(assembly_accession)
     origfile <- local_file
     fastaTo2bit(origfile, "single_sequences.2bit", assembly_accession)
 
-    library(Biobase)
+    ## Abbreviate package name
     f_name <- substring(organism,1,1)
     split_organism <- strsplit(organism, " +")[[1]]
     l_name <- tail(split_organism, 1)
     abbr_name <- paste0(f_name, l_name)
     pkgname <- paste0("BSgenome.", abbr_name, ".NCBI.", genome)
-
-    if(is.na(pkg_author))
-        pkg_author <- pkg_maintainer
 
     pkgtitle <- paste0("Full genome sequences for ", organism, " (NCBI version ", genome, ")")
     pkgdesc <- paste0("Full genome sequences for ", organism, "as provided by NCBI (", genome, ") and stored in Biostrings objects.")

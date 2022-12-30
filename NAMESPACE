@@ -3,6 +3,7 @@ importFrom(utils,download.file)
 importFrom(stats, setNames)
 
 import(BiocGenerics)
+importFrom(Biobase, createPackage)
 import(S4Vectors)
 import(IRanges)
 import(GenomeInfoDb)

@@ -28,8 +28,8 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism, genome,
     "Acidianus infernus", etc...).
   }
   \item{genome}{
-    The name of the NCBI assembly (e.g. "GRCh38.p12", "WBcel235F", 
-    "TAIR10.1", "ARS-UCD1.2", etc...).
+    The name of the NCBI assembly (e.g. "GRCh38.p14", "felCat9.1_X", 
+    "ASM972954v1", etc...).
   }
   \item{pkg_maintainer}{
     A single string containing the name and email address of the package
@@ -60,7 +60,7 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism, genome,
 }
 
 \value{
-  A logical TRUE.
+  A logical TRUE if the package is created, a logical FALSE if it is not.
 }
 
 \author{
