@@ -12,7 +12,7 @@
 \usage{
 forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism, genome,
                              pkg_maintainer, pkg_author=NA,
-                             pkg_version="0.01",
+                             pkg_version="1.0.0",
                              license="Artistic-2.0",
                              destdir=".")
 }

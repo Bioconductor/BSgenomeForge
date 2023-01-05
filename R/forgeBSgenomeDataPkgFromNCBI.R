@@ -1,6 +1,6 @@
 forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
                                          pkg_maintainer, pkg_author=NA,
-                                         pkg_version="0.01",
+                                         pkg_version="1.0.0",
                                          license="Artistic-2.0",
                                          destdir=".")
 {
@@ -21,7 +21,18 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
     split_organism <- strsplit(organism, " +")[[1]]
     l_name <- tail(split_organism, 1)
     abbr_name <- paste0(f_name, l_name)
-    pkgname <- paste0("BSgenome.", abbr_name, ".NCBI.", genome)
+
+    if (grepl("_", genome)) {
+        genome_split <- strsplit(genome, split = "_")
+        genome_name <- paste0(unlist(genome_split), collapse = "")
+    } else {
+        genome_name <- genome
+    }
+    pkgname <- paste0("BSgenome.", abbr_name, ".NCBI.", genome_name)
+
+    seqinfo <- getChromInfoFromNCBI(assembly_accession)
+    seq_sub <- seqinfo$SequenceName
+    seqnames <- paste0('c', '(', paste0('"', seq_sub, '"', collapse = ","), ')')
 
     pkgtitle <- paste0("Full genome sequences for ", organism, " (NCBI version ", genome, ")")
     pkgdesc <- paste0("Full genome sequences for ", organism, "as provided by NCBI (", genome, ") and stored in Biostrings objects.")
@@ -37,7 +48,7 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
                       ORGANISM = organism,
                       GENOME = genome,
                       ORGANISMBIOCVIEW = genome,
-                      SEQNAMES = "NA",
+                      SEQNAMES = seqnames,
                       CIRCSEQS = "character(0)")
 
     originDir <- system.file("pkgtemplates", "NCBI_BSgenome_datapkg", package = "BSgenomeForge")
