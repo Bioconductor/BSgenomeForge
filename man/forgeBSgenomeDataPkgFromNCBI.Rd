@@ -60,7 +60,7 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism, genome,
 }
 
 \value{
-  A logical TRUE if the package is created, a logical FALSE if it is not.
+  The path to the created package.
 }
 
 \author{

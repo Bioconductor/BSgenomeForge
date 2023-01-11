@@ -1,22 +1,27 @@
-.abbreviate_pkgname <- function(organism)
+.check_organism_case <- function(organism)
 {
-    ## Abbreviate package name
+    f_letter <- substring(organism,1,1)
+    r_letter <- substring(organism,2)
+    if (grepl("[[:upper:]]", f_letter) == TRUE & grepl("[[:upper:]]", r_letter) == FALSE){
+        return(organism)
+    }
+    else{
+        stop(wmsg("'organism' must be in sentence case"))
+    }
+}
+
+.get_abbr_organism <- function(organism)
+{
+    ## Abbreviate organism name
+    organism <- .check_organism_case(organism)
     f_name <- substring(organism,1,1)
     split_organism <- strsplit(organism, " +")[[1]]
     l_name <- tail(split_organism, 1)
-    abbr_name <- paste0(f_name, l_name)
-    abbr_name
+    abbr_organism <- paste0(f_name, l_name)
+    abbr_organism
 }
 
-.make_pkgname_part4 <- function(genome)
-{
-    if (grepl("[^0-9a-zA-Z.]", genome)) {
-        genome_name <- gsub("[^0-9a-zA-Z.]", "", genome)
-    } else {
-        genome_name <- genome
-    }
-    genome_name
-}
+.make_pkgname_part4 <- function(genome) gsub("[^0-9a-zA-Z.]", "", genome)
 
 .get_seqnames <- function(assembly_accession)
 {
@@ -33,11 +38,10 @@
     pkgtitle
 }
 
-.create_pkgname <- function(organism, genome)
+.create_pkgname <- function(abbr_organism, genome)
 {
-    abbr_name <- .abbreviate_pkgname(organism)
     genome_name <- .make_pkgname_part4(genome)
-    pkgname <- pkgname <- paste0("BSgenome.", abbr_name, ".NCBI.", genome_name)
+    pkgname <- paste0("BSgenome.", abbr_organism, ".NCBI.", genome_name)
     pkgname
 }
 
@@ -52,14 +56,18 @@
 
 .create_org_score <- function(organism)
 {
-    org_score <- gsub(" ", "_", organism)
+    split_organism <- strsplit(organism, " +")[[1]]
+    h_name <- head(split_organism, 1)
+    l_name <- tail(split_organism, 1)
+    org_score <- paste0(h_name, "_", l_name)
     org_score
 }
 
 .move_seq_file <- function(file_dir)
 {
-    new_dir <- file.path(file_dir, "inst/extdata")
-    file.copy(from = file.path(tempdir(), "single_sequences.2bit"),
+    current_dir <- getwd()
+    new_dir <- file.path(file_dir, "inst", "extdata")
+    file.rename(from = file.path(current_dir, "single_sequences.2bit"),
               to = file.path(new_dir, "single_sequences.2bit"))
 }
 
@@ -73,23 +81,30 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
         stop(wmsg("'organism' must be a single string"))
     if (!isSingleString(genome))
         stop(wmsg("'genome' must be a single string"))
+    if (!isSingleString(pkg_maintainer))
+        stop(wmsg("'package maintainer' must be a single string"))
+    if (is.na(organism) || organism == '')
+        stop(wmsg("'organism' must be a valid string value"))
+    if (is.na(genome) || genome == '')
+        stop(wmsg("'genome' must be a valid string value"))
+    if (!(grepl(pattern = "@", pkg_maintainer) & grepl(pattern = ".com", pkg_maintainer)))
+        stop(wmsg("Please enter a valid email address"))
     if (is.na(pkg_author))
         pkg_author <- pkg_maintainer
 
     ## Download file and convert from fasta to 2bit
     origfile <- downloadGenomicSequencesFromNCBI(assembly_accession)
-    twobitfile <- file.path(tempdir(), "single_sequences.2bit")
-    fastaTo2bit(origfile, twobitfile, assembly_accession)
+    fastaTo2bit(origfile, "single_sequences.2bit", assembly_accession)
 
-    abbr_name <- .abbreviate_pkgname(organism)
-    pkgname <- .create_pkgname(organism, genome)
+    abbr_organism <- .get_abbr_organism(organism)
+    pkgname <- .create_pkgname(abbr_organism, genome)
     pkgtitle <- .create_pkgtitle(organism, genome)
     pkgdesc <- .create_pkgdesc(organism, genome)
     org_score <- .create_org_score(organism)
     seqnames <- .get_seqnames(assembly_accession)
 
     symValues <- list(PKGNAME = pkgname,
-                      BSGENOMEOBJNAME = abbr_name,
+                      BSGENOMEOBJNAME = abbr_organism,
                       PKGTITLE = pkgtitle,
                       AUTHOR = pkg_author,
                       PKGVERSION = pkg_version,
@@ -104,8 +119,9 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
 
     originDir <- system.file("pkgtemplates", "NCBI_BSgenome_datapkg",
                              package = "BSgenomeForge")
-    file_dir <- createPackage(pkgname, destdir, originDir, symValues,
-                              unlink=TRUE, quiet=FALSE)
+    file_dir <- unlist(createPackage(pkgname, destdir, originDir, symValues,
+                              unlink=TRUE, quiet=FALSE))
 
     .move_seq_file(file_dir)
+    return(file_dir)
 }
