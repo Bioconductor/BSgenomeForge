@@ -1,19 +1,19 @@
-.check_organism_case <- function(organism)
+.check_organism_spaces <- function(organism)
 {
-    f_letter <- substring(organism,1,1)
-    r_letter <- substring(organism,2)
-    if (grepl("[[:upper:]]", f_letter) == TRUE & grepl("[[:upper:]]", r_letter) == FALSE){
-        return(organism)
-    }
-    else{
-        stop(wmsg("'organism' must be in sentence case"))
-    }
+    organism <- gsub("(?<=[\\s])\\s*|^\\s+|\\s+$", "", organism, perl = TRUE)
+    organism
+}
+
+.format_organism <- function(organism)
+{
+    first_letter <- substring(organism, 1, 1)
+    other_letters <- substring(organism, 2)
+    paste0(toupper(first_letter), tolower(other_letters))
 }
 
 .get_abbr_organism <- function(organism)
 {
     ## Abbreviate organism name
-    organism <- .check_organism_case(organism)
     f_name <- substring(organism,1,1)
     split_organism <- strsplit(organism, " +")[[1]]
     l_name <- tail(split_organism, 1)
@@ -22,6 +22,15 @@
 }
 
 .make_pkgname_part4 <- function(genome) gsub("[^0-9a-zA-Z.]", "", genome)
+
+.check_pkg_maintainer <- function(pkg_maintainer)
+{
+    if(grepl("\\<[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\>", as.character(pkg_maintainer), ignore.case=TRUE) == TRUE){
+        return(pkg_maintainer)
+    }else{
+        stop(wmsg("Please enter a valid email address"))
+    }
+}
 
 .get_seqnames <- function(assembly_accession)
 {
@@ -63,11 +72,10 @@
     org_score
 }
 
-.move_seq_file <- function(file_dir)
+.move_seq_file <- function(pkg_dir)
 {
-    current_dir <- getwd()
-    new_dir <- file.path(file_dir, "inst", "extdata")
-    file.rename(from = file.path(current_dir, "single_sequences.2bit"),
+    new_dir <- file.path(pkg_dir, "inst", "extdata")
+    file.rename(from = file.path(tempdir(), "single_sequences.2bit"),
               to = file.path(new_dir, "single_sequences.2bit"))
 }
 
@@ -83,20 +91,21 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
         stop(wmsg("'genome' must be a single string"))
     if (!isSingleString(pkg_maintainer))
         stop(wmsg("'package maintainer' must be a single string"))
-    if (is.na(organism) || organism == '')
+    if (organism == '')
         stop(wmsg("'organism' must be a valid string value"))
-    if (is.na(genome) || genome == '')
+    if (genome == '')
         stop(wmsg("'genome' must be a valid string value"))
-    if (!(grepl(pattern = "@", pkg_maintainer) & grepl(pattern = ".com", pkg_maintainer)))
-        stop(wmsg("Please enter a valid email address"))
     if (is.na(pkg_author))
         pkg_author <- pkg_maintainer
 
     ## Download file and convert from fasta to 2bit
     origfile <- downloadGenomicSequencesFromNCBI(assembly_accession)
-    fastaTo2bit(origfile, "single_sequences.2bit", assembly_accession)
+    twobitfile <- file.path(tempdir(), "single_sequences.2bit")
+    fastaTo2bit(origfile, twobitfile, assembly_accession)
 
+    organism <- .format_organism(organism)
     abbr_organism <- .get_abbr_organism(organism)
+    pkg_maintainer <- .check_pkg_maintainer(pkg_maintainer)
     pkgname <- .create_pkgname(abbr_organism, genome)
     pkgtitle <- .create_pkgtitle(organism, genome)
     pkgdesc <- .create_pkgdesc(organism, genome)
@@ -119,9 +128,9 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
 
     originDir <- system.file("pkgtemplates", "NCBI_BSgenome_datapkg",
                              package = "BSgenomeForge")
-    file_dir <- unlist(createPackage(pkgname, destdir, originDir, symValues,
-                              unlink=TRUE, quiet=FALSE))
+    pkg_dir <- unlist(createPackage(pkgname, destdir, originDir, symValues,
+                              unlink=TRUE, quiet=FALSE), use.names = FALSE)
 
-    .move_seq_file(file_dir)
-    return(file_dir)
+    .move_seq_file(pkg_dir)
+    pkg_dir
 }
