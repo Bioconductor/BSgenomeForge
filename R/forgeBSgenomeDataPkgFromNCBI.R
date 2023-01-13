@@ -1,11 +1,9 @@
-.check_organism_spaces <- function(organism)
-{
-    organism <- gsub("(?<=[\\s])\\s*|^\\s+|\\s+$", "", organism, perl = TRUE)
-    organism
-}
-
 .format_organism <- function(organism)
 {
+    ## Remove leading and trailing whitespaces (like strip() in Python):
+    organism <- gsub("^\\s*|\\s*$", "", organism)
+    ## Replace multiple whitespaces with single space:
+    organism <- gsub("\\s+", " ", organism)
     first_letter <- substring(organism, 1, 1)
     other_letters <- substring(organism, 2)
     paste0(toupper(first_letter), tolower(other_letters))
@@ -25,11 +23,10 @@
 
 .check_pkg_maintainer <- function(pkg_maintainer)
 {
-    if(grepl("\\<[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\>", as.character(pkg_maintainer), ignore.case=TRUE) == TRUE){
+    pattern <- "\\<[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\>"
+    if (grepl(pattern, pkg_maintainer, ignore.case=TRUE))
         return(pkg_maintainer)
-    }else{
-        stop(wmsg("Please enter a valid email address"))
-    }
+    stop(wmsg("Please enter a valid email address"))
 }
 
 .get_seqnames <- function(assembly_accession)
@@ -72,31 +69,32 @@
     org_score
 }
 
-.move_seq_file <- function(pkg_dir)
+.move_seq_file <- function(pkg_dir, twobitfile)
 {
     new_dir <- file.path(pkg_dir, "inst", "extdata")
-    file.rename(from = file.path(tempdir(), "single_sequences.2bit"),
-              to = file.path(new_dir, "single_sequences.2bit"))
+    file.rename(from = twobitfile, to = file.path(new_dir, "single_sequences.2bit"))
 }
 
 forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
                                          pkg_maintainer, pkg_author=NA,
                                          pkg_version="1.0.0",
                                          license="Artistic-2.0",
-                                         destdir=".")
+                                         destdir=".", circseqs=NULL)
 {
-    if (!isSingleString(organism))
-        stop(wmsg("'organism' must be a single string"))
-    if (!isSingleString(genome))
-        stop(wmsg("'genome' must be a single string"))
+    if (!isSingleString(organism) || organism == "")
+        stop(wmsg("'organism' must be a single (non-empty) string"))
+    if (!isSingleString(genome) || genome == "")
+        stop(wmsg("'genome' must be a single (non-empty) string"))
     if (!isSingleString(pkg_maintainer))
         stop(wmsg("'package maintainer' must be a single string"))
-    if (organism == '')
-        stop(wmsg("'organism' must be a valid string value"))
-    if (genome == '')
-        stop(wmsg("'genome' must be a valid string value"))
+    if (!isSingleString(pkg_version))
+        stop(wmsg("'package version' must be a single string"))
+    if (!isSingleString(license))
+        stop(wmsg("'license' must be a single string"))
     if (is.na(pkg_author))
         pkg_author <- pkg_maintainer
+    if (!isSingleString(pkg_author))
+        stop(wmsg("'package author' must be a single string"))
 
     ## Download file and convert from fasta to 2bit
     origfile <- downloadGenomicSequencesFromNCBI(assembly_accession)
@@ -131,6 +129,6 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
     pkg_dir <- unlist(createPackage(pkgname, destdir, originDir, symValues,
                               unlink=TRUE, quiet=FALSE), use.names = FALSE)
 
-    .move_seq_file(pkg_dir)
+    .move_seq_file(pkg_dir, twobitfile)
     pkg_dir
 }
