@@ -72,14 +72,14 @@
 .move_seq_file <- function(pkg_dir, twobitfile)
 {
     new_dir <- file.path(pkg_dir, "inst", "extdata")
-    file.rename(from = twobitfile, to = file.path(new_dir, "single_sequences.2bit"))
+    file.rename(from = twobitfile, to = file.path(new_dir, basename(twobitfile)))
 }
 
 forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
                                          pkg_maintainer, pkg_author=NA,
                                          pkg_version="1.0.0",
                                          license="Artistic-2.0",
-                                         destdir=".", circseqs=NULL)
+                                         destdir=".")
 {
     if (!isSingleString(organism) || organism == "")
         stop(wmsg("'organism' must be a single (non-empty) string"))
@@ -130,5 +130,5 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
                               unlink=TRUE, quiet=FALSE), use.names = FALSE)
 
     .move_seq_file(pkg_dir, twobitfile)
-    pkg_dir
+    invisible(pkg_dir)
 }
