@@ -46,8 +46,8 @@
 
 .create_pkgname <- function(abbr_organism, genome)
 {
-    genome_name <- .make_pkgname_part4(genome)
-    pkgname <- paste0("BSgenome.", abbr_organism, ".NCBI.", genome_name)
+    assembly_name <- .make_pkgname_part4(genome)
+    pkgname <- paste0("BSgenome.", abbr_organism, ".NCBI.", assembly_name)
     pkgname
 }
 
@@ -69,7 +69,7 @@
     org_score
 }
 
-.move_seq_file <- function(pkg_dir, twobitfile)
+.move_seq_file <- function(twobitfile, pkg_dir)
 {
     new_dir <- file.path(pkg_dir, "inst", "extdata")
     file.rename(from = twobitfile, to = file.path(new_dir, basename(twobitfile)))
@@ -129,6 +129,6 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
     pkg_dir <- unlist(createPackage(pkgname, destdir, originDir, symValues,
                               unlink=TRUE, quiet=FALSE), use.names = FALSE)
 
-    .move_seq_file(pkg_dir, twobitfile)
+    .move_seq_file(twobitfile, pkg_dir)
     invisible(pkg_dir)
 }

@@ -5,12 +5,12 @@
 \title{Create a BSgenome data package from a NCBI assembly}
 
 \description{
-  \code{forgeBSgenomeDataPkgFRomNCBI} function allows the user to create a
+  The \code{forgeBSgenomeDataPkgFRomNCBI} function allows the user to create a
    BSgenome data package from an NCBI assembly.
 }
 
 \usage{
-forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism,
+forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism, genome,
                              pkg_maintainer, pkg_author=NA,
                              pkg_version="1.0.0",
                              license="Artistic-2.0",
@@ -26,6 +26,10 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism,
   \item{organism}{
     The full name of the organism (e.g. \code{"Homo sapiens"},
     \code{"Felis catus"}, \code{"Acidianus infernus"}, etc...).
+  }
+  \item{genome}{
+    The name of the NCBI assembly (e.g. \code{"GRCh38.p14"},
+    \code{"felCat9.1_X"}, \code{"ASM972954v1"}, etc...).
   }
   \item{pkg_maintainer}{
     A single string containing the name and email address of the package
@@ -56,7 +60,7 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism,
 }
 
 \value{
-  The path to the created package.
+  The path to the created package as an invisible string.
 }
 
 \author{
@@ -82,6 +86,7 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism,
 ## Acidianus infernus:
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_009729545.1",
                              organism="Acidianus infernus",
+                             genome="ASM972954v1",
                              pkg_maintainer="Jane Doe <janedoe@gmail.com>")
 }
 
