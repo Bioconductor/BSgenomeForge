@@ -17,6 +17,6 @@ Authors@R: c(
 	person("Prisca Chidimma", "Maduka", role="ctb"))
 Depends: R (>= 4.2.0), methods, BiocGenerics, S4Vectors, IRanges,
 	GenomeInfoDb (>= 1.33.17), Biostrings, BSgenome
-Imports: utils, stats, rtracklayer
+Imports: utils, stats, Biobase, rtracklayer
 Suggests: GenomicRanges, GenomicFeatures, testthat, knitr, rmarkdown, BiocStyle
 VignetteBuilder: knitr

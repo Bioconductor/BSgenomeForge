@@ -6,9 +6,8 @@ Author: @AUTHOR@
 Maintainer: @MAINTAINER@
 Depends: R (>= 4.2.0), BSgenome (>= 1.66.1), GenomeInfoDb (>= 1.34.5)
 Imports: BSgenome
-Suggests: @SUGGESTS@
 License: @LICENSE@
 organism: @ORGANISM@
 genome: @GENOME@
-provider: @PROVIDER@
+provider: NCBI
 biocViews: AnnotationData, Genetics, BSgenome, @ORGANISMBIOCVIEW@
