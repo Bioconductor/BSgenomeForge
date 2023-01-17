@@ -11,18 +11,20 @@
   @PKGDESCRIPTION@
 }
 
-\author{@AUTHOR@}
+\author{@PKGAUTHOR@}
 
 \seealso{
   \itemize{
     \item \link[BSgenome]{BSgenome} objects and the
           \code{\link[BSgenome]{available.genomes}} function
           in the \pkg{BSgenome} software package.
+
     \item \link[Biostrings]{DNAString} objects in the \pkg{Biostrings}
           package.
-    \item The BSgenomeForge vignette (\code{vignette("BSgenomeForge")})
-          in the \pkg{BSgenome} software package for how to make a BSgenome
-          data package.
+
+    \item The \link[BSgenomeForge]{forgeBSgenomeDataPkgFromNCBI} function
+          in the \pkg{BSgenomeForge} package that was used to create this
+          package.
   }
 }
 

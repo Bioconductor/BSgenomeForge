@@ -2,18 +2,18 @@
 
 \alias{forgeBSgenomeDataPkgFromNCBI}
 
-\title{Create a BSgenome data package from a NCBI assembly}
+\title{Create a BSgenome data package from an NCBI assembly}
 
 \description{
-  The \code{forgeBSgenomeDataPkgFRomNCBI} function allows the user to create a
-   BSgenome data package from an NCBI assembly.
+  The \code{forgeBSgenomeDataPkgFRomNCBI} function allows the user to
+  create a BSgenome data package from an NCBI assembly.
 }
 
 \usage{
 forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism, genome,
                              pkg_maintainer, pkg_author=NA,
                              pkg_version="1.0.0",
-                             license="Artistic-2.0",
+                             pkg_license="Artistic-2.0",
                              destdir=".")
 }
 
@@ -36,21 +36,22 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism, genome,
     maintainer (e.g \code{"Jane Doe, <janedoe@gmail.com>"}).
   }
   \item{pkg_author}{
-    A single string containing the name of the package author. When unspecified
-    , this takes the value of \code{pkg_maintainer}.
+    A single string containing the name of the package author. When
+    unspecified, this takes the value of \code{pkg_maintainer}.
   }
   \item{pkg_version}{
-    The current version of the created BSgenome data package.
+    The version of the package. Set to \code{"1.0.0"} by default.
   }
-  \item{license}{
-    A single string containing the software license used for free and
-    open-source packages. The default version is Artistic-2.0.
+  \item{pkg_license}{
+    The license of the package. This must be the name of a software license
+    used for free and open-source packages. Set to \code{"Artistic-2.0"}
+    by default.
   }
   \item{destdir}{
     A single string containing the path to the directory where the
     compressed FASTA file is to be downloaded. This directory must
     already exist. Note that, by default, the file will be downloaded
-    to the current directory (".").
+    to the current directory (\code{"."}).
   }
 }
 
@@ -82,8 +83,8 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism, genome,
 }
 
 \examples{
-## Create a BSgenome data package for NCBI assembly GCA_009729545.1, organism
-## Acidianus infernus:
+## Create a BSgenome data package for NCBI assembly GCA_009729545.1
+## (organism Acidianus infernus):
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_009729545.1",
                              organism="Acidianus infernus",
                              genome="ASM972954v1",

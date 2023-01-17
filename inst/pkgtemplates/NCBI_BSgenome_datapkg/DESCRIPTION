@@ -2,11 +2,12 @@ Package: @PKGNAME@
 Title: @PKGTITLE@
 Description: @PKGDESCRIPTION@
 Version: @PKGVERSION@
-Author: @AUTHOR@
-Maintainer: @MAINTAINER@
+Author: @PKGAUTHOR@
+Maintainer: @PKGMAINTAINER@
 Depends: R (>= 4.2.0), BSgenome (>= 1.66.1), GenomeInfoDb (>= 1.34.5)
 Imports: BSgenome
-License: @LICENSE@
+Suggests: BSgenomeForge
+License: @PKGLICENSE@
 organism: @ORGANISM@
 genome: @GENOME@
 provider: NCBI
