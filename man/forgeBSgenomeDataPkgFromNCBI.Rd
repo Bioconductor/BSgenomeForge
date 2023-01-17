@@ -2,7 +2,7 @@
 
 \alias{forgeBSgenomeDataPkgFromNCBI}
 
-\title{Make a BSgenome data package from a NCBI assembly}
+\title{Create a BSgenome data package from a NCBI assembly}
 
 \description{
   \code{forgeBSgenomeDataPkgFRomNCBI} function allows the user to create a
@@ -78,7 +78,7 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism,
 }
 
 \examples{
-## Make a BSgenome data package for NCBI assembly GCA_009729545.1, organism
+## Create a BSgenome data package for NCBI assembly GCA_009729545.1, organism
 ## Acidianus infernus:
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_009729545.1",
                              organism="Acidianus infernus",
