@@ -43,7 +43,7 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism, genome,
     The version of the package. Set to \code{"1.0.0"} by default.
   }
   \item{pkg_license}{
-    The license of the package. It must be the name of a software license
+    The license of the package. This must be the name of a software license
     used for free and open-source packages. Set to \code{"Artistic-2.0"}
     by default.
   }
