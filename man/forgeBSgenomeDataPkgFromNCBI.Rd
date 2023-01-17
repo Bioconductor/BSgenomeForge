@@ -10,7 +10,7 @@
 }
 
 \usage{
-forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism, genome,
+forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism,
                              pkg_maintainer, pkg_author=NA,
                              pkg_version="1.0.0",
                              license="Artistic-2.0",
@@ -26,10 +26,6 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism, genome,
   \item{organism}{
     The full name of the organism (e.g. \code{"Homo sapiens"},
     \code{"Felis catus"}, \code{"Acidianus infernus"}, etc...).
-  }
-  \item{genome}{
-    The name of the NCBI assembly (e.g. \code{"GRCh38.p14"},
-    \code{"felCat9.1_X"}, \code{"ASM972954v1"}, etc...).
   }
   \item{pkg_maintainer}{
     A single string containing the name and email address of the package
@@ -86,7 +82,6 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism, genome,
 ## Acidianus infernus:
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_009729545.1",
                              organism="Acidianus infernus",
-                             genome="ASM972954v1",
                              pkg_maintainer="Jane Doe <janedoe@gmail.com>")
 }
 
