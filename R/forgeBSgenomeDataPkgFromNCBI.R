@@ -6,6 +6,44 @@
 ###
 
 
+.get_circseqs <- function(assembly_accession, circ_seqs)
+{
+    NCBI_assemblies <- registered_NCBI_assemblies()
+    seq_info <- getChromInfoFromNCBI(assembly_accession)
+    seq_row <- seq_info[seq_info$circular == "TRUE", ]
+    circ_seqs_row <- seq_row$SequenceName
+    sigh <- seq_info$circular
+    sigh1 <- unlist(circ_seqs_row)
+    a <- seq_info$SequenceName
+
+    if (assembly_accession %in% NCBI_assemblies[ , "assembly_accession"]) {
+        if (is.na(circ_seqs)) {
+            circ_seqs <- circ_seqs_row
+            paste0('c', '(', paste0('"', circ_seqs_row, '"', collapse=","), ')')
+        } else if (is.na(seq_info$circular)) {
+            character(0)
+        } else {
+            if (identical(circ_seqs, circ_seqs_row)) {
+                circ_seqs
+            } else {
+                stop(wmsg("Circular sequences provided must match those in the
+                          assembly"))
+            }
+        }
+
+    } else {
+#        if((circ_seqs %in% a) == FALSE)
+        if (all((unlist(circ_seqs_row) == FALSE)))
+            character(0)
+         if(is.na(match(circ_seqs, a)))
+            stop(wmsg("Please enter a valid circular sequence name"))
+        if (circ_seqs %in% seq_info[seq_info$SequenceRole == "assembled-molecule", ]) {
+            circ_seqs
+        } else { stop(wmsg("Circular sequences provided must be an
+                           assembled molecule")) }
+    }
+}
+
 .format_organism <- function(organism)
 {
     ## Remove leading and trailing whitespaces (like strip() in Python):
@@ -76,7 +114,7 @@
 
 forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
                                          pkg_maintainer, pkg_author=NA,
-                                         pkg_version="1.0.0",
+                                         pkg_version="1.0.0", circ_seqs=NULL,
                                          pkg_license="Artistic-2.0",
                                          destdir=".")
 {
@@ -111,6 +149,7 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
     pkg_maintainer <- .check_pkg_maintainer(pkg_maintainer)
     organism_biocview <- .create_organism_biocview(organism)
     seqnames <- .get_all_seqnames_in_one_string(assembly_accession)
+    circ_seqs <- .get_circseqs(assembly_accession, circ_seqs)
 
     symValues <- list(BSGENOMEOBJNAME=abbr_organism,
                       PKGTITLE=pkgtitle,
@@ -123,10 +162,10 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
                       GENOME=genome,
                       ORGANISMBIOCVIEW=organism_biocview,
                       SEQNAMES=seqnames,
-                      CIRCSEQS="character(0)")
+                      CIRCSEQS=circ_seqs)
 
     origdir <- system.file("pkgtemplates", "NCBI_BSgenome_datapkg",
-                           package="BSgenomeForge")
+                            package="BSgenomeForge")
     pkg_dir <- unlist(createPackage(pkgname, destdir, origdir, symValues,
                                     unlink=TRUE, quiet=FALSE),
                       use.names=FALSE)
