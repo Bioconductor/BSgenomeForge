@@ -1,48 +1,10 @@
 ### =========================================================================
-### forgeBSgenomeDataPkgFRomNCBI()
+### forgeBSgenomeDataPkgFromNCBI()
 ### -------------------------------------------------------------------------
 ###
 ### Create a BSgenome data package from an NCBI assembly.
 ###
 
-
-.get_circseqs <- function(assembly_accession, circ_seqs)
-{
-    NCBI_assemblies <- registered_NCBI_assemblies()
-    seq_info <- getChromInfoFromNCBI(assembly_accession)
-    seq_row <- seq_info[seq_info$circular == "TRUE", ]
-    circ_seqs_row <- seq_row$SequenceName
-    sigh <- seq_info$circular
-    sigh1 <- unlist(circ_seqs_row)
-    a <- seq_info$SequenceName
-
-    if (assembly_accession %in% NCBI_assemblies[ , "assembly_accession"]) {
-        if (is.na(circ_seqs)) {
-            circ_seqs <- circ_seqs_row
-            paste0('c', '(', paste0('"', circ_seqs_row, '"', collapse=","), ')')
-        } else if (is.na(seq_info$circular)) {
-            character(0)
-        } else {
-            if (identical(circ_seqs, circ_seqs_row)) {
-                circ_seqs
-            } else {
-                stop(wmsg("Circular sequences provided must match those in the
-                          assembly"))
-            }
-        }
-
-    } else {
-#        if((circ_seqs %in% a) == FALSE)
-        if (all((unlist(circ_seqs_row) == FALSE)))
-            character(0)
-         if(is.na(match(circ_seqs, a)))
-            stop(wmsg("Please enter a valid circular sequence name"))
-        if (circ_seqs %in% seq_info[seq_info$SequenceRole == "assembled-molecule", ]) {
-            circ_seqs
-        } else { stop(wmsg("Circular sequences provided must be an
-                           assembled molecule")) }
-    }
-}
 
 .format_organism <- function(organism)
 {
@@ -106,6 +68,42 @@
     paste0('c', '(', paste0('"', seqnames, '"', collapse=","), ')')
 }
 
+.get_circseqs <- function(assembly_accession, circ_seqs=NULL)
+{
+        NCBI_assemblies <- registered_NCBI_assemblies()
+        seq_info <- getChromInfoFromNCBI(assembly_accession)
+        ## if NCBI assembly is registered
+        if (assembly_accession %in% NCBI_assemblies[ , "assembly_accession"]) {
+            true_circ_seq <- seq_info[seq_info$circular == "TRUE", ]
+            inferred_circ_seqs<- true_circ_seq$SequenceName
+
+        if (is.null(circ_seqs))
+            return(inferred_circ_seqs)
+        if (!setequal(circ_seqs, inferred_circ_seqs))
+            stop(wmsg("'circ_seqs' values do not match those of the assembly"))
+            return(circ_seqs)
+
+        } else {
+            ## if NCBI assembly is not registered.
+            if (is.null(circ_seqs))
+                stop(wmsg("Please enter valid circular sequence (if none, enter
+                          character(0) i.e a length-0 character vector"))
+            ## Check if circ_seqs match assembly sequence names
+            if(is.na(match(circ_seqs, seq_info$SequenceName)))
+                stop(wmsg("Please enter a valid circular sequence name"))
+            ## Check if circ_seqs are names of assembled molecules
+            subset_seq_info <- seq_info[seq_info$SequenceName == circ_seqs, ]
+            if (! "assembled-molecule" %in% subset_seq_info[ , "SequenceRole"])
+                stop(wmsg("'circ_seqs' must be an assembled molecule"))
+            return(circ_seqs)
+        }
+}
+
+.get_all_circ_seqs_names_in_one_string <- function(circ_seqs)
+{
+    paste0('c', '(', paste0('"', circ_seqs, '"', collapse=","), ')')
+}
+
 .move_seq_file <- function(twobit_file, pkg_dir)
 {
     to <- file.path(pkg_dir, "inst", "extdata", basename(twobit_file))
@@ -114,8 +112,9 @@
 
 forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
                                          pkg_maintainer, pkg_author=NA,
-                                         pkg_version="1.0.0", circ_seqs=NULL,
+                                         pkg_version="1.0.0",
                                          pkg_license="Artistic-2.0",
+                                         circ_seqs=NULL,
                                          destdir=".")
 {
     if (!isSingleString(organism) || organism == "")
@@ -133,6 +132,12 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
         stop(wmsg("'pkg_version' must be a single (non-empty) string"))
     if (!isSingleString(pkg_license) || pkg_license == "")
         stop(wmsg("'pkg_license' must be a single (non-empty) string"))
+    if (is.na(circ_seqs))
+        stop(wmsg("'circ_seqs' must contain valid, non empty character values"))
+    if (duplicated(circ_seqs))
+        stop(wmsg("'circ_seqs' contains duplicate values"))
+    if (!(is.null(circ_seqs) || is.character(circ_seqs)))
+        stop(wmsg("'circ_seqs' must be NULL or a valid character vector"))
     if (!isSingleString(destdir) || destdir == "")
         stop(wmsg("'destdir' must be a single (non-empty) string"))
 
@@ -150,6 +155,7 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
     organism_biocview <- .create_organism_biocview(organism)
     seqnames <- .get_all_seqnames_in_one_string(assembly_accession)
     circ_seqs <- .get_circseqs(assembly_accession, circ_seqs)
+    circ_seqs <- .get_all_circ_seqs_names_in_one_string(circ_seqs)
 
     symValues <- list(BSGENOMEOBJNAME=abbr_organism,
                       PKGTITLE=pkgtitle,
