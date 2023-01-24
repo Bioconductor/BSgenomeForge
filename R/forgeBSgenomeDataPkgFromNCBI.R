@@ -68,8 +68,31 @@
     paste0('c', '(', paste0('"', seqnames, '"', collapse=","), ')')
 }
 
+.check_circ_seqs <- function(circ_seqs)
+{
+    # check if circ_seqs is null first - if so, return immediately
+    if (!is.null(circ_seqs)) {
+        # check is circ_seqs is a character vector & stop w/ error message if not
+        if (!is.character(circ_seqs)) {
+            stop(wmsg("'circ_seqs' must be NULL or a valid character vector"))
+        } else {
+            # check for nas, empty strings and duplicates
+            if (anyNA(circ_seqs))
+                stop(wmsg("'circ_seqs' must contain valid, non empty character values"))
+            if ("" %in% circ_seqs)
+                stop(wmsg("'circ_seqs' must be a non-empty string"))
+            if (anyDuplicated(circ_seqs))
+                stop(wmsg("'circ_seqs' contains duplicate values"))
+            return(circ_seqs)
+            }
+    } else {
+        return(circ_seqs)
+    }
+}
+
 .get_circseqs <- function(assembly_accession, circ_seqs=NULL)
 {
+        circ_seqs <- .check_circ_seqs(circ_seqs)
         NCBI_assemblies <- registered_NCBI_assemblies()
         seq_info <- getChromInfoFromNCBI(assembly_accession)
         ## if NCBI assembly is registered
@@ -77,25 +100,31 @@
             true_circ_seq <- seq_info[seq_info$circular == "TRUE", ]
             inferred_circ_seqs<- true_circ_seq$SequenceName
 
-        if (is.null(circ_seqs))
-            return(inferred_circ_seqs)
-        if (!setequal(circ_seqs, inferred_circ_seqs))
-            stop(wmsg("'circ_seqs' values do not match those of the assembly"))
-            return(circ_seqs)
+            if (is.null(circ_seqs))
+                return(inferred_circ_seqs)
+            if (!setequal(circ_seqs, inferred_circ_seqs))
+                stop(wmsg("'circ_seqs' values do not match those of the assembly"))
+                return(circ_seqs)
 
         } else {
             ## if NCBI assembly is not registered.
             if (is.null(circ_seqs))
-                stop(wmsg("Please enter valid circular sequence (if none, enter
-                          character(0) i.e a length-0 character vector"))
+                stop(wmsg("This assembly is not registered in
+                GenomeInfoDb so I don't know what sequences in this assembly are
+                circular. Please provide them in a character vector passed to
+                the 'circ_seqs' argument (set 'circ_seqs' to 'character(0)'
+                          if the assembly has no circular sequences)."))
             ## Check if circ_seqs match assembly sequence names
-            if(is.na(match(circ_seqs, seq_info$SequenceName)))
-                stop(wmsg("Please enter a valid circular sequence name"))
+            if(anyNA(match(circ_seqs, seq_info$SequenceName)))
+                stop(wmsg("Please enter valid circular sequence names"))
             ## Check if circ_seqs are names of assembled molecules
             subset_seq_info <- seq_info[seq_info$SequenceName == circ_seqs, ]
-            if (! "assembled-molecule" %in% subset_seq_info[ , "SequenceRole"])
-                stop(wmsg("'circ_seqs' must be an assembled molecule"))
-            return(circ_seqs)
+            if (isEmpty(subset_seq_info)){
+                return(circ_seqs)
+            } else {
+                if (! "assembled-molecule" %in% subset_seq_info[ , "SequenceRole"])
+                    stop(wmsg("'circ_seqs' must be an assembled molecule"))
+            return(circ_seqs) }
         }
 }
 
@@ -132,12 +161,12 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
         stop(wmsg("'pkg_version' must be a single (non-empty) string"))
     if (!isSingleString(pkg_license) || pkg_license == "")
         stop(wmsg("'pkg_license' must be a single (non-empty) string"))
-    if (is.na(circ_seqs))
-        stop(wmsg("'circ_seqs' must contain valid, non empty character values"))
-    if (duplicated(circ_seqs))
-        stop(wmsg("'circ_seqs' contains duplicate values"))
-    if (!(is.null(circ_seqs) || is.character(circ_seqs)))
-        stop(wmsg("'circ_seqs' must be NULL or a valid character vector"))
+#    if (anyNA(circ_seqs))
+#        stop(wmsg("'circ_seqs' must contain valid, non empty character values"))
+#    if (anyDuplicated(circ_seqs))
+#        stop(wmsg("'circ_seqs' contains duplicate values"))
+#    if (!(is.null(circ_seqs) || is.character(circ_seqs)))
+#        stop(wmsg("'circ_seqs' must be NULL or a valid character vector"))
     if (!isSingleString(destdir) || destdir == "")
         stop(wmsg("'destdir' must be a single (non-empty) string"))
 
@@ -154,6 +183,7 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
     pkg_maintainer <- .check_pkg_maintainer(pkg_maintainer)
     organism_biocview <- .create_organism_biocview(organism)
     seqnames <- .get_all_seqnames_in_one_string(assembly_accession)
+    circ_seqs <- .check_circ_seqs(circ_seqs)
     circ_seqs <- .get_circseqs(assembly_accession, circ_seqs)
     circ_seqs <- .get_all_circ_seqs_names_in_one_string(circ_seqs)
 
