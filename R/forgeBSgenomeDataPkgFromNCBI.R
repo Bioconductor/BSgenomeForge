@@ -61,33 +61,29 @@
     paste0(first_part, "_", last_part)
 }
 
-.get_all_seqnames_in_one_string <- function(assembly_accession)
-{
-    seqinfo <- getChromInfoFromNCBI(assembly_accession)
-    seqnames <- seqinfo$SequenceName
-    paste0('c', '(', paste0('"', seqnames, '"', collapse=","), ')')
-}
+#.get_all_seqnames_in_one_string <- function(assembly_accession)
+#{
+#    seqinfo <- getChromInfoFromNCBI(assembly_accession)
+#    seqnames <- seqinfo$SequenceName
+#    paste0('c', '(', paste0('"', seqnames, '"', collapse=","), ')')
+#}
 
 .check_circ_seqs <- function(circ_seqs)
 {
     # check if circ_seqs is null first - if so, return immediately
-    if (!is.null(circ_seqs)) {
-        # check is circ_seqs is a character vector & stop w/ error message if not
-        if (!is.character(circ_seqs)) {
-            stop(wmsg("'circ_seqs' must be NULL or a valid character vector"))
-        } else {
-            # check for nas, empty strings and duplicates
-            if (anyNA(circ_seqs))
-                stop(wmsg("'circ_seqs' must contain valid, non empty character values"))
-            if ("" %in% circ_seqs)
-                stop(wmsg("'circ_seqs' must be a non-empty string"))
-            if (anyDuplicated(circ_seqs))
-                stop(wmsg("'circ_seqs' contains duplicate values"))
-            return(circ_seqs)
-            }
-    } else {
+    if (!is.null(circ_seqs))
         return(circ_seqs)
-    }
+        # check is circ_seqs is a character vector & stop w/ error message if not
+    if (!is.character(circ_seqs))
+        stop(wmsg("'circ_seqs' must be NULL or a valid character vector"))
+            # check for nas, empty strings and duplicates
+    if (anyNA(circ_seqs))
+        stop(wmsg("'circ_seqs' must contain valid, non empty character values"))
+    if ("" %in% circ_seqs)
+        stop(wmsg("'circ_seqs' must be a non-empty string"))
+    if (anyDuplicated(circ_seqs))
+        stop(wmsg("'circ_seqs' contains duplicate values"))
+    return(circ_seqs)
 }
 
 .get_circseqs <- function(assembly_accession, circ_seqs=NULL)
@@ -128,9 +124,22 @@
         }
 }
 
-.get_all_circ_seqs_names_in_one_string <- function(circ_seqs)
+#.get_all_circ_seqs_names_in_one_string <- function(circ_seqs)
+#{
+#    if (length(circ_seqs) == 0)
+#        return("character(0)")
+#    paste0('c', '(', paste0('"', circ_seqs, '"', collapse=","), ')')
+#}
+
+.build_Rexpr_as_string <- function(sequencename)
 {
-    paste0('c', '(', paste0('"', circ_seqs, '"', collapse=","), ')')
+#    seqinfo <- getChromInfoFromNCBI(assembly_accession)
+#    seqnames <- seqinfo$SequenceName
+    if (length(sequencename) == 0)
+        return("character(0)")
+    paste0('c', '(', paste0('"', sequencename, '"', collapse=","), ')')
+
+#    circ_seqs <- .get_all_circ_seqs_names_in_one_string(circ_seqs)
 }
 
 .move_seq_file <- function(twobit_file, pkg_dir)
@@ -175,6 +184,9 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
     twobit_file <- file.path(tempdir(), "single_sequences.2bit")
     fastaTo2bit(fasta_file, twobit_file, assembly_accession)
 
+    seqinfo <- getChromInfoFromNCBI(assembly_accession)
+    seqnames <- seqinfo$SequenceName
+
     organism <- .format_organism(organism)
     abbr_organism <- .abbreviate_organism_name(organism)
     pkgname <- .create_pkgname(abbr_organism, genome)
@@ -182,10 +194,10 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
     pkgdesc <- .create_pkgdesc(organism, genome, assembly_accession)
     pkg_maintainer <- .check_pkg_maintainer(pkg_maintainer)
     organism_biocview <- .create_organism_biocview(organism)
-    seqnames <- .get_all_seqnames_in_one_string(assembly_accession)
+    seqnames <- .build_Rexpr_as_string(seqnames)
     circ_seqs <- .check_circ_seqs(circ_seqs)
     circ_seqs <- .get_circseqs(assembly_accession, circ_seqs)
-    circ_seqs <- .get_all_circ_seqs_names_in_one_string(circ_seqs)
+    circ_seqs <- .build_Rexpr_as_string(circ_seqs)
 
     symValues <- list(BSGENOMEOBJNAME=abbr_organism,
                       PKGTITLE=pkgtitle,
