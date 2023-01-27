@@ -69,21 +69,21 @@
         # check is circ_seqs is a character vector & stop w/ error message if not
     if (!is.character(circ_seqs))
         stop(wmsg("'circ_seqs' must be NULL or a valid character vector"))
-            # check for nas, empty strings and duplicates
+    # check for nas, empty strings and duplicates
     if (anyNA(circ_seqs))
         stop(wmsg("'circ_seqs' must contain valid, non empty character values"))
     if ("" %in% circ_seqs)
         stop(wmsg("'circ_seqs' must be a non-empty string"))
     if (anyDuplicated(circ_seqs))
         stop(wmsg("'circ_seqs' contains duplicate values"))
-    return(circ_seqs)
+        return(circ_seqs)
 }
 
-.get_circseqs <- function(assembly_accession, circ_seqs=NULL)
+.get_circseqs <- function(assembly_accession, seq_info, circ_seqs=NULL)
 {
     circ_seqs <- .check_circ_seqs(circ_seqs)
     NCBI_assemblies <- registered_NCBI_assemblies()
-    seq_info <- getChromInfoFromNCBI(assembly_accession)
+#    seq_info <- getChromInfoFromNCBI(assembly_accession)
     ## if NCBI assembly is registered
     if (assembly_accession %in% NCBI_assemblies[ , "assembly_accession"]) {
         true_circ_seq <- seq_info[seq_info$circular == "TRUE", ]
@@ -92,7 +92,8 @@
         if (is.null(circ_seqs))
             return(inferred_circ_seqs)
         if (!setequal(circ_seqs, inferred_circ_seqs))
-            stop(wmsg("'circ_seqs' values do not match those of the assembly"))
+            stop(wmsg("'circ_seqs' values do not match the names of the
+                      sequences in the assembly"))
             return(circ_seqs)
 
     } else {
@@ -105,16 +106,16 @@
                       if the assembly has no circular sequences)."))
         ## Check if circ_seqs match assembly sequence names
         if(anyNA(match(circ_seqs, seq_info$SequenceName)))
-            stop(wmsg("Please enter valid circular sequence names"))
+            stop(wmsg("'circ_seqs' does not contain valid circular
+                      sequence names"))
         ## Check if circ_seqs are names of assembled molecules
-        ## Approach creates Warning: longer object length is not a multiple of
-        ## shorter object length
-        subset_seq_info <- seq_info[seq_info$SequenceName == circ_seqs, ]
+        subset_seq_info <- seq_info[seq_info$SequenceName %in% circ_seqs, ]
         if (isEmpty(subset_seq_info)){
             return(circ_seqs)
         } else {
             if (! "assembled-molecule" %in% subset_seq_info[ , "SequenceRole"])
-                stop(wmsg("'circ_seqs' must be an assembled molecule"))
+                stop(wmsg("The strings within 'circ_seqs' must be assembled
+                          molecules"))
         return(circ_seqs) }
     }
 }
@@ -169,8 +170,8 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
     fastaTo2bit(fasta_file, twobit_file, assembly_accession)
 
     # retrieve the sequence names for supplied NCBI assembly
-    seqinfo <- getChromInfoFromNCBI(assembly_accession)
-    seqnames <- seqinfo$SequenceName
+    seq_info <- getChromInfoFromNCBI(assembly_accession)
+    seqnames <- seq_info$SequenceName
 
     organism <- .format_organism(organism)
     abbr_organism <- .abbreviate_organism_name(organism)
@@ -181,7 +182,7 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
     organism_biocview <- .create_organism_biocview(organism)
     seqnames <- .build_Rexpr_as_string(seqnames)
     circ_seqs <- .check_circ_seqs(circ_seqs)
-    circ_seqs <- .get_circseqs(assembly_accession, circ_seqs)
+    circ_seqs <- .get_circseqs(assembly_accession, seq_info, circ_seqs)
     circ_seqs <- .build_Rexpr_as_string(circ_seqs)
 
     symValues <- list(BSGENOMEOBJNAME=abbr_organism,

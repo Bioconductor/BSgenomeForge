@@ -14,6 +14,7 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism, genome,
                              pkg_maintainer, pkg_author=NA,
                              pkg_version="1.0.0",
                              pkg_license="Artistic-2.0",
+                             circ_seqs=NULL,
                              destdir=".")
 }
 
@@ -46,6 +47,12 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism, genome,
     The license of the package. This must be the name of a software license
     used for free and open-source packages. Set to \code{"Artistic-2.0"}
     by default.
+  }
+    \item{circ_seqs}{
+    The names of the circular sequences found in the genome. This must be
+    specified if the organism is not registered in \code{GenomeInfoDb}, and
+    supplied as a character vector. If the organism does not possess circular
+    sequences, set this to character(0).
   }
   \item{destdir}{
     A single string containing the path to the directory where the
@@ -88,7 +95,8 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism, genome,
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_009729545.1",
                              organism="Acidianus infernus",
                              genome="ASM972954v1",
-                             pkg_maintainer="Jane Doe <janedoe@gmail.com>")
+                             pkg_maintainer="Jane Doe <janedoe@gmail.com>",
+                             circ_seqs=character(0))
 }
 
 \keyword{utilities}
