@@ -83,7 +83,6 @@
 {
     circ_seqs <- .check_circ_seqs(circ_seqs)
     NCBI_assemblies <- registered_NCBI_assemblies()
-#    seq_info <- getChromInfoFromNCBI(assembly_accession)
     ## if NCBI assembly is registered
     if (assembly_accession %in% NCBI_assemblies[ , "assembly_accession"]) {
         true_circ_seq <- seq_info[seq_info$circular == "TRUE", ]
