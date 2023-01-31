@@ -63,17 +63,14 @@
 
 .check_circ_seqs <- function(circ_seqs)
 {
-    # check if circ_seqs is null first - if so, return immediately
     if (is.null(circ_seqs))
         return(circ_seqs)
-        # check is circ_seqs is a character vector & stop w/ error message if not
     if (!is.character(circ_seqs))
         stop(wmsg("'circ_seqs' must be NULL or a valid character vector"))
-    # check for nas, empty strings and duplicates
     if (anyNA(circ_seqs))
-        stop(wmsg("'circ_seqs' must contain valid, non empty character values"))
+        stop(wmsg("'circ_seqs' cannot contain NA's"))
     if ("" %in% circ_seqs)
-        stop(wmsg("'circ_seqs' must be a non-empty string"))
+        stop(wmsg("'circ_seqs' cannot contain empty character vector strings"))
     if (anyDuplicated(circ_seqs))
         stop(wmsg("'circ_seqs' contains duplicate values"))
         return(circ_seqs)
@@ -81,7 +78,6 @@
 
 .get_circseqs <- function(assembly_accession, seq_info, circ_seqs=NULL)
 {
-    circ_seqs <- .check_circ_seqs(circ_seqs)
     NCBI_assemblies <- registered_NCBI_assemblies()
     ## if NCBI assembly is registered
     if (assembly_accession %in% NCBI_assemblies[ , "assembly_accession"]) {
@@ -113,8 +109,8 @@
             return(circ_seqs)
         } else {
             if (! "assembled-molecule" %in% subset_seq_info[ , "SequenceRole"])
-                stop(wmsg("The strings within 'circ_seqs' must be assembled
-                          molecules"))
+                stop(wmsg("the sequence names in 'circ_seqs' must be the names
+                          of assembled molecules"))
         return(circ_seqs) }
     }
 }

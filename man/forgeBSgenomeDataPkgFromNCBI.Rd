@@ -10,12 +10,10 @@
 }
 
 \usage{
-forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism, genome,
-                             pkg_maintainer, pkg_author=NA,
-                             pkg_version="1.0.0",
-                             pkg_license="Artistic-2.0",
-                             circ_seqs=NULL,
-                             destdir=".")
+forgeBSgenomeDataPkgFromNCBI(
+            assembly_accession, organism, genome, pkg_maintainer,
+            pkg_author=NA, pkg_version="1.0.0", pkg_license="Artistic-2.0",
+            circ_seqs=NULL, destdir=".")
 }
 
 \arguments{
@@ -48,11 +46,11 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism, genome,
     used for free and open-source packages. Set to \code{"Artistic-2.0"}
     by default.
   }
-    \item{circ_seqs}{
-    The names of the circular sequences found in the genome. This must be
-    specified if the organism is not registered in \code{GenomeInfoDb}, and
-    supplied as a character vector. If the organism does not possess circular
-    sequences, set this to character(0).
+  \item{circ_seqs}{
+    NULL (the default) or a character vector containing the names of the
+    circular sequences in the assembly. This must be specified if the organism
+    is not registered in the \pkg{GenomeInfoDb} package. If the organism does
+    not possess circular sequences, set this to \code{character(0)}.
   }
   \item{destdir}{
     A single string containing the path to the directory where the
@@ -97,6 +95,14 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_009729545.1",
                              genome="ASM972954v1",
                              pkg_maintainer="Jane Doe <janedoe@gmail.com>",
                              circ_seqs=character(0))
+
+## Create a BSgenome data package for NCBI assembly GCF_000857545.1
+## (organism Torque teno virus 1):
+forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCF_000857545.1",
+                             organism="Torque teno virus 1",
+                             genome="ViralProj15247",
+                             pkg_maintainer="Jane Doe <janedoe@gmail.com>",
+                             circ_seqs=c("NC_002076.2"))
 }
 
 \keyword{utilities}
