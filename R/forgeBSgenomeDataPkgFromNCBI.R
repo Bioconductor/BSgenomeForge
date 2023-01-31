@@ -1,5 +1,5 @@
 ### =========================================================================
-### forgeBSgenomeDataPkgFRomNCBI()
+### forgeBSgenomeDataPkgFromNCBI()
 ### -------------------------------------------------------------------------
 ###
 ### Create a BSgenome data package from an NCBI assembly.
@@ -61,11 +61,65 @@
     paste0(first_part, "_", last_part)
 }
 
-.get_all_seqnames_in_one_string <- function(assembly_accession)
+.check_circ_seqs <- function(circ_seqs)
 {
-    seqinfo <- getChromInfoFromNCBI(assembly_accession)
-    seqnames <- seqinfo$SequenceName
-    paste0('c', '(', paste0('"', seqnames, '"', collapse=","), ')')
+    if (is.null(circ_seqs))
+        return(circ_seqs)
+    if (!is.character(circ_seqs))
+        stop(wmsg("'circ_seqs' must be NULL or a valid character vector"))
+    if (anyNA(circ_seqs))
+        stop(wmsg("'circ_seqs' cannot contain NA's"))
+    if ("" %in% circ_seqs)
+        stop(wmsg("'circ_seqs' cannot contain empty strings"))
+    if (anyDuplicated(circ_seqs))
+        stop(wmsg("'circ_seqs' contains duplicate values"))
+    circ_seqs
+}
+
+.get_circseqs <- function(assembly_accession, seq_info, circ_seqs=NULL)
+{
+    NCBI_assemblies <- registered_NCBI_assemblies()
+    ## if NCBI assembly is registered
+    if (assembly_accession %in% NCBI_assemblies[ , "assembly_accession"]) {
+        true_circ_seq <- seq_info[seq_info$circular == "TRUE", ]
+        inferred_circ_seqs<- true_circ_seq$SequenceName
+
+        if (is.null(circ_seqs))
+            return(inferred_circ_seqs)
+        if (!setequal(circ_seqs, inferred_circ_seqs))
+            stop(wmsg("'circ_seqs' values do not match the names of the
+                      sequences in the assembly"))
+        return(circ_seqs)
+
+    } else {
+        ## if NCBI assembly is not registered.
+        if (is.null(circ_seqs))
+            stop(wmsg("This assembly is not registered in
+            GenomeInfoDb so I don't know what sequences in this assembly are
+            circular. Please provide them in a character vector passed to
+            the 'circ_seqs' argument (set 'circ_seqs' to 'character(0)'
+                      if the assembly has no circular sequences)."))
+        ## Check if circ_seqs match assembly sequence names
+        if(anyNA(match(circ_seqs, seq_info$SequenceName)))
+            stop(wmsg("'circ_seqs' does not contain valid circular
+                      sequence names"))
+        ## Check if circ_seqs are names of assembled molecules
+        subset_seq_info <- seq_info[seq_info$SequenceName %in% circ_seqs, ]
+        if (isEmpty(subset_seq_info)){
+        return(circ_seqs)
+        } else {
+            if (! "assembled-molecule" %in% subset_seq_info[ , "SequenceRole"])
+                stop(wmsg("the sequence names in 'circ_seqs' must be the names
+                          of assembled molecules"))
+        return(circ_seqs) }
+    }
+}
+
+.build_Rexpr_as_string <- function(sequencename)
+{
+    if (length(sequencename) == 0)
+        return("character(0)")
+    paste0('c', '(', paste0('"', sequencename, '"', collapse=","), ')')
 }
 
 .move_seq_file <- function(twobit_file, pkg_dir)
@@ -78,6 +132,7 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
                                          pkg_maintainer, pkg_author=NA,
                                          pkg_version="1.0.0",
                                          pkg_license="Artistic-2.0",
+                                         circ_seqs=NULL,
                                          destdir=".")
 {
     if (!isSingleString(organism) || organism == "")
@@ -97,6 +152,12 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
         stop(wmsg("'pkg_license' must be a single (non-empty) string"))
     if (!isSingleString(destdir) || destdir == "")
         stop(wmsg("'destdir' must be a single (non-empty) string"))
+    circ_seqs <- .check_circ_seqs(circ_seqs)
+
+    # retrieve the sequence names for supplied NCBI assembly
+    seq_info <- getChromInfoFromNCBI(assembly_accession)
+    seqnames <- seq_info$SequenceName
+    circ_seqs <- .get_circseqs(assembly_accession, seq_info, circ_seqs)
 
     ## Download file and convert from FASTA to 2bit.
     fasta_file <- downloadGenomicSequencesFromNCBI(assembly_accession)
@@ -110,7 +171,8 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
     pkgdesc <- .create_pkgdesc(organism, genome, assembly_accession)
     pkg_maintainer <- .check_pkg_maintainer(pkg_maintainer)
     organism_biocview <- .create_organism_biocview(organism)
-    seqnames <- .get_all_seqnames_in_one_string(assembly_accession)
+    seqnames <- .build_Rexpr_as_string(seqnames)
+    circ_seqs <- .build_Rexpr_as_string(circ_seqs)
 
     symValues <- list(BSGENOMEOBJNAME=abbr_organism,
                       PKGTITLE=pkgtitle,
@@ -123,10 +185,10 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
                       GENOME=genome,
                       ORGANISMBIOCVIEW=organism_biocview,
                       SEQNAMES=seqnames,
-                      CIRCSEQS="character(0)")
+                      CIRCSEQS=circ_seqs)
 
     origdir <- system.file("pkgtemplates", "NCBI_BSgenome_datapkg",
-                           package="BSgenomeForge")
+                            package="BSgenomeForge")
     pkg_dir <- unlist(createPackage(pkgname, destdir, origdir, symValues,
                                     unlink=TRUE, quiet=FALSE),
                       use.names=FALSE)
