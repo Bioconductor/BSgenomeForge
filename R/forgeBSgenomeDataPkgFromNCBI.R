@@ -172,8 +172,6 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
     pkg_maintainer <- .check_pkg_maintainer(pkg_maintainer)
     organism_biocview <- .create_organism_biocview(organism)
     seqnames <- .build_Rexpr_as_string(seqnames)
-#    circ_seqs <- .check_circ_seqs(circ_seqs)
-#    circ_seqs <- .get_circseqs(assembly_accession, seq_info, circ_seqs)
     circ_seqs <- .build_Rexpr_as_string(circ_seqs)
 
     symValues <- list(BSGENOMEOBJNAME=abbr_organism,
