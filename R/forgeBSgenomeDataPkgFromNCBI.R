@@ -89,7 +89,7 @@
         if (!setequal(circ_seqs, inferred_circ_seqs))
             stop(wmsg("'circ_seqs' values do not match the names of the
                       sequences in the assembly"))
-            return(circ_seqs)
+        return(circ_seqs)
 
     } else {
         ## if NCBI assembly is not registered.
