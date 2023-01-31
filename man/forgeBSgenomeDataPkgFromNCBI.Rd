@@ -11,7 +11,7 @@
 
 \usage{
 forgeBSgenomeDataPkgFromNCBI(
-            assembly_accession, organism, genome, pkg_maintainer,
+            assembly_accession, organism, pkg_maintainer,
             pkg_author=NA, pkg_version="1.0.0", pkg_license="Artistic-2.0",
             circ_seqs=NULL, destdir=".")
 }
@@ -25,10 +25,6 @@ forgeBSgenomeDataPkgFromNCBI(
   \item{organism}{
     The full name of the organism (e.g. \code{"Homo sapiens"},
     \code{"Felis catus"}, \code{"Acidianus infernus"}, etc...).
-  }
-  \item{genome}{
-    The name of the NCBI assembly (e.g. \code{"GRCh38.p14"},
-    \code{"felCat9.1_X"}, \code{"ASM972954v1"}, etc...).
   }
   \item{pkg_maintainer}{
     A single string containing the name and email address of the package
@@ -92,7 +88,6 @@ forgeBSgenomeDataPkgFromNCBI(
 ## (organism Acidianus infernus):
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_009729545.1",
                              organism="Acidianus infernus",
-                             genome="ASM972954v1",
                              pkg_maintainer="Jane Doe <janedoe@gmail.com>",
                              circ_seqs=character(0))
 
@@ -100,7 +95,6 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_009729545.1",
 ## (organism Torque teno virus 1):
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCF_000857545.1",
                              organism="Torque teno virus 1",
-                             genome="ViralProj15247",
                              pkg_maintainer="Jane Doe <janedoe@gmail.com>",
                              circ_seqs=c("NC_002076.2"))
 }
