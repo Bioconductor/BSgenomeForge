@@ -5,6 +5,16 @@
 ### Create a BSgenome data package from an NCBI assembly.
 ###
 
+.extract_assembly_string <- function(assembly_split)
+{
+    ## 'assembly_split' is a string that is expected to be of the
+    ## form "<assembly-accession>_<assembly-name>". We know
+    ## that <assembly-accession> cannot contain underscores
+    ## so <assembly-name> will by everything that comes after the
+    ## first underscore.
+    sub("^[^_]*_[^_]*_", "", assembly_split)
+}
+
 .get_assemblyname <- function(assembly_accession)
 {
     ## 2 length character vector containing URL to FTP dir and file name in FTP
@@ -12,12 +22,7 @@
     assembly_ftp_dir <- find_NCBI_assembly_ftp_dir(assembly_accession)
     ## Return only file name
     assembly_split <- assembly_ftp_dir [2]
-    ## Split file name and return assembly name
-    split_sub1 <- sub("_", " ", assembly_split)
-    split_sub2 <- sub("_", " ", split_sub1)
-    split_name <- strsplit(split_sub2, " +")[[1]]
-    assembly_name <- tail(split_name, 1)
-    assembly_name
+    assembly_name <- .extract_assembly_string(assembly_split)
 }
 
 .format_organism <- function(organism)
