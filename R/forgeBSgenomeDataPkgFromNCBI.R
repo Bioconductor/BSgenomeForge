@@ -7,11 +7,9 @@
 
 .extract_assembly_string <- function(assembly_split)
 {
-    ## 'assembly_split' is a string that is expected to be of the
-    ## form "<assembly-accession>_<assembly-name>". We know
-    ## that <assembly-accession> cannot contain underscores
-    ## so <assembly-name> will by everything that comes after the
-    ## first underscore.
+    ## 'assembly_split' is a string that is expected to contain at least
+    ## two underscores. We want to extract everything that comes after the
+    ## second underscore.
     sub("^[^_]*_[^_]*_", "", assembly_split)
 }
 
