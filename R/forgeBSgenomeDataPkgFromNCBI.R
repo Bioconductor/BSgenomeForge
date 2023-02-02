@@ -122,10 +122,12 @@
                       sequence names"))
         ## Check if circ_seqs are names of assembled molecules
         subset_seq_info <- seq_info[seq_info$SequenceName %in% circ_seqs, ]
+        assembled_molecules <- subset_seq_info[subset_seq_info$SequenceRole
+                                                  %in% "assembled-molecule", ]
         if (isEmpty(subset_seq_info)){
         return(circ_seqs)
         } else {
-            if (! "assembled-molecule" %in% subset_seq_info[ , "SequenceRole"])
+            if (! all(circ_seqs %in% assembled_molecules$SequenceName))
                 stop(wmsg("the sequence names in 'circ_seqs' must be the names
                           of assembled molecules"))
         return(circ_seqs) }
