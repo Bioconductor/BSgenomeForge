@@ -5,6 +5,23 @@
 ### Create a BSgenome data package from an NCBI assembly.
 ###
 
+.extract_assembly_string <- function(assembly_split)
+{
+    ## 'assembly_split' is a string that is expected to contain at least
+    ## two underscores. We want to extract everything that comes after the
+    ## second underscore.
+    sub("^[^_]*_[^_]*_", "", assembly_split)
+}
+
+.get_assemblyname <- function(assembly_accession)
+{
+    ## 2 length character vector containing URL to FTP dir and file name in FTP
+    ## dir
+    assembly_ftp_dir <- find_NCBI_assembly_ftp_dir(assembly_accession)
+    ## Return only file name
+    assembly_split <- assembly_ftp_dir [2]
+    assembly_name <- .extract_assembly_string(assembly_split)
+}
 
 .format_organism <- function(organism)
 {
@@ -128,7 +145,7 @@
     file.rename(twobit_file, to)
 }
 
-forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
+forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism,
                                          pkg_maintainer, pkg_author=NA,
                                          pkg_version="1.0.0",
                                          pkg_license="Artistic-2.0",
@@ -137,8 +154,6 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
 {
     if (!isSingleString(organism) || organism == "")
         stop(wmsg("'organism' must be a single (non-empty) string"))
-    if (!isSingleString(genome) || genome == "")
-        stop(wmsg("'genome' must be a single (non-empty) string"))
     if (!isSingleString(pkg_maintainer) || pkg_maintainer == "")
         stop(wmsg("'pkg_maintainer' must be a single (non-empty) string"))
     if (identical(pkg_author, NA)) {
@@ -158,6 +173,7 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism, genome,
     seq_info <- getChromInfoFromNCBI(assembly_accession)
     seqnames <- seq_info$SequenceName
     circ_seqs <- .get_circseqs(assembly_accession, seq_info, circ_seqs)
+    genome <- .get_assemblyname(assembly_accession)
 
     ## Download file and convert from FASTA to 2bit.
     fasta_file <- downloadGenomicSequencesFromNCBI(assembly_accession)
