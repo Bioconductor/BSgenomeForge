@@ -36,10 +36,33 @@
 
 .abbreviate_organism_name <- function(organism)
 {
-    first_letter <- substring(organism, 1, 1)
-    parts <- strsplit(organism, " +")[[1]]
-    last_part <- tail(parts, 1)
-    paste0(first_letter, last_part)
+    ## If 'organism' has a numeric suffix, we handle it separately.
+    ## This is an attempt at doing something sensible with organism names
+    ## like "Torque teno virus 1" where we want .abbreviate_organism_name()
+    ## to return "Tvirus1".
+    ## Note that we allow whitespaces in the numeric suffix but we'll remove
+    ## them before adding the suffix back to the abbreviated organism name.
+    prefix_suffix <- split_numeric_suffix(organism, "0-9\\s")
+    organism <- prefix_suffix[ , "prefix"]
+
+    ## Abbreviate 'organism' e.g.
+    ##   "Homo sapiens" -> "Hsapiens"
+    ##   "Canis lupus familiaris" -> "Cfamiliaris"
+    ##   "Torque teno virus" -> "Tvirus"
+    parts <- strsplit(organism, "\\s+")[[1]]
+    if (length(parts) <= 1) {
+        abbr_organism <- parts
+    } else {
+        first_letter <- substr(head(parts, 1), 1, 1)
+        last_part <- tail(parts, 1)
+        abbr_organism <- paste0(first_letter, last_part)
+    }
+
+    ## Remove whitespaces from the numeric suffix.
+    suffix <- gsub("\\s", "", prefix_suffix[ , "suffix"])
+
+    ## Add numeric suffix back.
+    paste0(abbr_organism, suffix)
 }
 
 .create_pkgname <- function(abbr_organism, genome)
