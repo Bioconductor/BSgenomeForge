@@ -5,6 +5,17 @@
 ### Create a BSgenome data package from an NCBI assembly.
 ###
 
+.check_assembled <- function(circ_seqs)
+{
+    if (is.null(circ_seqs))
+        return(character(0))
+    if (length(circ_seqs) > 0)
+        stop(wmsg("This assembly does not contain assembled-molecules, and so
+                  cannot have any other value of 'circ_seqs' specified other
+                  than 'character(0)'"))
+    return(circ_seqs)
+}
+
 .extract_assembly_name_from_ftp_file_prefix <- function(ftp_file_prefix)
 {
     ## 'ftp_file_prefix' is a string that is expected to contain at least
@@ -138,6 +149,8 @@
         stop(wmsg(msg))
     } else {
         ## NCBI assembly is **not** registered.
+        if (! "assembled-molecule" %in% chrominfo[ , "SequenceRole"])
+            circ_seqs <- .check_assembled(circ_seqs)
         if (is.null(circ_seqs))
             stop(wmsg("This assembly is not registered in the GenomeInfoDb ",
                       "package so I don't know what sequences in the ",
