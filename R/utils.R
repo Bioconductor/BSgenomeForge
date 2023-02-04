@@ -12,11 +12,11 @@
 ### Returns a 2-col matrix with one row per string in 'x'.
 ### Sanity check:
 ###   x <- c("", " ", "a", "2", "  ", " a", " 2", "a ", "aa", "a2", "2 ",
-##           "2a", "22", "a23", "a 3", "a3 ", "2 3 ", " a  1 bb 2  33 ")
-###   prefix_suffix <- split_numeric_suffix(x, "0-9\\s")
+###          "2a", "22", "a23", "a 3", "a3 ", "2 3 ", " a  1 bb 2  33 ")
+###   prefix_suffix <- split_suffix(x, "0-9\\s")
 ###   reconstructed <- paste0(prefix_suffix[ , 1], prefix_suffix[ , 2])
 ###   stopifnot(identical(x, reconstructed))
-split_numeric_suffix <- function(x, character_class)
+split_suffix <- function(x, character_class)
 {   
     pattern <- sprintf("^.*[^%s]([%s]*)$", character_class, character_class)
     suffix <- sub(pattern, "\\1", x, perl=TRUE)

@@ -40,7 +40,7 @@
     ## to return "Tvirus1".
     ## Note that we allow whitespaces in the numeric suffix but we'll remove
     ## them before adding the suffix back to the abbreviated organism name.
-    prefix_suffix <- split_numeric_suffix(organism, "0-9\\s")
+    prefix_suffix <- split_suffix(organism, "0-9\\s")
     organism <- prefix_suffix[ , "prefix"]
 
     ## Abbreviate 'organism' e.g.
