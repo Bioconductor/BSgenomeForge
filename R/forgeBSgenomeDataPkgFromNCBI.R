@@ -148,8 +148,7 @@
     } else {
         ## NCBI assembly is **not** registered.
         if (! "assembled-molecule" %in% chrominfo[ , "SequenceRole"])
-            circ_seqs <- .check_sequencerole(circ_seqs)
-        return(circ_seqs)
+            return(.check_sequencerole(circ_seqs))
         if (is.null(circ_seqs))
             stop(wmsg("This assembly is not registered in the GenomeInfoDb ",
                       "package so I don't know what sequences in the ",
