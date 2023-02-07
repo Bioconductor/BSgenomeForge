@@ -114,6 +114,15 @@
     circ_seqs
 }
 
+.check_no_circ_seqs <- function(circ_seqs)
+{
+    if (length(circ_seqs) == 0)
+        return(character(0))
+    stop(wmsg("This assembly does not contain assembled-molecules, and so
+              cannot have any other value of 'circ_seqs' specified other
+              than 'character(0)'"))
+}
+
 .get_circseqs <- function(assembly_accession, chrominfo, circ_seqs=NULL)
 {
     NCBI_assemblies <- registered_NCBI_assemblies()
@@ -138,6 +147,8 @@
         stop(wmsg(msg))
     } else {
         ## NCBI assembly is **not** registered.
+        if (! "assembled-molecule" %in% chrominfo[ , "SequenceRole"])
+            return(.check_no_circ_seqs(circ_seqs))
         if (is.null(circ_seqs))
             stop(wmsg("This assembly is not registered in the GenomeInfoDb ",
                       "package so I don't know what sequences in the ",
