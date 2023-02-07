@@ -118,17 +118,16 @@
 {
     if (length(circ_seqs) == 0)
         return(character(0))
-    stop(wmsg("This assembly does not contain assembled-molecules, and so
-              cannot have any other value of 'circ_seqs' specified other
-              than 'character(0)'"))
+    stop(wmsg("This assembly does not contain assembled molecules ",
+              "so it cannot have circular sequences."))
 }
 
-.get_circseqs <- function(assembly_accession, chrominfo, circ_seqs=NULL)
+.get_circ_seqs <- function(assembly_accession, chrominfo, circ_seqs=NULL)
 {
     NCBI_assemblies <- registered_NCBI_assemblies()
-    ## NCBI assembly is registered.
     if (assembly_accession %in% NCBI_assemblies[ , "assembly_accession"]) {
-        known_circ_seqs <- chrominfo[chrominfo$circular, "SequenceName"]
+        ## NCBI assembly is registered.
+        known_circ_seqs <- chrominfo[chrominfo[ , "circular"], "SequenceName"]
         if (is.null(circ_seqs))
             return(known_circ_seqs)
         if (setequal(circ_seqs, known_circ_seqs))
@@ -138,7 +137,7 @@
             msg <- c(msg, "and it has no known circular sequences.")
         } else {
             in1string <- paste0("\"", known_circ_seqs, "\"", collapse=", ")
-            msg <- c(msg, "which means that the circular sequences are known ",
+            msg <- c(msg, "which means that its circular sequences are known ",
                           "so you are not required to specify them. However, ",
                           "if you do specify them, then they must match the ",
                           "known ones. The circular sequences for registered ",
@@ -147,7 +146,7 @@
         stop(wmsg(msg))
     } else {
         ## NCBI assembly is **not** registered.
-        if (! "assembled-molecule" %in% chrominfo[ , "SequenceRole"])
+        if (!("assembled-molecule" %in% chrominfo[ , "SequenceRole"]))
             return(.check_no_circ_seqs(circ_seqs))
         if (is.null(circ_seqs))
             stop(wmsg("This assembly is not registered in the GenomeInfoDb ",
@@ -158,13 +157,13 @@
                       "character(0) if the assembly has no circular ",
                       "sequences)."))
         ## The sequence names in 'circ_seqs' must belong to the assembly.
-        if (anyNA(match(circ_seqs, chrominfo$SequenceName)))
+        if (anyNA(match(circ_seqs, chrominfo[ , "SequenceName"])))
             stop(wmsg("'circ_seqs' contains sequence names that ",
                       "do not belong to the specified assembly (",
                       assembly_accession, ")"))
         ## 'is_assembled' will be a logical vector with 1 element per row
         ## in the 'chrominfo' data frame.
-        is_assembled <- chrominfo$SequenceRole %in% "assembled-molecule"
+        is_assembled <- chrominfo[ , "SequenceRole"] %in% "assembled-molecule"
         assembled_molecules <- chrominfo[is_assembled, "SequenceName"]
         ## The sequence names in 'circ_seqs' must be names of assembled
         ## molecules.
@@ -214,7 +213,7 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism,
 
     ## Retrieve chromosome information for specified NCBI assembly.
     chrominfo <- getChromInfoFromNCBI(assembly_accession)
-    circ_seqs <- .get_circseqs(assembly_accession, chrominfo, circ_seqs)
+    circ_seqs <- .get_circ_seqs(assembly_accession, chrominfo, circ_seqs)
 
     ## Obtain assembly name from NCBI FTP repository.
     genome <- .fetch_assembly_name_from_NCBI(assembly_accession)
@@ -231,7 +230,7 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism,
     pkgdesc <- .create_pkgdesc(organism, genome, assembly_accession)
     pkg_maintainer <- .check_pkg_maintainer(pkg_maintainer)
     organism_biocview <- .create_organism_biocview(organism)
-    seqnames <- .build_Rexpr_as_string(chrominfo$SequenceName)
+    seqnames <- .build_Rexpr_as_string(chrominfo[ , "SequenceName"])
     circ_seqs <- .build_Rexpr_as_string(circ_seqs)
 
     symValues <- list(BSGENOMEOBJNAME=abbr_organism,

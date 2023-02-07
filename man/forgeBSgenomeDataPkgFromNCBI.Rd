@@ -10,9 +10,9 @@
 }
 
 \usage{
-forgeBSgenomeDataPkgFromNCBI(
-            assembly_accession, organism, pkg_maintainer,
-            pkg_author=NA, pkg_version="1.0.0", pkg_license="Artistic-2.0",
+forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism,
+            pkg_maintainer, pkg_author=NA,
+            pkg_version="1.0.0", pkg_license="Artistic-2.0",
             circ_seqs=NULL, destdir=".")
 }
 
@@ -20,11 +20,11 @@ forgeBSgenomeDataPkgFromNCBI(
   \item{assembly_accession}{
     A single string containing a GenBank assembly accession (e.g.
     \code{"GCA_009729545.1"}) or a RefSeq assembly accession (e.g.
-    \code{"GCF_009729545.1"}).
+    \code{"GCF_000857545.1"}).
   }
   \item{organism}{
-    The full name of the organism (e.g. \code{"Homo sapiens"},
-    \code{"Felis catus"}, \code{"Acidianus infernus"}, etc...).
+    The full name of the organism e.g. \code{"Homo sapiens"},
+    \code{"Felis catus"}, \code{"Acidianus infernus"}, etc...
   }
   \item{pkg_maintainer}{
     A single string containing the name and email address of the package
@@ -43,16 +43,31 @@ forgeBSgenomeDataPkgFromNCBI(
     by default.
   }
   \item{circ_seqs}{
-    NULL (the default) or a character vector containing the names of the
-    circular sequences in the assembly. This must be specified if the organism
-    is not registered in the \pkg{GenomeInfoDb} package. If the organism does
-    not possess circular sequences, set this to \code{character(0)}.
+    NULL (the default), or a character vector containing the names of the
+    circular sequences in the assembly. This only needs to be specified if
+    the assembly is \emph{not} registered in the \pkg{GenomeInfoDb} package
+    (if the assembly is registered then its circular sequences are known so
+    there's no need to specify \code{circ_seqs}).
+
+    Notes:
+    \itemize{
+      \item You can use \code{registered_NCBI_assemblies()} to get the list
+            of assemblies that are registered in the \pkg{GenomeInfoDb}
+            package.
+      \item Only assembled molecules can be circular. To see the
+            list of assembled molecules for a given assembly, call
+            \code{getChromInfoFromNCBI(assembly_accession,
+            assembled.molecules.only=TRUE)$SequenceName}.
+      \item If the assembly is not registered and does not have
+            circular sequences, then \code{circ_seqs} must be set
+            to \code{character(0)}.
+    }
   }
   \item{destdir}{
     A single string containing the path to the directory where the
-    compressed FASTA file is to be downloaded. This directory must
-    already exist. Note that, by default, the file will be downloaded
-    to the current directory (\code{"."}).
+    BSgenome data package is to be created. This directory must already
+    exist. Note that, by default, the package will be created in the
+    current directory (\code{"."}).
   }
 }
 
@@ -71,6 +86,10 @@ forgeBSgenomeDataPkgFromNCBI(
 
 \seealso{
   \itemize{
+    \item The \code{\link[GenomeInfoDb]{registered_NCBI_assemblies}} and
+          \code{\link[GenomeInfoDb]{getChromInfoFromNCBI}} functions defined
+          in the \pkg{GenomeInfoDb} package.
+
     \item The \code{\link{downloadGenomicSequencesFromNCBI}} function that
           \code{forgeBSgenomeDataPkgFromNCBI} uses internally to download
           the genomic sequences from NCBI.
@@ -84,19 +103,26 @@ forgeBSgenomeDataPkgFromNCBI(
 }
 
 \examples{
+## ---------------------------------------------------------------------
+## EXAMPLE 1
+## ---------------------------------------------------------------------
+
 ## Create a BSgenome data package for NCBI assembly GCA_009729545.1
 ## (organism Acidianus infernus):
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_009729545.1",
                              organism="Acidianus infernus",
-                             pkg_maintainer="Jane Doe <janedoe@gmail.com>",
-                             circ_seqs=character(0))
+                             pkg_maintainer="Jane Doe <janedoe@gmail.com>")
+
+## ---------------------------------------------------------------------
+## EXAMPLE 2
+## ---------------------------------------------------------------------
 
 ## Create a BSgenome data package for NCBI assembly GCF_000857545.1
 ## (organism Torque teno virus 1):
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCF_000857545.1",
                              organism="Torque teno virus 1",
                              pkg_maintainer="Jane Doe <janedoe@gmail.com>",
-                             circ_seqs=c("NC_002076.2"))
+                             circ_seqs="NC_002076.2")
 }
 
 \keyword{utilities}

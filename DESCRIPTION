@@ -6,7 +6,7 @@ biocViews: Genetics, Infrastructure, DataRepresentation, Annotation,
 	GenomeAnnotation
 URL: https://bioconductor.org/packages/BSgenomeForge
 BugReports: https://github.com/Bioconductor/BSgenomeForge/issues
-Version: 0.0.6
+Version: 0.0.7
 License: Artistic-2.0
 Encoding: UTF-8
 Authors@R: c(
