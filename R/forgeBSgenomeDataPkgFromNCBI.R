@@ -21,48 +21,6 @@
     .extract_assembly_name_from_ftp_file_prefix(ftp_dir[2])
 }
 
-.format_organism <- function(organism)
-{
-    ## Remove leading and trailing whitespaces (like strip() in Python):
-    organism <- gsub("^\\s*|\\s*$", "", organism)
-    ## Replace multiple whitespaces with single space:
-    organism <- gsub("\\s+", " ", organism)
-    first_letter <- substring(organism, 1, 1)
-    other_letters <- substring(organism, 2)
-    paste0(toupper(first_letter), tolower(other_letters))
-}
-
-.abbreviate_organism_name <- function(organism)
-{
-    ## If 'organism' has a numeric suffix, we handle it separately.
-    ## This is an attempt at doing something sensible with organism names
-    ## like "Torque teno virus 1" where we want .abbreviate_organism_name()
-    ## to return "Tvirus1".
-    ## Note that we allow whitespaces in the numeric suffix but we'll remove
-    ## them before adding the suffix back to the abbreviated organism name.
-    prefix_suffix <- split_suffix(organism, "0-9\\s")
-    organism <- prefix_suffix[ , "prefix"]
-
-    ## Abbreviate 'organism' e.g.
-    ##   "Homo sapiens" -> "Hsapiens"
-    ##   "Canis lupus familiaris" -> "Cfamiliaris"
-    ##   "Torque teno virus" -> "Tvirus"
-    parts <- strsplit(organism, "\\s+")[[1]]
-    if (length(parts) <= 1) {
-        abbr_organism <- parts
-    } else {
-        first_letter <- substr(head(parts, 1), 1, 1)
-        last_part <- tail(parts, 1)
-        abbr_organism <- paste0(first_letter, last_part)
-    }
-
-    ## Remove whitespaces from the numeric suffix.
-    suffix <- gsub("\\s", "", prefix_suffix[ , "suffix"])
-
-    ## Add numeric suffix back.
-    paste0(abbr_organism, suffix)
-}
-
 .create_pkgname <- function(abbr_organism, genome)
 {
     assembly_name <- gsub("[^0-9a-zA-Z.]", "", genome)
@@ -174,13 +132,6 @@
     }
 }
 
-.build_Rexpr_as_string <- function(seqnames)
-{
-    if (length(seqnames) == 0)
-        return("character(0)")
-    paste0('c', '(', paste0('"', seqnames, '"', collapse=","), ')')
-}
-
 .move_seq_file <- function(twobit_file, pkg_dir)
 {
     to <- file.path(pkg_dir, "inst", "extdata", basename(twobit_file))
@@ -223,15 +174,15 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism,
     twobit_file <- file.path(tempdir(), "single_sequences.2bit")
     fastaTo2bit(fasta_file, twobit_file, assembly_accession)
 
-    organism <- .format_organism(organism)
-    abbr_organism <- .abbreviate_organism_name(organism)
+    organism <- format_organism(organism)
+    abbr_organism <- abbreviate_organism_name(organism)
     pkgname <- .create_pkgname(abbr_organism, genome)
     pkgtitle <- .create_pkgtitle(organism, genome)
     pkgdesc <- .create_pkgdesc(organism, genome, assembly_accession)
     pkg_maintainer <- .check_pkg_maintainer(pkg_maintainer)
     organism_biocview <- .create_organism_biocview(organism)
-    seqnames <- .build_Rexpr_as_string(chrominfo[ , "SequenceName"])
-    circ_seqs <- .build_Rexpr_as_string(circ_seqs)
+    seqnames <- build_Rexpr_as_string(chrominfo[ , "SequenceName"])
+    circ_seqs <- build_Rexpr_as_string(circ_seqs)
 
     symValues <- list(BSGENOMEOBJNAME=abbr_organism,
                       PKGTITLE=pkgtitle,
