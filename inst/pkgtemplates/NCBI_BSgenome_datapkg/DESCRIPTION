@@ -8,6 +8,6 @@ Depends: R (>= 4.2.0), GenomeInfoDb (>= 1.34.9), BSgenome (>= 1.66.1)
 Suggests: BSgenomeForge
 License: @PKGLICENSE@
 organism: @ORGANISM@
-genome: @GENOME@
 provider: NCBI
+genome: @GENOME@
 biocViews: AnnotationData, Genetics, BSgenome, @ORGANISMBIOCVIEW@
