@@ -4,8 +4,7 @@ Description: @PKGDESCRIPTION@
 Version: @PKGVERSION@
 Author: @PKGAUTHOR@
 Maintainer: @PKGMAINTAINER@
-Depends: R (>= 4.2.0), GenomeInfoDb (>= 1.34.5), BSgenome (>= 1.66.1)
-Imports: BSgenome
+Depends: R (>= 4.2.0), GenomeInfoDb (>= 1.34.9), BSgenome (>= 1.66.1)
 Suggests: BSgenomeForge
 License: @PKGLICENSE@
 organism: @ORGANISM@
