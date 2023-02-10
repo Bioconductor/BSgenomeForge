@@ -170,7 +170,14 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism,
     genome <- .fetch_assembly_name_from_NCBI(assembly_accession)
 
     ## Download genomic sequences and convert from FASTA to 2bit.
-    fasta_file <- downloadGenomicSequencesFromNCBI(assembly_accession)
+    file_url <- get_URL_to_genomic_sequences_from_NCBI(assembly_accession)
+    fasta_file <- basename(file_url)
+    if (file.exists(fasta_file)) {
+        message(wmsg("The file ", fasta_file, " is already in the current ",
+                     "directory so will be used."))
+    } else {
+        fasta_file <- downloadGenomicSequencesFromNCBI(assembly_accession)
+    }
     twobit_file <- file.path(tempdir(), "single_sequences.2bit")
     fastaTo2bit(fasta_file, twobit_file, assembly_accession)
 
