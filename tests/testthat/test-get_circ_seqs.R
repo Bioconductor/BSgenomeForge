@@ -63,6 +63,26 @@ test_that("get_circ_seqs works for an unregistered assembly with
                  regexp, ignore.case=TRUE, perl=TRUE)
 })
 
+test_that("get_circ_seqs throws an error when both assembled and unassembled
+          molecules are specified", {
+    ## NCBI assembly ASM2578275v1 (Saccharomyces cerevisiae, baker's yeast).
+    ## Only 1 circular sequence, "MT". See CP088317.1 in NCBI Nucleotide
+    ## database at https://www.ncbi.nlm.nih.gov/nuccore/
+    chrominfo <- getChromInfoFromNCBI("GCA_025782755.1")
+
+    circ_seqs <- get_circ_seqs("GCA_025782755.1", chrominfo, circ_seqs="MT")
+    expect_equal(circ_seqs, "MT")
+
+    regexp <- "must[\\s]+be[\\s]+names[\\s]+of[\\s]+assembled[\\s]+molecules"
+    expect_error(get_circ_seqs("GCA_025782755.1", chrominfo, "CP088301.1"),
+                 regexp, ignore.case=TRUE, perl=TRUE)
+
+    regexp <- "must[\\s]+be[\\s]+names[\\s]+of[\\s]+assembled[\\s]+molecules"
+    expect_error(get_circ_seqs("GCA_025782755.1", chrominfo,
+                               circ_seqs=c("MT", "CP088301.1")),
+                 regexp, ignore.case=TRUE, perl=TRUE)
+})
+
 test_that("get_circ_seqs works for a registered assembly with one
           assembled molecule", {
     ## NCBI assembly Felis_catus_9.0 (1 circular sequence: "MT").
