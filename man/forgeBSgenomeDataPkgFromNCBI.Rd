@@ -73,13 +73,11 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism,
 
 \details{
   This function is intended for Bioconductor users who want to forge a BSgenome
-  data package from an NCBI assembly. It typically makes use of
-  \code{downloadGenomicSequencesFromNCBI} to download the compressed FASTA file
-  from NCBI, and stores them in the working directory. However, should the file
-  already exist in the working directory, it is not re-downloaded. Instead, it
-  makes use of \code{get_URL_to_genomic_sequences_from_NCBI} to obtain the file
-  name and ensure it exists in the working directory. Hereafter, the rest of the
-  function is executed.
+  data package from an NCBI assembly. It typically makes use of the
+  \code{downloadGenomicSequencesFromNCBI} utility function to download to
+  download the compressed FASTA file that contains the genomic sequences of the
+  assembly, and stores it in the working directory.However, if the file already
+  exists in the working directory, then it is used and not downloaded again.
 }
 
 \value{
