@@ -70,8 +70,8 @@ test_that("get_circ_seqs throws an error when both assembled and unassembled
     ## database at https://www.ncbi.nlm.nih.gov/nuccore/
     chrominfo <- getChromInfoFromNCBI("GCA_025782755.1")
 
-circ_seqs <- get_circ_seqs("GCA_025782755.1", chrominfo, circ_seqs="MT")
-expect_equal(circ_seqs, "MT")
+    circ_seqs <- get_circ_seqs("GCA_025782755.1", chrominfo, circ_seqs="MT")
+    expect_equal(circ_seqs, "MT")
 
     regexp <- "must[\\s]+be[\\s]+names[\\s]+of[\\s]+assembled[\\s]+molecules"
     expect_error(get_circ_seqs("GCA_025782755.1", chrominfo, "CP088301.1"),
