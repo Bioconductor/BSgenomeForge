@@ -6,8 +6,7 @@ author:
 date: "Modified: 16 February 2023; Compiled: `r format(Sys.time(), '%d %B, %Y')`"
 package: BSgenomeForge
 vignette: >
-  %\VignetteIndexEntry{How to use the BSgenomeForge package to forge a BSgenome
-   data package}
+  %\VignetteIndexEntry{How to use the BSgenomeForge package to forge a BSgenome data package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 output:
