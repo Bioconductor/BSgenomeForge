@@ -1,18 +1,20 @@
 ---
 title: "How to use the BSgenomeForge package to forge a BSgenome data package"
 author:
-- name: Atuhurira Kirabo Kakopo
-- name: Herve Pages
-output:
-  html_document:
-      toc: true
-vignette: |
+- name: "Atuhurira Kirabo Kakopo"
+- name: "Hervé Pagès"
+date: "Modified: 16 February 2023; Compiled: `r format(Sys.time(), '%d %B, %Y')`"
+package: BSgenomeForge
+vignette: >
   %\VignetteIndexEntry{How to use the BSgenomeForge package to forge a BSgenome
    data package}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
-  markdown: 
-    wrap: 80
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+  number_sections: true
+  toc: true
+  toc_depth: 4
 ---
 
 # Introduction
@@ -46,7 +48,7 @@ on the seed file to forge the package. This is quite a convoluted task that can
 be an inconvenience for the average user.
 
 The BSgenomeForge package simplifies the whole process, by allowing the user to
-use one function to create a BSgenome data package. It is comprised of two major
+use one function to create a BSgenome data package. It is comprised of two main
 functions: `forgeBSgenomeDataPkgfromNCBI` and `forgeBSgenomeDataPkgfromUCSC`
 which allow the user to forge BSgenome data packages with sequence data files
 sourced from NCBI or UCSC respectively.
@@ -55,17 +57,21 @@ sourced from NCBI or UCSC respectively.
 
 ## Using `forgeBSgenomeDataPkgFromNCBI()`
 
-1.Create a BSgenome data package for a NCBI assembly registered in GenomeInfoDb.
-This is the organism *Felis catus*.
+1. Information about the assembly ASM2578275v1 can be found at https://www.ncbi.nlm.nih.gov/assembly/GCA_025782755.1/, including the assembly
+accession, *GCA_009729545.1* and organism name, *Saccharomyces cerevisiae*.
+Assembly ASM2578275v1 contains one circular sequence, "MT" which must specified
+as shown in the example below.
 
 ```{r, eval = FALSE}
-forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCF_000181335.3",
-                             organism="Felis catus",
-                             pkg_maintainer="Jane Doe <janedoe@gmail.com>")
+forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_009729545.1",
+                             organism="Saccharomyces cerevisiae",
+                             pkg_maintainer="Jane Doe <janedoe@gmail.com>",
+                             circ_seqs = "MT")
 ```
 
-2.Create a BSgenome data package for a NCBI assembly NOT registered in
-GenomeInfoDb. This is the organism *Acidianus infernus*.
+2. Information about the assembly ASM972954v1 can be found at https://www.ncbi.nlm.nih.gov/assembly/GCF_009729545.1/, including the assembly
+accession, *GCA_009729545.1* and organism name, *Acidianus infernus*. Assembly
+ASM972954v1 does not contain any circular sequences to be specified. 
 
 ```{r, eval = FALSE}
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_009729545.1",
