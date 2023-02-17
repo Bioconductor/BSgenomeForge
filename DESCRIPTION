@@ -18,5 +18,6 @@ Authors@R: c(
 Depends: R (>= 4.2.0), methods, BiocGenerics, S4Vectors, IRanges,
 	GenomeInfoDb (>= 1.33.17), Biostrings, BSgenome
 Imports: utils, stats, Biobase, rtracklayer
-Suggests: GenomicRanges, GenomicFeatures, testthat, knitr, rmarkdown, BiocStyle
+Suggests: GenomicRanges, GenomicFeatures, testthat, knitr, rmarkdown,
+         BiocStyle, devtools
 VignetteBuilder: knitr
