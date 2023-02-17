@@ -35,8 +35,7 @@ _UCSC genomes_ (i.e. genomes supported by the UCSC Genome Browser) or
 _NCBI assemblies_. The packages are used in various Bioconductor workflows, as
 well as in man page examples and vignettes of other Bioconductor packages,
 typically in conjunction with tools available in the
-[BSgenome](https://github.com/Bioconductor/BSgenome) and
-[Biostrings](https://bioconductor.org/packages/Biostrings) software packages.
+`r Biocpkg("BSgenomeForge")` and `r Biocpkg("Biostrings")` software packages.
 New BSgenome data packages get added on a regular basis, based on user demand.
 
 The current process of forging a BSgenome data package requires one to download
@@ -56,24 +55,27 @@ sourced from NCBI or UCSC respectively.
 
 ## Using `forgeBSgenomeDataPkgFromNCBI()`
 
+```{r, message=FALSE}
+library(BSgenomeForge)
+```
+
 1. Information about the assembly ASM836960v1 can be found at https://www.ncbi.nlm.nih.gov/assembly/GCA_008369605.1/, including the assembly
 accession, *GCA_008369605.1* and organism name, *Vibrio cholerae*.
-Assembly ASM836960v1 contains three circular sequence, "MT" which must
-specified as shown in the example below;
+Assembly ASM836960v1 contains three circular sequence, "1", "2" and "unnamed"
+which must be specified as shown in the example below;
 
-```{r, eval = TRUE}
-library(BSgenomeForge)
+```{r, message=FALSE}
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_008369605.1",
                              organism="Vibrio cholerae",
                              pkg_maintainer="Jane Doe <janedoe@gmail.com>",
-                             circ_seqs = c("1", "2"))
+                             circ_seqs = c("1", "2", "unnamed"))
 ```
 
 2. Information about the assembly ASM972954v1 can be found at https://www.ncbi.nlm.nih.gov/assembly/GCF_009729545.1/, including the assembly
 accession, *GCA_009729545.1* and organism name, *Acidianus infernus*. Assembly
 ASM972954v1 does not contain any circular sequences to be specified; 
 
-```{r, eval = TRUE}
+```{r, message=FALSE}
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_009729545.1",
                              organism="Acidianus infernus",
                              pkg_maintainer="Jane Doe <janedoe@gmail.com>")
@@ -109,15 +111,15 @@ install the package with
 R CMD INSTALL <tarball>
 ```
 
-These operations can also be carried out within R, instead, using the `devtools`
-package
+These operations can also be carried out within R, instead, using the
+`r Biocpkg("devtools")` package
 
-```{r}
+```{r, results='hide'}
 devtools::build("./BSgenome.Ainfernus.NCBI.ASM972954v1")
 ```
 
-```{r}
-devtools::check("./BSgenome.Ainfernus.NCBI.ASM972954v1")
+```{r, results='hide', eval=FALSE}
+devtools::check_built("./BSgenome.Ainfernus.NCBI.ASM972954v1")
 ```
 
 ```{r, eval=FALSE}
@@ -126,6 +128,6 @@ devtools::install("./BSgenome.Ainfernus.NCBI.ASM972954v1")
 
 # sessionInfo()
 
-```{r, eval = TRUE}
+```{r}
 sessionInfo()
 ```
