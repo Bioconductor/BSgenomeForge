@@ -10,8 +10,8 @@ downloadGenomicSequencesFromUCSC <- function(genome,
             goldenPath.url=getOption("UCSC.goldenPath.url"),
             destdir=".", method, quiet=FALSE)
 {
-    if (!isSingleString(genome))
-        stop(wmsg("'genome' must be a single string"))
+    if (!isSingleString(genome) || genome == "")
+        stop(wmsg("'genome' must be a single (non-empty) string"))
     if (!isSingleString(goldenPath.url))
         stop(wmsg("'goldenPath.url' must be a single string"))
     if (!isSingleString(destdir))
