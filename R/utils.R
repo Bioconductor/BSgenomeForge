@@ -67,6 +67,21 @@ abbreviate_organism_name <- function(organism)
     paste0(abbr_organism, suffix)
 }
 
+check_pkg_maintainer <- function(pkg_maintainer)
+{
+    pattern <- "\\<[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\>"
+    if (!grepl(pattern, pkg_maintainer, ignore.case=TRUE))
+        stop(wmsg("please provide a valid email address"))
+}
+
+organism2biocview <- function(organism)
+{
+    parts <- strsplit(organism, " +")[[1]]
+    first_part <- head(parts, 1)
+    last_part <- tail(parts, 1)
+    paste0(first_part, "_", last_part)
+}
+
 build_Rexpr_as_string <- function(seqnames)
 {
     if (length(seqnames) == 0)
