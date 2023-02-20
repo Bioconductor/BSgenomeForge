@@ -18,13 +18,12 @@ output:
 
 # Introduction
 
-BSgenome data packages are one of the many types of annotation packages
-available in [*Bioconductor*](https://bioconductor.org). They contain the
-genomic sequences, which comprise chromosome sequences and other DNA sequences,
-of a particular genome assembly for a given organism. For example
-[BSgenome.Hsapiens.UCSC.hg19](https://bioconductor.org/packages/BSgenome.Hsapiens.UCSC.hg19/)
-is a BSgenome data package that contains the genomic sequences of the hg19
-genome from [UCSC](https://genome.ucsc.edu/cgi-bin/hgGateway). Users can easily
+`r Biocpkg("BSgenome")` data packages are one of the many types of annotation
+packages available in [*Bioconductor*](https://bioconductor.org). They contain
+the genomic sequences, which comprise chromosome sequences and other DNA
+sequences of a particular genome assembly for a given organism. For example
+`r Biocpkg("BSgenome.Hsapiens.UCSC.hg19")` is a BSgenome data package that
+contains the genomic sequences of the hg19 genome from [UCSC](https://genome.ucsc.edu/cgi-bin/hgGateway). Users can easily
 and efficiently access the sequences, or portions of the sequences, stored in
 these packages, via a common API implemented in the
 [BSgenome](https://bioconductor.org/packages/BSgenome/) software package.
@@ -59,26 +58,27 @@ sourced from NCBI or UCSC respectively.
 library(BSgenomeForge)
 ```
 
-1. Information about the assembly ASM836960v1 can be found at https://www.ncbi.nlm.nih.gov/assembly/GCA_008369605.1/, including the assembly
-accession, *GCA_008369605.1* and organism name, *Vibrio cholerae*.
-Assembly ASM836960v1 contains three circular sequence, "1", "2" and "unnamed"
-which must be specified as shown in the example below;
+1.Information about the assembly ASM972954v1 can be found at https://www.ncbi.nlm.nih.gov/assembly/GCF_009729545.1/, including the assembly
+accession, *GCA_009729545.1* and organism name, *Acidianus infernus*. Assembly
+ASM972954v1 does not contain any circular sequences to be specified; 
 
-```{r, message=FALSE}
+```{r}
+forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_009729545.1",
+                             organism="Acidianus infernus",
+                             pkg_maintainer="Jane Doe <janedoe@gmail.com>")
+```
+
+2.Information about the assembly ASM836960v1 can be found at https://www.ncbi.nlm.nih.gov/assembly/GCA_008369605.1/, including the assembly
+accession, *GCA_008369605.1* and organism name, *Vibrio cholerae*.
+Assembly ASM836960v1 contains three circular sequence, "1", "2" and "unnamed".
+See CP043554.1, CP043556.1, and CP043555.1 in the NCBI Nucleotide database at https://www.ncbi.nlm.nih.gov/nuccore/. They must be specified as shown in the
+example below;
+
+```{r}
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_008369605.1",
                              organism="Vibrio cholerae",
                              pkg_maintainer="Jane Doe <janedoe@gmail.com>",
                              circ_seqs = c("1", "2", "unnamed"))
-```
-
-2. Information about the assembly ASM972954v1 can be found at https://www.ncbi.nlm.nih.gov/assembly/GCF_009729545.1/, including the assembly
-accession, *GCA_009729545.1* and organism name, *Acidianus infernus*. Assembly
-ASM972954v1 does not contain any circular sequences to be specified; 
-
-```{r, message=FALSE}
-forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_009729545.1",
-                             organism="Acidianus infernus",
-                             pkg_maintainer="Jane Doe <janedoe@gmail.com>")
 ```
 
 Check `?forgeBSgenomeDataPkgFromNCBI` for more information.
@@ -112,13 +112,13 @@ R CMD INSTALL <tarball>
 ```
 
 These operations can also be carried out within R, instead, using the
-`r Biocpkg("devtools")` package
+`r CRANpkg("devtools")` package
 
-```{r, results='hide'}
+```{r}
 devtools::build("./BSgenome.Ainfernus.NCBI.ASM972954v1")
 ```
 
-```{r, results='hide', eval=FALSE}
+```{r, eval=FALSE}
 devtools::check_built("./BSgenome.Ainfernus.NCBI.ASM972954v1")
 ```
 
