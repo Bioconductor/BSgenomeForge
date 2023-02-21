@@ -18,16 +18,16 @@ output:
 
 # Introduction
 
-`r Biocpkg("BSgenome")` data packages are one of the many types of annotation
-packages available in [*Bioconductor*](https://bioconductor.org). They contain
-the genomic sequences, which comprise chromosome sequences and other DNA
+BSgenome data packages are one of the many types of annotation packages
+available in [*Bioconductor*](https://bioconductor.org). They contain the
+genomic sequences, which comprise chromosome sequences and other DNA
 sequences of a particular genome assembly for a given organism. For example
 `r Biocpkg("BSgenome.Hsapiens.UCSC.hg19")` is a BSgenome data package that
 contains the genomic sequences of the hg19 genome from
 [UCSC](https://genome.ucsc.edu/cgi-bin/hgGateway).
 Users can easily and efficiently access the sequences, or portions of the
 sequences, stored in these packages, via a common API implemented in the
-[BSgenome](https://bioconductor.org/packages/BSgenome/) software package.
+`r Biocpkg("BSgenome")` software package.
 
 Bioconductor currently provides more than [100 BSgenome data packages](https://bioconductor.org/packages/release/BiocViews.html#___BSgenome),
 for more than 30 organisms. Most of them contain the genomic sequences of
