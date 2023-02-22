@@ -89,3 +89,89 @@ build_Rexpr_as_string <- function(seqnames)
     paste0('c', '(', paste0('"', seqnames, '"', collapse=","), ')')
 }
 
+
+### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+### Helper functions used by .get_circ_seqs_from_NCBI() and
+### .get_circ_seqs_from_UCSC()
+###
+
+check_circ_seqs <- function(circ_seqs)
+{
+    if (is.null(circ_seqs))
+        return()
+    if (!is.character(circ_seqs))
+        stop(wmsg("'circ_seqs' must be NULL or a character vector"))
+    if (anyNA(circ_seqs))
+        stop(wmsg("'circ_seqs' cannot contain NA's"))
+    if ("" %in% circ_seqs)
+        stop(wmsg("'circ_seqs' cannot contain empty strings"))
+    if (anyDuplicated(circ_seqs))
+        stop(wmsg("'circ_seqs' cannot contain duplicate values"))
+}
+
+get_circ_seqs_for_registered_assembly_or_genome <-
+    function(assembly_or_genome, seqnames, is_circular,
+             circ_seqs=NULL, what="assembly")
+{
+    known_circ_seqs <- seqnames[is_circular]
+    if (is.null(circ_seqs))
+        return(known_circ_seqs)
+    if (setequal(circ_seqs, known_circ_seqs))
+        return(circ_seqs)
+    msg <- c("This ", what, " is registered in the GenomeInfoDb package ")
+    if (length(known_circ_seqs) == 0) {
+        msg <- c(msg, "and it has no known circular sequences.")
+    } else {
+        in1string <- paste0("\"", known_circ_seqs, "\"", collapse=", ")
+        msg <- c(msg, "which means that its circular sequences are known, ",
+                      "so you are not required to specify them. However, ",
+                      "if you do specify them, then they must match the ",
+                      "known ones. The known circular sequences for ",
+                      "registered ", what, " ", assembly_or_genome, " ",
+                      "are: ", in1string)
+    }
+    stop(wmsg(msg))
+}
+
+.assembly_has_no_assembled_molecules <- function(circ_seqs, what)
+{
+    if (length(circ_seqs) == 0)
+        return(character(0))
+    stop(wmsg("This ", what, " contains no assembled molecules ",
+              "so cannot have circular sequences."))
+}
+
+### 'is_assembled' will be set to:
+### - a logical vector parallel to 'seqnames' when the function is called
+###   by .get_circ_seqs_from_NCBI();
+### - NULL when the function is called by .get_circ_seqs_from_UCSC().
+get_circ_seqs_for_unregistered_assembly_or_genome <-
+    function(assembly_or_genome, seqnames, is_assembled,
+             circ_seqs=NULL, what="assembly")
+{
+    if (!is.null(is_assembled) && !any(is_assembled))
+        return(.assembly_has_no_assembled_molecules(circ_seqs, what))
+    if (is.null(circ_seqs))
+        stop(wmsg("This ", what, " is not registered in the ",
+                  "GenomeInfoDb package so I don't know what its ",
+                  "circular sequences are (if any). Please provide ",
+                  "their names in a character vector passed to ",
+                  "the 'circ_seqs' argument (set 'circ_seqs' to ",
+                  "character(0) if the ", what, " has no circular ",
+                  "sequences)."))
+    ## The sequence names in 'circ_seqs' must belong to the assembly or genome.
+    if (anyNA(match(circ_seqs, seqnames)))
+        stop(wmsg("'circ_seqs' contains sequence names that ",
+                  "do not belong to the specified ", what, " ",
+                  "(", assembly_or_genome, ")"))
+    if (!is.null(is_assembled)) {
+        ## The sequence names in 'circ_seqs' must be names of **assembled**
+        ## molecules.
+        assembled_molecules <- seqnames[is_assembled]
+        if (!all(circ_seqs %in% assembled_molecules))
+            stop(wmsg("all the sequence names in 'circ_seqs' must be ",
+                      "names of assembled molecules"))
+    }
+    circ_seqs
+}
+
