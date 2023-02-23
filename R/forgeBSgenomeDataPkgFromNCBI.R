@@ -5,6 +5,7 @@
 ### Create a BSgenome data package from an NCBI assembly.
 ###
 
+
 .extract_assembly_name_from_ftp_file_prefix <- function(ftp_file_prefix)
 {
     ## 'ftp_file_prefix' is a string that is expected to contain at least
@@ -21,31 +22,25 @@
     .extract_assembly_name_from_ftp_file_prefix(ftp_dir[2])
 }
 
-.create_pkgname_for_NCBI_datapkg <- function(abbr_organism, genome)
+.make_pkgname_for_NCBI_datapkg <- function(abbr_organism, assembly_name)
 {
-    assembly_name <- gsub("[^0-9a-zA-Z.]", "", genome)
-    paste0("BSgenome.", abbr_organism, ".NCBI.", assembly_name)
+    part4 <- gsub("[^0-9a-zA-Z.]", "", assembly_name)
+    paste0("BSgenome.", abbr_organism, ".NCBI.", part4)
 }
 
-.create_pkgtitle_for_NCBI_datapkg <- function(organism, genome)
+.make_pkgtitle_for_NCBI_datapkg <- function(organism, assembly_name)
 {
     paste0("Full genomic sequences for ", organism,
-           " (NCBI assembly ", genome, ")")
+           " (NCBI assembly ", assembly_name, ")")
 }
 
-.create_pkgdesc_for_NCBI_datapkg <- function(organism, genome,
-                                             assembly_accession)
+.make_pkgdesc_for_NCBI_datapkg <- function(organism, assembly_name,
+                                           assembly_accession)
 {
     paste0("Full genomic sequences for ", organism, " as ",
-           "provided by NCBI (assembly ", genome, ", assembly ",
+           "provided by NCBI (assembly ", assembly_name, ", assembly ",
            "accession ", assembly_accession, "). ",
            "The sequences are stored in DNAString objects.")
-}
-
-.move_seq_file <- function(twobit_file, pkg_dir)
-{
-    to <- file.path(pkg_dir, "inst", "extdata", basename(twobit_file))
-    file.rename(twobit_file, to)
 }
 
 
@@ -58,9 +53,10 @@
                                      circ_seqs=NULL)
 {
     check_circ_seqs(circ_seqs)
-    NCBI_assemblies <- registered_NCBI_assemblies()
     seqnames <- chrominfo[ , "SequenceName"]
-    if (assembly_accession %in% NCBI_assemblies[ , "assembly_accession"]) {
+    NCBI_assemblies <- registered_NCBI_assemblies()[ , "assembly_accession"]
+    is_registered <- assembly_accession %in% NCBI_assemblies
+    if (is_registered) {
         ## NCBI assembly is registered.
         FUN <- get_circ_seqs_for_registered_assembly_or_genome
         is_xxx <- chrominfo[ , "circular"]
@@ -106,31 +102,34 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism,
                                           circ_seqs)
 
     ## Obtain assembly name from NCBI FTP repository.
-    genome <- .fetch_assembly_name_from_NCBI(assembly_accession)
+    assembly_name <- .fetch_assembly_name_from_NCBI(assembly_accession)
 
     ## Download genomic sequences and convert from FASTA to 2bit.
     file_url <- get_URL_to_genomic_sequences_from_NCBI(assembly_accession)
     fasta_file <- basename(file_url)
     if (file.exists(fasta_file)) {
-        message(wmsg("The file ", fasta_file, " is already in the current ",
-                     "directory so will be used."))
+        message("The file ", fasta_file, " is already in the current ",
+                "directory so will be used.")
     } else {
         fasta_file <- downloadGenomicSequencesFromNCBI(assembly_accession)
     }
-    twobit_file <- file.path(tempdir(), "single_sequences.2bit")
-    fastaTo2bit(fasta_file, twobit_file, assembly_accession)
+    sorted_twobit_file <- file.path(tempdir(), "single_sequences.2bit")
+    fastaTo2bit(fasta_file, sorted_twobit_file, assembly_accession)
 
     organism <- format_organism(organism)
     abbr_organism <- abbreviate_organism_name(organism)
-    pkgname <- .create_pkgname_for_NCBI_datapkg(abbr_organism, genome)
-    pkgtitle <- .create_pkgtitle_for_NCBI_datapkg(organism, genome)
-    pkgdesc <- .create_pkgdesc_for_NCBI_datapkg(organism, genome,
-                                                assembly_accession)
+    pkgname <- .make_pkgname_for_NCBI_datapkg(abbr_organism, assembly_name)
+    pkgtitle <- .make_pkgtitle_for_NCBI_datapkg(organism, assembly_name)
+    pkgdesc <- .make_pkgdesc_for_NCBI_datapkg(organism, assembly_name,
+                                              assembly_accession)
     check_pkg_maintainer(pkg_maintainer)
     biocview <- organism2biocview(organism)
     seqnames <- build_Rexpr_as_string(chrominfo[ , "SequenceName"])
     circ_seqs <- build_Rexpr_as_string(circ_seqs)
 
+    ## Create the package.
+    origdir <- system.file("pkgtemplates", "NCBI_BSgenome_datapkg",
+                           package="BSgenomeForge")
     symValues <- list(BSGENOMEOBJNAME=abbr_organism,
                       PKGTITLE=pkgtitle,
                       PKGDESCRIPTION=pkgdesc,
@@ -139,17 +138,13 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism,
                       PKGMAINTAINER=pkg_maintainer,
                       PKGLICENSE=pkg_license,
                       ORGANISM=organism,
-                      GENOME=genome,
+                      GENOME=assembly_name,
                       ORGANISMBIOCVIEW=biocview,
                       SEQNAMES=seqnames,
                       CIRCSEQS=circ_seqs)
+    pkg_dir <- createPackage(pkgname, destdir, origdir, symValues,
+                             unlink=TRUE, quiet=FALSE)[[1]]
+    move_file_to_datapkg(sorted_twobit_file, pkg_dir)
 
-    origdir <- system.file("pkgtemplates", "NCBI_BSgenome_datapkg",
-                            package="BSgenomeForge")
-    pkg_dir <- unlist(createPackage(pkgname, destdir, origdir, symValues,
-                                    unlink=TRUE, quiet=FALSE),
-                      use.names=FALSE)
-
-    .move_seq_file(twobit_file, pkg_dir)
     invisible(pkg_dir)
 }

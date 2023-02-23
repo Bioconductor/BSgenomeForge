@@ -89,6 +89,12 @@ build_Rexpr_as_string <- function(seqnames)
     paste0('c', '(', paste0('"', seqnames, '"', collapse=","), ')')
 }
 
+move_file_to_datapkg <- function(filepath, pkg_dir)
+{
+    to <- file.path(pkg_dir, "inst", "extdata", basename(filepath))
+    file.rename(filepath, to)
+}
+
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ### Helper functions used by .get_circ_seqs_from_NCBI() and

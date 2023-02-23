@@ -34,7 +34,7 @@ fastaTo2bit <- function(origfile, destfile, assembly_accession=NA)
     if (!isSingleString(origfile))
         stop(wmsg("'origfile' must be a single string"))
     if (dir.exists(origfile))
-        stop(wmsg("'origfile' must be path to a file, not a directory"))
+        stop(wmsg("'origfile' must be a path to a file, not to a directory"))
     if (!file.exists(origfile))
         stop(wmsg("'origfile' must be the path to an existing file"))
     if (!isSingleString(destfile))
@@ -43,11 +43,9 @@ fastaTo2bit <- function(origfile, destfile, assembly_accession=NA)
         stop(wmsg("'assembly_accession' must be a single string or NA value"))
 
     dna <- readDNAStringSet(origfile)
-
     if (!is.na(assembly_accession))
         dna <- .sort_and_rename(dna, assembly_accession)
-
     ## Export file as 2bit.
-    export.2bit (dna, destfile)
+    export.2bit(dna, destfile)
 }
 
