@@ -89,6 +89,20 @@ Check `?forgeBSgenomeDataPkgFromNCBI` for more information.
 
 ## Using `forgeBSgenomeDataPkgFromUCSC()`
 
+1.Information about the genome wuhCor1 can be found at <https://genome.ucsc.edu/cgi-bin/hgGateway>. This belongs to the organism
+*Severe acute respiratory syndrome coronavirus 2*. Genome wuhCor1 does not
+contain any circular sequences to be specified;
+
+```{r}
+forgeBSgenomeDataPkgFromUCSC(
+    genome="wuhCor1",
+    organism="Severe acute respiratory syndrome coronavirus 2",
+    pkg_maintainer="Jane Doe <janedoe@gmail.com>"
+)
+```
+
+Check `?forgeBSgenomeDataPkgFromUCSC` for more information.
+
 # Final steps
 
 `forgeBSgenomeDataPkgfromNCBI` or `forgeBSgenomeDataPkgfromUCSC` returns the
