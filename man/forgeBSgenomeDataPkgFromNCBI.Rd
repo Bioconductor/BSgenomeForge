@@ -91,8 +91,8 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism,
 \seealso{
   \itemize{
     \item The \code{\link[GenomeInfoDb]{registered_NCBI_assemblies}} and
-          \code{\link[GenomeInfoDb]{getChromInfoFromNCBI}} functions defined
-          in the \pkg{GenomeInfoDb} package.
+          \code{\link[GenomeInfoDb]{getChromInfoFromNCBI}} functions
+          defined in the \pkg{GenomeInfoDb} package.
 
     \item The \code{\link{downloadGenomicSequencesFromNCBI}} function that
           \code{forgeBSgenomeDataPkgFromNCBI} uses internally to download
@@ -103,6 +103,8 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism,
           the file downloaded by \code{downloadGenomicSequencesFromNCBI}
           from FASTA to 2bit.
 
+    \item The \code{\link{forgeBSgenomeDataPkgFromUCSC}} function for
+          creating a BSgenome data package from a UCSC genome.
   }
 }
 
