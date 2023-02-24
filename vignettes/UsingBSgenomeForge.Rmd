@@ -138,11 +138,11 @@ devtools::build("./BSgenome.Ainfernus.NCBI.ASM972954v1")
 ```
 
 ```{r, eval=FALSE}
-devtools::check_built("./BSgenome.Ainfernus.NCBI.ASM972954v1")
+devtools::check_built("BSgenome.Ainfernus.NCBI.ASM972954v1_1.0.0.tar.gz")
 ```
 
 ```{r, eval=FALSE}
-devtools::install("./BSgenome.Ainfernus.NCBI.ASM972954v1")
+devtools::install_local("BSgenome.Ainfernus.NCBI.ASM972954v1_1.0.0.tar.gz")
 ```
 
 # sessionInfo()
