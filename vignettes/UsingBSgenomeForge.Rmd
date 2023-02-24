@@ -59,10 +59,10 @@ sourced from NCBI or UCSC respectively.
 library(BSgenomeForge)
 ```
 
-1.Information about the assembly ASM972954v1 can be found at
+**Example 1:** Information about assembly ASM972954v1 can be found at
 https://www.ncbi.nlm.nih.gov/assembly/GCF_009729545.1/, including the assembly
 accession, *GCA_009729545.1* and organism name, *Acidianus infernus*. Assembly
-ASM972954v1 does not contain any circular sequences to be specified; 
+ASM972954v1 does not contain any circular sequences to be specified: 
 
 ```{r}
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_009729545.1",
@@ -70,13 +70,13 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_009729545.1",
                              pkg_maintainer="Jane Doe <janedoe@gmail.com>")
 ```
 
-2.Information about the assembly ASM836960v1 can be found at
+**Example 2:** Information about assembly ASM836960v1 can be found at
 https://www.ncbi.nlm.nih.gov/assembly/GCA_008369605.1/, including the assembly
 accession, *GCA_008369605.1* and organism name, *Vibrio cholerae*.
 Assembly ASM836960v1 contains three circular sequence, "1", "2" and "unnamed".
 See CP043554.1, CP043556.1, and CP043555.1 in the NCBI Nucleotide database at
 https://www.ncbi.nlm.nih.gov/nuccore/. They must be specified as shown in the
-example below;
+example below:
 
 ```{r}
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_008369605.1",
@@ -89,10 +89,10 @@ Check `?forgeBSgenomeDataPkgFromNCBI` for more information.
 
 ## Using `forgeBSgenomeDataPkgFromUCSC()`
 
-1.Information about the genome wuhCor1 can be found at
+**Example 3:** Information about genome wuhCor1 can be found at
 <https://genome.ucsc.edu/cgi-bin/hgGateway>. This belongs to the organism
 *Severe acute respiratory syndrome coronavirus 2*. Genome wuhCor1 does not
-contain any circular sequences to be specified;
+contain any circular sequences to be specified:
 
 ```{r}
 forgeBSgenomeDataPkgFromUCSC(
