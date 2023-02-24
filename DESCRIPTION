@@ -1,9 +1,9 @@
 Package: BSgenomeForge
 Title: Forge BSgenome data packages
 Description: A set of tools to forge BSgenome data packages. Supersedes the
-	old tools from the BSgenome software package. This package allows
-	users to use one function to create BSgenome data packages,
-	simplifying the whole process.
+	old seed-based tools from the BSgenome software package. This package
+	allows the user to create a BSgenome data package in one function call,
+	simplifying the old seed-based process.
 biocViews: Genetics, Infrastructure, DataRepresentation, Annotation,
 	GenomeAnnotation, Sequencing, Alignment, DataImport,
 	SequenceMatching
