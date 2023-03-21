@@ -117,7 +117,8 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism,
 ## (organism Acidianus infernus):
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_009729545.1",
                              organism="Acidianus infernus",
-                             pkg_maintainer="Jane Doe <janedoe@gmail.com>")
+                             pkg_maintainer="Jane Doe <janedoe@gmail.com>",
+                             destdir=tempdir())
 
 ## ---------------------------------------------------------------------
 ## EXAMPLE 2
@@ -128,7 +129,8 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_009729545.1",
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCF_000857545.1",
                              organism="Torque teno virus 1",
                              pkg_maintainer="Jane Doe <janedoe@gmail.com>",
-                             circ_seqs="NC_002076.2")
+                             circ_seqs="NC_002076.2",
+                             destdir=tempdir())
 }
 
 \keyword{utilities}

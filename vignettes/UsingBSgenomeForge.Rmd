@@ -51,6 +51,14 @@ functions: `forgeBSgenomeDataPkgfromNCBI` and `forgeBSgenomeDataPkgfromUCSC`
 which allow the user to forge BSgenome data packages with sequence data files
 sourced from NCBI or UCSC respectively.
 
+# Installation
+
+```{r, eval=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("BSgenomeForge")
+```
+
 # Basic usage
 
 ## Using `forgeBSgenomeDataPkgFromNCBI()`
