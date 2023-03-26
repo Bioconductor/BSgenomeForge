@@ -108,7 +108,7 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism,
     file_url <- get_URL_to_genomic_sequences_from_NCBI(assembly_accession)
     fasta_file <- basename(file_url)
     if (file.exists(fasta_file)) {
-        message("The file ", fasta_file, " is already in the current ",
+        message("File ", fasta_file, " is already in current ",
                 "directory so will be used.")
     } else {
         fasta_file <- downloadGenomicSequencesFromNCBI(assembly_accession)
