@@ -109,7 +109,7 @@ forgeBSgenomeDataPkgFromUCSC <- function(genome, organism,
                                               goldenPath.url=goldenPath.url)
     twobit_file <- basename(file_url)
     if (file.exists(twobit_file)) {
-        message("The file ", twobit_file, " is already in the current ",
+        message("File ", twobit_file, " is already in current ",
                 "directory so will be used.")
     } else {
         twobit_file <- downloadGenomicSequencesFromUCSC(genome,
