@@ -110,7 +110,8 @@ forgeBSgenomeDataPkgFromUCSC(genome, organism,
 forgeBSgenomeDataPkgFromUCSC(
     genome="wuhCor1",
     organism="Severe acute respiratory syndrome coronavirus 2",
-    pkg_maintainer="Jane Doe <janedoe@gmail.com>"
+    pkg_maintainer="Jane Doe <janedoe@gmail.com>",
+    destdir=tempdir()
 )
 }
 
