@@ -1,33 +1,34 @@
-\name{BSgenomeForgepackage}
+\name{BSgenomeForge-package}
 
-\alias{BSgenomeForgepackage}
+\alias{BSgenomeForge-package}
+\alias{BSgenomeForge}
 
 \docType{package}
 
-\title{BSgenomeForge}
+\title{The BSgenomeForge package}
 
-\description{
-A package that simplifies the process of forging a BSgenome data package,
-by allowing the user to use one function to create the package.
-}
+  \description{
+  A package that simplifies the process of forging a BSgenome data package,
+  by allowing the user to use one function to create the package.
+  }
 
-\details{
-\code{BSgenomeForge} is comprised of two major functions, the
-\code{forgeBSgenomeDataPkgFromNCBI} function and
-\code{forgeBSgenomeDataPkgFromUCSC} function which allow one to forge
-a BSgenome data package from a NCBI assembly or UCSC genome respectively.
+  \details{
+  \pkg{BSgenomeForge} provides two major functions, the
+  \code{forgeBSgenomeDataPkgFromNCBI} function and
+  \code{forgeBSgenomeDataPkgFromUCSC} function which allow one to forge
+  a BSgenome data package from a NCBI assembly or UCSC genome respectively.
 
-For an overview of the functionality provided by the package, please see the
-vignette:
-\code{vignette("UsingBSgenomeForge", package="BSgenomeForge")}
-}
+  For an overview of the functionality provided by the package, please see the
+  vignette:
+  \code{vignette("UsingBSgenomeForge", package="BSgenomeForge")}
+  }
 
-\author{
-Atuhurira Kirabo Kakopo,
-Hervé Pagès
+  \author{
+  Atuhurira Kirabo Kakopo,
+  Hervé Pagès
 
-Maintainer: Hervé Pagès
-}
+  Maintainer: Hervé Pagès
+  }
 
 \seealso{
   \itemize{
