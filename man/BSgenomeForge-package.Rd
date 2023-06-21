@@ -48,8 +48,8 @@
 ## Create a BSgenome data package for NCBI assembly GCF_000857545.1
 ## (organism Torque teno virus 1):
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCF_000857545.1",
-                             organism="Torque teno virus 1",
                              pkg_maintainer="Jane Doe <janedoe@gmail.com>",
+                             organism="Torque teno virus 1",
                              circ_seqs="NC_002076.2",
                              destdir=tempdir())
 

@@ -45,27 +45,59 @@
 
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-### .get_circ_seqs_from_NCBI()
+### .extract_NCBI_assembly_info()
 ###
 
-### 'circ_seqs' contains the circular sequences specified by the user.
-.get_circ_seqs_from_NCBI <- function(assembly_accession, chrominfo,
-                                     circ_seqs=NULL)
+### Returns a named list of length 4 with components "assembly_accession",
+### "organism", "circ_seqs", and "assembly_name". This is a subset of
+### the "NCBI_assembly_info" attribute found on the 'chrominfo' data frame
+### returned by getChromInfoFromNCBI() when the assembly is registered.
+.extract_NCBI_assembly_info <- function(assembly_accession, chrominfo,
+                                        organism=NULL, circ_seqs=NULL)
 {
-    check_circ_seqs(circ_seqs)
     seqnames <- chrominfo[ , "SequenceName"]
-    NCBI_assemblies <- registered_NCBI_assemblies()[ , "assembly_accession"]
-    is_registered <- assembly_accession %in% NCBI_assemblies
-    if (is_registered) {
-        ## NCBI assembly is registered.
-        FUN <- get_circ_seqs_for_registered_assembly_or_genome
-        is_xxx <- chrominfo[ , "circular"]
-    } else {
+
+    ## If the requested assembly is registered, then 'chrominfo' has
+    ## a "NCBI_assembly_info" attribute.
+    NCBI_assembly_info <- attr(chrominfo, "NCBI_assembly_info")
+    if (is.null(NCBI_assembly_info)) {
         ## NCBI assembly is **not** registered.
-        FUN <- get_circ_seqs_for_unregistered_assembly_or_genome 
-        is_xxx <- chrominfo[ , "SequenceRole"] %in% "assembled-molecule"
+        if (is.null(organism))
+            stop(wmsg("\"", assembly_accession, "\" is not a registered NCBI ",
+                      "assembly --> argument 'organism' must be supplied"))
+        organism <- format_organism(organism)
+        is_assembled <- chrominfo[ , "SequenceRole"] %in% "assembled-molecule"
+        circ_seqs <- get_circ_seqs_for_unregistered_assembly_or_genome(
+                         assembly_accession,
+                         seqnames,
+                         is_assembled,
+                         circ_seqs,
+                         what="assembly")
+        ## Obtain assembly name from NCBI FTP repository.
+        assembly <- .fetch_assembly_name_from_NCBI(assembly_accession)
+    } else {
+        ## NCBI assembly is registered.
+        if (!is.null(organism))
+            warning(wmsg("\"", assembly_accession, "\" is a registered NCBI ",
+                         "assembly for organism \"",
+                         NCBI_assembly_info$organism, "\" ",
+                         "--> ignoring supplied 'organism' argument"),
+                    immediate.=TRUE)
+        organism <- NCBI_assembly_info$organism
+        is_circular <- chrominfo[ , "circular"]
+        circ_seqs <- get_circ_seqs_for_registered_assembly_or_genome(
+                         assembly_accession,
+                         seqnames,
+                         is_circular,
+                         circ_seqs,
+                         what="assembly")
+        assembly_accession <- NCBI_assembly_info$assembly_accession
+        assembly <- NCBI_assembly_info$assembly
     }
-    FUN(assembly_accession, seqnames, is_xxx, circ_seqs, what="assembly")
+    list(assembly_accession=assembly_accession,
+         organism=organism,
+         circ_seqs=circ_seqs,
+         assembly=assembly)
 }
 
 
@@ -73,15 +105,14 @@
 ### forgeBSgenomeDataPkgFromNCBI()
 ###
 
-forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism,
+forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession,
                                          pkg_maintainer, pkg_author=NA,
                                          pkg_version="1.0.0",
                                          pkg_license="Artistic-2.0",
+                                         organism=NULL,
                                          circ_seqs=NULL,
                                          destdir=".")
 {
-    if (!isSingleString(organism) || organism == "")
-        stop(wmsg("'organism' must be a single (non-empty) string"))
     if (!isSingleString(pkg_maintainer) || pkg_maintainer == "")
         stop(wmsg("'pkg_maintainer' must be a single (non-empty) string"))
     if (identical(pkg_author, NA)) {
@@ -93,30 +124,37 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism,
         stop(wmsg("'pkg_version' must be a single (non-empty) string"))
     if (!isSingleString(pkg_license) || pkg_license == "")
         stop(wmsg("'pkg_license' must be a single (non-empty) string"))
+    if (!(is.null(organism) || isSingleString(organism) && organism != ""))
+        stop(wmsg("when suplied, 'organism' must be a single (non-empty) ",
+                  "string"))
+    check_circ_seqs(circ_seqs)
     if (!isSingleString(destdir) || destdir == "")
         stop(wmsg("'destdir' must be a single (non-empty) string"))
 
     ## Retrieve chromosome information for specified NCBI assembly.
     chrominfo <- getChromInfoFromNCBI(assembly_accession)
-    circ_seqs <- .get_circ_seqs_from_NCBI(assembly_accession, chrominfo,
-                                          circ_seqs)
-
-    ## Obtain assembly name from NCBI FTP repository.
-    assembly_name <- .fetch_assembly_name_from_NCBI(assembly_accession)
+    NCBI_assembly_info <- .extract_NCBI_assembly_info(assembly_accession,
+                                                      chrominfo,
+                                                      organism=organism,
+                                                      circ_seqs=circ_seqs)
+    assembly_accession <- NCBI_assembly_info$assembly_accession
+    organism <- NCBI_assembly_info$organism
+    circ_seqs <- NCBI_assembly_info$circ_seqs
+    assembly_name <- NCBI_assembly_info$assembly
+    seqnames <- chrominfo[ , "SequenceName"]
 
     ## Download genomic sequences and convert from FASTA to 2bit.
     file_url <- get_URL_to_genomic_sequences_from_NCBI(assembly_accession)
     fasta_file <- basename(file_url)
     if (file.exists(fasta_file)) {
-        message("File ", fasta_file, " is already in current ",
-                "directory so will be used.")
+        message(wmsg("File ", fasta_file, " is already in current ",
+                     "directory so will be used."))
     } else {
         fasta_file <- downloadGenomicSequencesFromNCBI(assembly_accession)
     }
     sorted_twobit_file <- file.path(tempdir(), "single_sequences.2bit")
     fastaTo2bit(fasta_file, sorted_twobit_file, assembly_accession)
 
-    organism <- format_organism(organism)
     abbr_organism <- abbreviate_organism_name(organism)
     pkgname <- .make_pkgname_for_NCBI_datapkg(abbr_organism, assembly_name)
     pkgtitle <- .make_pkgtitle_for_NCBI_datapkg(organism, assembly_name)
@@ -124,7 +162,7 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism,
                                               assembly_accession)
     check_pkg_maintainer(pkg_maintainer)
     biocview <- organism2biocview(organism)
-    seqnames <- build_Rexpr_as_string(chrominfo[ , "SequenceName"])
+    seqnames <- build_Rexpr_as_string(seqnames)
     circ_seqs <- build_Rexpr_as_string(circ_seqs)
 
     ## Create the package.
@@ -148,3 +186,4 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession, organism,
 
     invisible(pkg_dir)
 }
+
