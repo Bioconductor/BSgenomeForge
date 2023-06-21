@@ -10,21 +10,21 @@
 }
 
 \usage{
-forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism,
-            pkg_maintainer, pkg_author=NA,
-            pkg_version="1.0.0", pkg_license="Artistic-2.0",
-            circ_seqs=NULL, destdir=".")
+forgeBSgenomeDataPkgFromNCBI(assembly_accession,
+             pkg_maintainer, pkg_author=NA,
+             pkg_version="1.0.0", pkg_license="Artistic-2.0",
+             organism=NULL, circ_seqs=NULL, destdir=".")
 }
 
 \arguments{
   \item{assembly_accession}{
     A single string containing a GenBank assembly accession (e.g.
     \code{"GCA_009729545.1"}) or a RefSeq assembly accession (e.g.
-    \code{"GCF_000857545.1"}).
-  }
-  \item{organism}{
-    The full name of the organism e.g. \code{"Homo sapiens"},
-    \code{"Felis catus"}, \code{"Acidianus infernus"}, etc...
+    \code{"GCF_000857545.1"}). Alternatively, if the assembly
+    is registered in the \pkg{GenomeInfoDb} package (see
+    \code{?GenomeInfoDb::\link{registered_NCBI_assemblies}}), the
+    assembly name (e.g. \code{"mLoxAfr1.hap2"}) can be supplied
+    instead of its GenBank or RefSeq accession.
   }
   \item{pkg_maintainer}{
     A single string containing the name and email address of the package
@@ -41,6 +41,13 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism,
     The license of the package. This must be the name of a software license
     used for free and open-source packages. Set to \code{"Artistic-2.0"}
     by default.
+  }
+  \item{organism}{
+    The full name of the organism e.g. \code{"Homo sapiens"},
+    \code{"Felis catus"}, \code{"Loxodonta africana"},
+    \code{"Acidianus infernus"}, etc... Only needs to be specified
+    if the assembly is \emph{not} registered in the \pkg{GenomeInfoDb}
+    package (see \code{?GenomeInfoDb::\link{registered_NCBI_assemblies}}).
   }
   \item{circ_seqs}{
     NULL (the default), or a character vector containing the names of the
@@ -116,8 +123,8 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession, organism,
 ## Create a BSgenome data package for NCBI assembly GCA_009729545.1
 ## (organism Acidianus infernus):
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_009729545.1",
-                             organism="Acidianus infernus",
                              pkg_maintainer="Jane Doe <janedoe@gmail.com>",
+                             organism="Acidianus infernus",
                              destdir=tempdir())
 
 ## ---------------------------------------------------------------------
@@ -127,8 +134,8 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_009729545.1",
 ## Create a BSgenome data package for NCBI assembly GCF_000857545.1
 ## (organism Torque teno virus 1):
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCF_000857545.1",
-                             organism="Torque teno virus 1",
                              pkg_maintainer="Jane Doe <janedoe@gmail.com>",
+                             organism="Torque teno virus 1",
                              circ_seqs="NC_002076.2",
                              destdir=tempdir())
 }

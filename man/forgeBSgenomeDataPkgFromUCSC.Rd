@@ -11,11 +11,11 @@
 
 \usage{
 forgeBSgenomeDataPkgFromUCSC(genome, organism,
-            pkg_maintainer, pkg_author=NA,
-            pkg_version="1.0.0", pkg_license="Artistic-2.0",
-            circ_seqs=NULL,
-            goldenPath.url=getOption("UCSC.goldenPath.url"),
-            destdir=".")
+             pkg_maintainer, pkg_author=NA,
+             pkg_version="1.0.0", pkg_license="Artistic-2.0",
+             circ_seqs=NULL,
+             goldenPath.url=getOption("UCSC.goldenPath.url"),
+             destdir=".")
 }
 
 \arguments{

@@ -3,7 +3,7 @@ title: "How to use the BSgenomeForge package to forge a BSgenome data package"
 author:
 - name: "Atuhurira Kirabo Kakopo"
 - name: "Hervé Pagès"
-date: "Modified: 16 February 2023; Compiled: `r format(Sys.time(), '%d %B, %Y')`"
+date: "Modified: 20 June 2023; Compiled: `r format(Sys.time(), '%d %B, %Y')`"
 package: BSgenomeForge
 vignette: >
   %\VignetteIndexEntry{How to use the BSgenomeForge package to forge a BSgenome data package}
@@ -74,8 +74,8 @@ ASM972954v1 does not contain any circular sequences to be specified:
 
 ```{r}
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_009729545.1",
-                             organism="Acidianus infernus",
-                             pkg_maintainer="Jane Doe <janedoe@gmail.com>")
+                             pkg_maintainer="Jane Doe <janedoe@gmail.com>",
+                             organism="Acidianus infernus")
 ```
 
 **Example 2:** Information about assembly ASM836960v1 can be found at
@@ -88,8 +88,8 @@ example below:
 
 ```{r}
 forgeBSgenomeDataPkgFromNCBI(assembly_accession="GCA_008369605.1",
-                             organism="Vibrio cholerae",
                              pkg_maintainer="Jane Doe <janedoe@gmail.com>",
+                             organism="Vibrio cholerae",
                              circ_seqs = c("1", "2", "unnamed"))
 ```
 
@@ -158,3 +158,4 @@ devtools::install_local("BSgenome.Ainfernus.NCBI.ASM972954v1_1.0.0.tar.gz")
 ```{r}
 sessionInfo()
 ```
+

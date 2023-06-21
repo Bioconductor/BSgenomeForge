@@ -7,8 +7,8 @@
     old_wd <- setwd(extdata_path)
     on.exit(setwd(old_wd))
     forgeBSgenomeDataPkgFromNCBI(assembly_accession=assembly_accession,
-                                 organism=organism,
                                  pkg_maintainer="Jane Doe <janedoe@gmail.com>",
+                                 organism=organism,
                                  circ_seqs=circ_seqs,
                                  destdir=tempdir())
 }
