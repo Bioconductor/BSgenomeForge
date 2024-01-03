@@ -5,6 +5,32 @@
 ### Nothing in this file is exported.
 ###
 
+
+### Returns TRUE if 'assembly_accession' is a GenBank accession, or FALSE
+### if it's a RefSeq accession, or an error if it's none.
+is_GenBank_accession <- function(assembly_accession)
+{
+    stopifnot(isSingleString(assembly_accession))
+    if (assembly_accession == "")
+        stop(wmsg("'assembly_accession' cannot be an empty string"))
+    ## Make sure that 'assembly_accession' looks either like a GenBank
+    ## or like a RefSeq accession. We only look at its first 5 characters.
+    if (grepl("^GCA_[0-9]", assembly_accession))
+        return(TRUE)
+    if (grepl("^GCF_[0-9]", assembly_accession))
+        return(FALSE)
+    stop(wmsg("malformed assembly accession: ", assembly_accession))
+}
+
+drop_rows_with_NA_accns <- function(chrominfo, accession_col)
+{
+    accns <- chrominfo[ , accession_col]
+    drop_idx <- which(is.na(accns))
+    if (length(drop_idx) != 0L)
+        chrominfo <- S4Vectors:::extract_data_frame_rows(chrominfo, -drop_idx)
+    chrominfo
+}
+
 ### 'character_class' must be a string containing a set of character
 ### specifications like in [0-9\\s] but **without** the square brackets
 ### e.g. "0-9\\s".
