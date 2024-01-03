@@ -131,8 +131,17 @@ forgeBSgenomeDataPkgFromNCBI <- function(assembly_accession,
     if (!isSingleString(destdir) || destdir == "")
         stop(wmsg("'destdir' must be a single (non-empty) string"))
 
+    ## Returns TRUE if 'assembly_accession' is a GenBank accession, or FALSE
+    ## if it's a RefSeq accession, or an error if it's none.
+    ## Make sure to do this before the call to getChromInfoFromNCBI() below.
+    is_GCA <- is_GenBank_accession(assembly_accession)
+    accession_type <- if (is_GCA) "GenBank" else "RefSeq"
+    accession_col <- paste0(accession_type, "Accn")
+
     ## Retrieve chromosome information for specified NCBI assembly.
     chrominfo <- getChromInfoFromNCBI(assembly_accession)
+    chrominfo <- drop_rows_with_NA_accns(chrominfo, accession_col)
+
     NCBI_assembly_info <- .extract_NCBI_assembly_info(assembly_accession,
                                                       chrominfo,
                                                       organism=organism,

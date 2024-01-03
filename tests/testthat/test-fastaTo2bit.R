@@ -31,12 +31,12 @@ test_that("sort_and_rename_fasta_sequences() works with GCA_009729545.1", {
     expect_identical(names(dna4), expected_seqnames)
 
     regexp <-
-        "number[\\s]+of[\\s]+sequences[\\s]+.*[\\s]+does[\\s]+not[\\s]+match"
+        "number[\\s]+of[\\s]+sequences[\\s]+.*[\\s]+is[\\s]+not[\\s]+equal"
     expect_error(sort_and_rename_fasta_sequences(dna[-2], "GCA_009729545.1"),
                  regexp, ignore.case=TRUE, perl=TRUE)
 
     names(dna) <- tolower(names(dna))
-    regexp <- "failed[\\s]+to[\\s]+map"
+    regexp <- "cannot[\\s]+be[\\s]+mapped"
     expect_error(sort_and_rename_fasta_sequences(dna, "GCA_009729545.1"),
                  regexp, ignore.case=TRUE, perl=TRUE)
 
