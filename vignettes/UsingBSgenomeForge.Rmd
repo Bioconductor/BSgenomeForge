@@ -3,18 +3,16 @@ title: "How to use the BSgenomeForge package to forge a BSgenome data package"
 author:
 - name: "Atuhurira Kirabo Kakopo"
 - name: "Hervé Pagès"
-date: "Modified: 20 June 2023; Compiled: `r format(Sys.time(), '%d %B, %Y')`"
+date: "Modified: June 20, 2023; Compiled: `r format(Sys.time(), '%B %d, %Y')`"
 package: BSgenomeForge
-vignette: >
+vignette: |
   %\VignetteIndexEntry{How to use the BSgenomeForge package to forge a BSgenome data package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 output:
   BiocStyle::html_document
-  number_sections: true
-  toc: true
-  toc_depth: 4
 ---
+
 
 # Introduction
 
@@ -51,6 +49,7 @@ functions: `forgeBSgenomeDataPkgfromNCBI` and `forgeBSgenomeDataPkgfromUCSC`
 which allow the user to forge BSgenome data packages with sequence data files
 sourced from NCBI or UCSC respectively.
 
+
 # Installation
 
 ```{r, eval=FALSE}
@@ -58,6 +57,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install("BSgenomeForge")
 ```
+
 
 # Basic usage
 
@@ -112,6 +112,7 @@ forgeBSgenomeDataPkgFromUCSC(
 
 Check `?forgeBSgenomeDataPkgFromUCSC` for more information.
 
+
 # Final steps
 
 `forgeBSgenomeDataPkgfromNCBI` or `forgeBSgenomeDataPkgfromUCSC` returns the
@@ -152,6 +153,7 @@ devtools::check_built("BSgenome.Ainfernus.NCBI.ASM972954v1_1.0.0.tar.gz")
 ```{r, eval=FALSE}
 devtools::install_local("BSgenome.Ainfernus.NCBI.ASM972954v1_1.0.0.tar.gz")
 ```
+
 
 # sessionInfo()
 
