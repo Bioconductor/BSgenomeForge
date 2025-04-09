@@ -22,8 +22,8 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession,
     \code{"GCA_009729545.1"}) or a RefSeq assembly accession (e.g.
     \code{"GCF_000857545.1"}). Alternatively, if the assembly
     is registered in the \pkg{GenomeInfoDb} package (see
-    \code{?GenomeInfoDb::\link{registered_NCBI_assemblies}}), the
-    assembly name (e.g. \code{"mLoxAfr1.hap2"}) can be supplied
+    \code{?GenomeInfoDb::\link[GenomeInfoDb]{registered_NCBI_assemblies}}),
+    the assembly name (e.g. \code{"mLoxAfr1.hap2"}) can be supplied
     instead of its GenBank or RefSeq accession.
   }
   \item{pkg_maintainer}{
@@ -45,9 +45,10 @@ forgeBSgenomeDataPkgFromNCBI(assembly_accession,
   \item{organism}{
     The full name of the organism e.g. \code{"Homo sapiens"},
     \code{"Felis catus"}, \code{"Loxodonta africana"},
-    \code{"Acidianus infernus"}, etc... Only needs to be specified
-    if the assembly is \emph{not} registered in the \pkg{GenomeInfoDb}
-    package (see \code{?GenomeInfoDb::\link{registered_NCBI_assemblies}}).
+    \code{"Acidianus infernus"}, etc... Only needs to be
+    specified if the assembly is \emph{not} registered in
+    the \pkg{GenomeInfoDb} package (see
+    \code{?GenomeInfoDb::\link[GenomeInfoDb]{registered_NCBI_assemblies}}).
   }
   \item{circ_seqs}{
     NULL (the default), or a character vector containing the names of the

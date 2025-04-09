@@ -175,10 +175,12 @@ forgeMasksFiles(seqnames, nmask_per_seq,
           \code{\link[BSgenomeForge]{forgeBSgenomeDataPkgFromUCSC}} in the
           \pkg{BSgenomeForge} package.
 
-    \item \code{\link{available.genomes}} to find BSgenome data packages
-          available in Bioconductor.
+    \item \code{\link[BSgenome]{available.genomes}} in the \pkg{BSgenome}
+          package to get the list of BSgenome data packages available in
+          Bioconductor.
 
-    \item \link{BSgenome} objects.
+    \item \link[BSgenome]{BSgenome} objects implemented in the \pkg{BSgenome}
+          package.
   }
 }
 
