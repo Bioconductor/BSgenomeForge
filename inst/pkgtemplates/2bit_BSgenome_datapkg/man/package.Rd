@@ -18,9 +18,8 @@
     \item \link[BSgenome]{BSgenome} objects in the \pkg{BSgenome}
           software package.
 
-    \item The \code{\link[GenomeInfoDb]{seqinfo}} getter and
-          \link[GenomeInfoDb]{Seqinfo} objects in the \pkg{GenomeInfoDb}
-          package.
+    \item The \code{\link[Seqinfo]{seqinfo}} getter and \link[Seqinfo]{Seqinfo}
+          objects in the \pkg{Seqinfo} package.
 
     \item The \code{\link[GenomeInfoDb]{seqlevelsStyle}} getter and
           setter in the \pkg{GenomeInfoDb} package.

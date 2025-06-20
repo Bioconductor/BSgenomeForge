@@ -4,8 +4,8 @@ Description: @PKGDESCRIPTION@
 Version: @PKGVERSION@
 Author: @PKGAUTHOR@
 Maintainer: @PKGMAINTAINER@
-Depends: R (>= 4.2.0), GenomeInfoDb (>= 1.34.9), BSgenome (>= @BSGENOMEVERSION@), @REFPKGNAME@
-Suggests: @SUGGESTS@
+Depends: R (>= 4.2.0), Seqinfo, BSgenome (>= @BSGENOMEVERSION@), @REFPKGNAME@
+Suggests: GenomeInfoDb (>= 1.45.5), @SUGGESTS@
 License: @PKGLICENSE@
 organism: @ORGANISM@
 common_name: @COMMONNAME@

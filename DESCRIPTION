@@ -9,7 +9,7 @@ biocViews: Infrastructure, DataRepresentation, GenomeAssembly, Annotation,
 	SequenceMatching
 URL: https://bioconductor.org/packages/BSgenomeForge
 BugReports: https://github.com/Bioconductor/BSgenomeForge/issues
-Version: 1.9.0
+Version: 1.9.1
 License: Artistic-2.0
 Encoding: UTF-8
 Authors@R: c(
@@ -18,9 +18,10 @@ Authors@R: c(
 	person("Atuhurira Kirabo", "Kakopo", role="aut"),
 	person("Emmanuel Chigozie", "Elendu", role="ctb"),
 	person("Prisca Chidimma", "Maduka", role="ctb"))
-Depends: R (>= 4.3.0), methods, BiocGenerics, IRanges,
-	GenomeInfoDb (>= 1.33.17), Biostrings, BSgenome
-Imports: utils, stats, Biobase, S4Vectors, GenomicRanges, BiocIO, rtracklayer
+Depends: R (>= 4.3.0), methods, BiocGenerics, IRanges, Seqinfo,
+	GenomeInfoDb (>= 1.45.5), Biostrings (>= 2.77.2), BSgenome (>= 1.77.1)
+Imports: utils, stats, Biobase, S4Vectors, GenomicRanges (>= 1.61.1),
+	BiocIO, rtracklayer (>= 1.69.1)
 Suggests: GenomicFeatures, Rsamtools, testthat,
 	knitr, rmarkdown, BiocStyle, devtools,
 	BSgenome.Celegans.UCSC.ce2

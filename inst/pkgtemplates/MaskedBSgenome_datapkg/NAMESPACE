@@ -1,4 +1,4 @@
-import(GenomeInfoDb)
+import(Seqinfo)
 import(BSgenome)
 import(@REFPKGNAME@)
 
