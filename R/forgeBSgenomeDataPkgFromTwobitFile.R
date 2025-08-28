@@ -140,6 +140,7 @@ create_2bit_BSgenome_datapkg <-
     stopifnot(all(vapply(symValues, isSingleString, logical(1))))
     pkg_dir <- createPackage(pkgname, destdir, origdir, symValues,
                              unlink=TRUE, quiet=FALSE)[[1L]]
+    dir.create(file.path(pkg_dir, "inst", "extdata"), recursive = TRUE)
     to <- file.path(pkg_dir, "inst", "extdata", "single_sequences.2bit")
     if (move_twobit_file) {
         file.rename(twobit_path, to)
