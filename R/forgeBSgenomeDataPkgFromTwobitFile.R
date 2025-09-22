@@ -142,7 +142,7 @@ create_2bit_BSgenome_datapkg <-
                              unlink=TRUE, quiet=FALSE)[[1L]]
     to <- file.path(pkg_dir, "inst", "extdata", "single_sequences.2bit")
     if (move_twobit_file) {
-        file.rename(twobit_path, to)
+        rename_file(twobit_path, to)
     } else {
         stopifnot(file.copy(twobit_path, to))
     }

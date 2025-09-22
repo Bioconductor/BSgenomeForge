@@ -16,6 +16,27 @@ load_package_gracefully <- function(package, ...)
              "\n\n    BiocManager::install(\"", package, "\")")
 }
 
+### A wrapper around file.rename() that works even when trying to
+### move/rename a file across partitions.
+### Note that this is a much simpler version than igblastr:::rename_file()
+### that doesn't support renaming directories and is also less cautious but
+### is "good enough" for the purpose of BSgenomeForge.
+### Raises an error if the destination file already exists, or if it's a
+### directory, or if the renaming/copying fails for lack of permissions.
+rename_file <- function(from, to)
+{
+    stopifnot(isSingleString(from), nzchar(from),
+              file.exists(from), !dir.exists(from),
+              isSingleString(to), nzchar(to), !file.exists(to))
+    ## file.rename() fails softly (i.e. with a warning only) if trying
+    ## to move/rename a file across partitions.
+    ok <- suppressWarnings(file.rename(from, to))
+    if (!ok) {
+        stopifnot(file.copy(from, to))
+        unlink(from)
+    }
+}
+
 ### If 'collapse' is FALSE (the default), returns a logical vector parallel
 ### to 'x'. Otherwise, returns a single logical TRUE or FALSE.
 ### TODO: Move this to Biostrings (put it in same file as replaceAmbiguities).
