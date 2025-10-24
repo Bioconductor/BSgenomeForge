@@ -6,16 +6,6 @@
 ###
 
 
-### TODO: Move this to S4Vectors (or BiocBaseUtils).
-load_package_gracefully <- function(package, ...)
-{
-    if (!requireNamespace(package, quietly=TRUE))
-        stop("Could not load package ", package, ". Is it installed?\n\n  ",
-             wmsg("Note that ", ..., " requires the ", package, " package. ",
-                  "Please install it with:"),
-             "\n\n    BiocManager::install(\"", package, "\")")
-}
-
 ### A wrapper around file.rename() that works even when trying to
 ### move/rename a file across partitions.
 ### Note that this is a much simpler version than igblastr:::rename_file()

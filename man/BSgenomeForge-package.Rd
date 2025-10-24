@@ -10,7 +10,7 @@
 \description{
   A package that simplifies the process of forging a BSgenome data package,
   by allowing the user to use one function to create the package.
-  }
+}
 
 \details{
   \pkg{BSgenomeForge} provides two major functions, the
@@ -21,14 +21,14 @@
   For an overview of the functionality provided by the package, please see the
   vignette:
   \code{vignette("QuickBSgenomeForge", package="BSgenomeForge")}
-  }
+}
 
 \author{
   Atuhurira Kirabo Kakopo,
   Hervé Pagès
 
   Maintainer: Hervé Pagès
-  }
+}
 
 \seealso{
   \itemize{

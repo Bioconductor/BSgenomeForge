@@ -208,9 +208,9 @@ forgeSeqlengthsRdaFile <- function(seqnames, prefix="", suffix=".fa",
                                             seqs_srcdir, seqs_destdir,
                                             ondisk_seq_format, verbose=TRUE)
 {
-    load_package_gracefully("Rsamtools", "setting 'ondisk_seq_format' ",
-                                         "to \"fa.rz\" or \"fa\"")
-
+    S4Vectors:::load_package_gracefully("Rsamtools", "when setting ",
+                                        "argument 'ondisk_seq_format' ",
+                                        "to \"fa.rz\"' or \"fa\"")
     if (!is.character(seqnames))
         stop("'seqnames' must be a character vector")
     dest_filename <- "single_sequences.fa"
@@ -683,7 +683,7 @@ forgeMasksFiles <- function(seqnames, nmask_per_seq,
                             TRFfiles_name=NA, TRFfiles_prefix="", TRFfiles_suffix=".bed",
                             verbose=TRUE)
 {
-    load_package_gracefully("Rsamtools", "forgeMasksFiles()")
+    S4Vectors:::load_package_gracefully("Rsamtools", "for forgeMasksFiles()")
 
     if (length(seqnames) == 0L)
         warning("'seqnames' is empty")
@@ -1069,7 +1069,8 @@ setMethod("forgeBSgenomeDataPkg", "character",
 setGeneric("forgeMaskedBSgenomeDataPkg", signature="x",
     function(x, masks_srcdir=".", destdir=".", verbose=TRUE)
     {
-        load_package_gracefully("Rsamtools", "forgeMaskedBSgenomeDataPkg()")
+        S4Arrays:::load_package_gracefully("Rsamtools",
+                                           "for forgeMaskedBSgenomeDataPkg()")
         standardGeneric("forgeMaskedBSgenomeDataPkg")
     }
 )
