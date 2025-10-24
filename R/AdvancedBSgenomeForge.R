@@ -1069,8 +1069,8 @@ setMethod("forgeBSgenomeDataPkg", "character",
 setGeneric("forgeMaskedBSgenomeDataPkg", signature="x",
     function(x, masks_srcdir=".", destdir=".", verbose=TRUE)
     {
-        S4Arrays:::load_package_gracefully("Rsamtools",
-                                           "for forgeMaskedBSgenomeDataPkg()")
+        S4Vectors:::load_package_gracefully("Rsamtools",
+                                            "for forgeMaskedBSgenomeDataPkg()")
         standardGeneric("forgeMaskedBSgenomeDataPkg")
     }
 )
