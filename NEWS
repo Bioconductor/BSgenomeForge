@@ -1,3 +1,17 @@
+VERSION 1.10.0
+--------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Add Seqinfo to Depends.
+
+BUG FIXES
+
+    o Make sure internal helper create_2bit_BSgenome_datapkg() can
+      move the 2bit file across partitions without getting hit by
+      an "Invalid cross-device link" error.
+
+
 VERSION 1.8.0
 -------------
 
