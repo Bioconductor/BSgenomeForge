@@ -73,8 +73,11 @@ drop_rows_with_NA_accns <- function(chrominfo, accession_col)
 {
     accns <- chrominfo[ , accession_col]
     drop_idx <- which(is.na(accns))
-    if (length(drop_idx) != 0L)
-        chrominfo <- S4Vectors:::extract_data_frame_rows(chrominfo, -drop_idx)
+    if (length(drop_idx) == 0L)
+        return(chrominfo)
+    NCBI_assembly_info <- attr(chrominfo, "NCBI_assembly_info")
+    chrominfo <- S4Vectors:::extract_data_frame_rows(chrominfo, -drop_idx)
+    attr(chrominfo, "NCBI_assembly_info") <- NCBI_assembly_info
     chrominfo
 }
 
