@@ -24,10 +24,6 @@
   See \code{?\link[@REFPKGNAME@]{@REFPKGNAME@}} in the
   \pkg{@REFPKGNAME@} package for information about how the sequences
   were obtained.
-
-  See \code{?\link[BSgenome]{BSgenomeForge}} and the BSgenomeForge
-  vignette (\code{vignette("BSgenomeForge")}) in the \pkg{BSgenome}
-  software package for how to create a BSgenome data package.
 }
 
 \author{@PKGAUTHOR@}
@@ -52,9 +48,10 @@
     \item The \code{\link[BSgenome]{available.genomes}} function
           in the \pkg{BSgenome} software package.
 
-    \item The BSgenomeForge vignette (\code{vignette("BSgenomeForge")})
-          in the \pkg{BSgenome} software package for how to create a BSgenome
-          data package.
+    \item The "Advanced BSgenomeForge usage" vignette in the
+          \pkg{BSgenomeForge} package for how to create a BSgenome data
+          package with masked sequences. Install the package and access the
+          vignette with \code{browseVignettes(package="BSgenomeForge")}.
   }
 }
 

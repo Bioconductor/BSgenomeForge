@@ -20,10 +20,6 @@
   \preformatted{
 @SRCDATAFILES@
   }
-
-  See \code{?\link[BSgenome]{BSgenomeForge}} and the BSgenomeForge
-  vignette (\code{vignette("BSgenomeForge")}) in the \pkg{BSgenome}
-  software package for how to create a BSgenome data package.
 }
 
 \author{@PKGAUTHOR@}
@@ -45,9 +41,10 @@
     \item The \code{\link[BSgenome]{available.genomes}} function
           in the \pkg{BSgenome} software package.
 
-    \item The BSgenomeForge vignette (\code{vignette("BSgenomeForge")})
-          in the \pkg{BSgenome} software package for how to create a BSgenome
-          data package.
+    \item The "A quick introduction to the BSgenomeForge package" vignette
+          in the \pkg{BSgenomeForge} package for how to create a BSgenome
+          data package. Install the package and access the vignette with
+          \code{browseVignettes(package="BSgenomeForge")}.
   }
 }
 
