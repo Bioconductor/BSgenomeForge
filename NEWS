@@ -1,3 +1,15 @@
+VERSION 1.12.0
+--------------
+
+BUG FIXES
+
+    o Fix issue in internal helper drop_rows_with_NA_accns()
+
+    o Remove outdated links from
+      inst/pkgtemplates/BSgenome_datapkg/man/package.Rd and
+      inst/pkgtemplates/MaskedBSgenome_datapkg/man/package.Rd
+
+
 VERSION 1.10.0
 --------------
 
